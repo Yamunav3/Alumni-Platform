@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Asthra Career Platform Design System
+Professional, modern design with deep blue-purple gradients
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Brand Colors - Professional Blue to Purple Gradient */
+    --background: 0 0% 100%;
+    --foreground: 224 71% 4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
+
+    /* Primary - Deep Blue */
+    --primary: 224 76% 48%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 224 76% 65%;
+
+    /* Secondary - Lighter Blue */
+    --secondary: 224 47% 95%;
+    --secondary-foreground: 224 76% 48%;
+
+    --muted: 224 47% 95%;
+    --muted-foreground: 224 25% 50%;
+
+    /* Accent - Purple */
+    --accent: 262 83% 58%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 224 39% 90%;
+    --input: 224 39% 90%;
+    --ring: 224 76% 48%;
+
+    /* Success Stories */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(224 76% 48%), hsl(262 83% 58%));
+    --gradient-hero: linear-gradient(135deg, hsl(224 76% 48%) 0%, hsl(262 83% 58%) 50%, hsl(283 89% 74%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(224 47% 98%), hsl(224 47% 95%));
+    
+    /* Shadows */
+    --shadow-primary: 0 10px 30px -10px hsl(224 76% 48% / 0.3);
+    --shadow-card: 0 4px 20px -4px hsl(224 25% 25% / 0.08);
+    --shadow-glow: 0 0 40px hsl(224 76% 65% / 0.4);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 0 0% 100%;
+
+    --card: 224 71% 6%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 224 71% 6%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 224 76% 65%;
+    --primary-foreground: 224 71% 4%;
+    --primary-glow: 224 76% 75%;
+
+    --secondary: 224 71% 10%;
+    --secondary-foreground: 224 76% 65%;
+
+    --muted: 224 71% 10%;
+    --muted-foreground: 224 25% 70%;
+
+    --accent: 262 83% 68%;
+    --accent-foreground: 224 71% 4%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 224 71% 15%;
+    --input: 224 71% 15%;
+    --ring: 224 76% 65%;
+
+    --success: 142 76% 46%;
+    --success-foreground: 0 0% 100%;
+
+    /* Dark mode gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(224 76% 65%), hsl(262 83% 68%));
+    --gradient-hero: linear-gradient(135deg, hsl(224 76% 65%) 0%, hsl(262 83% 68%) 50%, hsl(283 89% 84%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(224 71% 8%), hsl(224 71% 6%));
+    
+    --shadow-primary: 0 10px 30px -10px hsl(224 76% 65% / 0.4);
+    --shadow-card: 0 4px 20px -4px hsl(0 0% 0% / 0.3);
+    --shadow-glow: 0 0 40px hsl(224 76% 75% / 0.5);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Hero Button Variant */
+  .btn-hero {
+    @apply bg-gradient-to-r from-primary to-accent text-primary-foreground;
+    @apply shadow-[var(--shadow-primary)] hover:shadow-[var(--shadow-glow)];
+    @apply transition-all duration-300 hover:scale-105 hover:brightness-110;
+  }
+
+  /* Glass Card Effect */
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-sm border border-border/50;
+    @apply shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-primary)];
+    @apply transition-all duration-300;
+  }
+
+  /* Gradient Text */
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Feature Card Hover */
+  .feature-card {
+    @apply glass-card hover:scale-105 cursor-pointer;
+    @apply hover:bg-gradient-to-br hover:from-card hover:to-secondary/50;
+  }
+
+  /* Navigation Link Hover */
+  .nav-link {
+    @apply relative text-foreground/80 hover:text-foreground;
+    @apply transition-colors duration-200;
+  }
+
+  .nav-link::after {
+    @apply content-[''] absolute -bottom-1 left-0 w-0 h-0.5;
+    @apply bg-gradient-to-r from-primary to-accent;
+    @apply transition-all duration-300;
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+}
