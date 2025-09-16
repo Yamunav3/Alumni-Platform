@@ -22,6 +22,7 @@ import AlumniProfile from "./AlumniPage/Profile";
 import AlumniGamification from "./AlumniPage/Gamification";
 import AlumniHome from "./AlumniPage/Home";
 import AlumniEvents from "./AlumniPage/Events";
+import Hello from "./API/api";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
    <TooltipProvider>
       <Toaster />
       <Sonner />
+      <Hello />
       <BrowserRouter></BrowserRouter>
       <BrowserRouter>
         <Routes>
