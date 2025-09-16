@@ -23,6 +23,28 @@ import AlumniGamification from "./AlumniPage/Gamification";
 import AlumniHome from "./AlumniPage/Home";
 import AlumniEvents from "./AlumniPage/Events";
 
+import StaffAbout from "./staff/About";
+import StaffCareerPortal from "./staff/CareerPortal";
+import StaffHome from "./staff/StaffHome";
+import StaffProfile from "./staff/StaffProfile";
+import StaffNotifications from "./staff/StaffNotifications";
+import AdminLogin from "./Login/adminlogin";
+import AlumniLogin from "./Login/alumnilogin";
+import StaffLogin from "./Login/stafflogin";
+import StudentLogin from "./Login/studentlogin";
+import StudentSignup from "./signup/studentsignup";
+import StaffSignup from "./signup/staffsignup";
+import AlumniSignup from "./signup/alumnisignup";
+import AdminSignup from "./signup/adminsignup";
+
+import StudentHome from "./student/StudentHome";
+import StudentAbout from "./student/About";
+import StudentCareerPortal from "./student/CareerPortal";
+import StudentEvents from "./student/Events";
+import StudentProfile from "./student/Profile";
+import StudentNotifications from "./student/Notifications";
+
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -54,12 +76,41 @@ const App = () => (
            <Route path="/alumni/profile" element={<AlumniProfile/>}/>
            <Route path="/alumni/home" element={<AlumniHome/>}/>
            <Route path="/alumni/gamification" element={<AlumniGamification/>}/>
+          {/*student*/}
+
+ <Route path="/student" element={<StudentHome />} />
+            <Route path="/student/about" element={<StudentAbout />} />
+            <Route path="/student/career" element={<StudentCareerPortal />} />
+            <Route path="/student/events" element={<StudentEvents />} />
+            <Route path="/student/profile" element={<StudentProfile />} />
+            <Route path="/student/notifications" element={<StudentNotifications />} />
+
+
+           {/*Staff route*/}
+            <Route path="/staff/about" element={<StaffAbout/>}/>
+            <Route path="/staff/career" element={<StaffCareerPortal/>}/>
+            <Route path="staff/*" element={<StaffHome/>}/>
+            <Route path="staff/profile" element={<StaffProfile/>}/>
+            <Route path="staff/notifications" element={<StaffNotifications/>}/>
+           
+
+            {/*login route*/ }
+            <Route path="/login/student" element={<StudentLogin/>}/>
+             <Route path="/login/staff" element={<StaffLogin/>}/>
+              <Route path="/login/alumni" element={<AlumniLogin/>}/>
+               <Route path="/login/admin" element={<AdminLogin/>}/>
+              {/*signuo route*/ }
+              <Route path="/signup/student" element={<StudentSignup/>}/>
+             <Route path="/signup/staff" element={<StaffSignup/>}/>
+              <Route path="/signup/alumni" element={<AlumniSignup/>}/>
+               <Route path="/signup/admin" element={<AdminSignup/>}/>
           
            
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+         <Footer />
       </BrowserRouter>
       {/* <Footer/> */}
       </TooltipProvider>
