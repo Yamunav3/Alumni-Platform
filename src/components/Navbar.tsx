@@ -22,6 +22,12 @@ const Navbar = () => {
     { name: "Staff", icon: User, path: "/login/staff" },
     { name: "Admin", icon: Shield, path: "/login/admin" },
   ];
+  const user = [
+    { name: "Student", icon: GraduationCap, path: "/login/student" },
+    { name: "Alumni", icon: Users, path: "/login/alumni" },
+    { name: "Staff", icon: User, path: "/login/staff" },
+
+  ];
 
   return (
     <nav className="bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
@@ -44,13 +50,13 @@ const Navbar = () => {
               About Us
             </Link>
             
-            {/* Career Portal Link - No dropdown */}
+            {/* Career Portal Link - No dropdown
             <Link 
               to="/career" 
               className={`nav-link ${isActive("/career") ? "text-primary" : ""}`}
             >
               Career Portal
-            </Link>
+            </Link> */}
 
             {/* Login Dropdown */}
             <DropdownMenu>
@@ -84,7 +90,7 @@ const Navbar = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-40">
-                {userTypes.map((type, index) => (
+                {user.map((type, index) => (
                   <div key={type.name}>
                     <DropdownMenuItem asChild>
                       <Link to={`/signup/${type.name.toLowerCase()}`} className="flex items-center space-x-2">
@@ -92,7 +98,7 @@ const Navbar = () => {
                         <span>{type.name}</span>
                       </Link>
                     </DropdownMenuItem>
-                    {index < userTypes.length - 1 && <DropdownMenuSeparator />}
+                    {index < user.length - 1 && <DropdownMenuSeparator />}
                   </div>
                 ))}
               </DropdownMenuContent>
