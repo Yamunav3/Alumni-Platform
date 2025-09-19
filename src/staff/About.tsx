@@ -30,18 +30,20 @@ const StaffAbout = () => {
     <div className="min-h-screen">
       <StaffNavbar />
       
-      <main className="pt-16">
-        {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-br from-primary/10 to-accent/10">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              About <span className="gradient-text">Asthra</span>
-            </h1>
-            <p className="text-xl text-muted-foreground">
-              Empowering careers through meaningful connections and opportunities
-            </p>
-          </div>
-        </section>
+      <main className="pt-0">
+        
+        <section className="relative py-20 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-fade-in">
+            About Us
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Empowering students with the tools, connections, and opportunities 
+              they need to build successful careers and make a meaningful impact.
+          </p>
+        </div>
+      </section>
 
         {/* Story Section */}
         <section className="py-20">
