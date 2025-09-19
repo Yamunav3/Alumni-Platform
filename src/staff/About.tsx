@@ -138,7 +138,7 @@ const StaffAbout = () => {
         </section>
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

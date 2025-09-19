@@ -50,13 +50,13 @@ const Navbar = () => {
               About Us
             </Link>
             
-            {/* Career Portal Link - No dropdown */}
+            {/* Career Portal Link - No dropdown
             <Link 
               to="/career" 
               className={`nav-link ${isActive("/career") ? "text-primary" : ""}`}
             >
               Career Portal
-            </Link>
+            </Link> */}
 
             {/* Login Dropdown */}
             <DropdownMenu>

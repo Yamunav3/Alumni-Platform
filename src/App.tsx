@@ -81,9 +81,9 @@ const App = () => (
            <Route path="/alumni/profile" element={<AlumniProfile/>}/>
            <Route path="/alumni/home" element={<AlumniHome/>}/>
            <Route path="/alumni/gamification" element={<AlumniGamification/>}/>
-          {/*student*/}
 
- <Route path="/student" element={<StudentHome />} />
+            {/*student*/}
+            <Route path="/student" element={<StudentHome />} />
             <Route path="/student/about" element={<StudentAbout />} />
             <Route path="/student/career" element={<StudentCareerPortal />} />
             <Route path="/student/events" element={<StudentEvents />} />
@@ -97,7 +97,7 @@ const App = () => (
             <Route path="staff/*" element={<StaffHome/>}/>
             <Route path="staff/profile" element={<StaffProfile/>}/>
             <Route path="staff/notifications" element={<StaffNotifications/>}/>
-           
+                       
 
             {/*login route*/ }
             <Route path="/login/student" element={<StudentLogin/>}/>

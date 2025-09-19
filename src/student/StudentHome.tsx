@@ -255,7 +255,7 @@ const StudentHome = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {mentors.map((mentor) => (
-                <Card key={mentor.id} className="hover:shadow-lg transition-shadow bg-card/50 backdrop-blur-sm">
+                <Card key={mentor.id} className="hover:shadow-lg transition-shadow bg-card/50 backdrop-blur-sm mb-6">
                   <CardHeader className="pb-4">
                     <div className="flex items-center space-x-4">
                       <Avatar className="h-16 w-16">
@@ -303,7 +303,7 @@ const StudentHome = () => {
           </TabsContent>
 
           {/* Internships Tab */}
-          <TabsContent value="internships" className="space-y-6">
+          <TabsContent value="internships" className="space-y-6 ">
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -317,7 +317,7 @@ const StudentHome = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {internships.map((internship) => (
-                <Card key={internship.id} className="hover:shadow-lg transition-shadow bg-card/50 backdrop-blur-sm">
+                <Card key={internship.id} className="hover:shadow-lg transition-shadow bg-card/50 backdrop-blur-sm mb-6">
                   <CardHeader>
                     <CardTitle className="text-xl">{internship.title}</CardTitle>
                     <CardDescription className="text-lg font-medium text-primary">
@@ -379,7 +379,7 @@ const StudentHome = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {webinars.map((webinar) => (
-                <Card key={webinar.id} className="hover:shadow-lg transition-shadow bg-card/50 backdrop-blur-sm">
+                <Card key={webinar.id} className="hover:shadow-lg transition-shadow bg-card/50 backdrop-blur-sm mb-6">
                   <CardHeader>
                     <CardTitle className="text-xl">{webinar.title}</CardTitle>
                     <CardDescription>
@@ -432,7 +432,7 @@ const StudentHome = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
               {trainings.map((training) => (
-                <Card key={training.id} className="hover:shadow-lg transition-shadow bg-card/50 backdrop-blur-sm">
+                <Card key={training.id} className="hover:shadow-lg transition-shadow bg-card/50 backdrop-blur-sm mb-6">
                   <CardHeader>
                     <CardTitle className="text-lg">{training.title}</CardTitle>
                     <CardDescription>{training.provider}</CardDescription>
@@ -478,7 +478,7 @@ const StudentHome = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="bg-card/50 backdrop-blur-sm">
+              <Card className="bg-card/50 backdrop-blur-sm mb-6">
                 <CardHeader>
                   <CardTitle>Submit Feedback</CardTitle>
                   <CardDescription>
@@ -521,7 +521,7 @@ const StudentHome = () => {
                 </CardContent>
               </Card>
 
-              <Card className="bg-card/50 backdrop-blur-sm">
+              <Card className="bg-card/50 backdrop-blur-sm mb-6">
                 <CardHeader>
                   <CardTitle>Recent Student Feedback</CardTitle>
                   <CardDescription>See what other students are saying</CardDescription>
