@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { Link } from "react-router-dom";
 import { 
   Calendar, 
   MapPin, 
@@ -212,10 +213,12 @@ const AlumniEvents = () => {
                           <Eye className="h-4 w-4 mr-1" />
                           Details
                         </Button>
-                        <Button size="sm">
-                          <UserPlus className="h-4 w-4 mr-1" />
-                          Register
-                        </Button>
+                       <Link to={"/register"}>
+                       <Button size="sm">
+                       <UserPlus className="h-4 w-4 mr-1" />
+                       Register
+                          </Button>
+                         </Link>
                       </div>
                     </div>
                   </CardContent>
