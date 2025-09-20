@@ -22,11 +22,19 @@ const Navbar = () => {
     { name: "Staff", icon: User, path: "/login/staff" },
     { name: "Admin", icon: Shield, path: "/login/admin" },
   ];
+<<<<<<< HEAD
    const user = [
     { name: "Student", icon: GraduationCap, path: "/login/student" },
     { name: "Alumni", icon: Users, path: "/login/alumni" },
     { name: "Staff", icon: User, path: "/login/staff" },
    
+=======
+  const user = [
+    { name: "Student", icon: GraduationCap, path: "/login/student" },
+    { name: "Alumni", icon: Users, path: "/login/alumni" },
+    { name: "Staff", icon: User, path: "/login/staff" },
+
+>>>>>>> origin/main
   ];
 
   return (
@@ -50,13 +58,13 @@ const Navbar = () => {
               About Us
             </Link>
             
-            {/* Career Portal Link - No dropdown */}
+            {/* Career Portal Link - No dropdown
             <Link 
               to="/career" 
               className={`nav-link ${isActive("/career") ? "text-primary" : ""}`}
             >
               Career Portal
-            </Link>
+            </Link> */}
 
             {/* Login Dropdown */}
             <DropdownMenu>
@@ -98,7 +106,7 @@ const Navbar = () => {
                         <span>{type.name}</span>
                       </Link>
                     </DropdownMenuItem>
-                    {index < userTypes.length - 1 && <DropdownMenuSeparator />}
+                    {index < user.length - 1 && <DropdownMenuSeparator />}
                   </div>
                 ))}
               </DropdownMenuContent>

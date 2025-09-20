@@ -396,7 +396,7 @@ const CareerPortal = () => {
       <Navbar />
       
       {/* Header with gradient */}
-      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 py-12">
+      {/* <div className="bg-gradient-to-r from-primary/10 to-secondary/10 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-foreground mb-4">Career Portal</h1>
@@ -406,6 +406,19 @@ const CareerPortal = () => {
           </div>
         </div>
       </div>
+      
+   */}
+   <section className="relative py-20 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-fade-in">
+            Career Portal
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-slide-up">
+            Discover opportunities, track applications, and advance your career with alumni connections
+          </p>
+        </div>
+      </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="jobs" className="w-full">
