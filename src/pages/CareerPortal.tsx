@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, User, Users, Shield, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import magicBento from "../ReactBits/MagicBento";
 import {
   DropdownMenu,
   DropdownMenuContent,

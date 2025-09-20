@@ -165,7 +165,7 @@ const Navbar = () => {
             <div className="space-y-2">
               <div className="text-sm font-medium text-muted-foreground">Sign Up As</div>
               <div className="grid grid-cols-2 gap-2">
-                {userTypes.map((type) => (
+                {user.map((type) => (
                   <Link 
                     key={type.name}
                     to={`/signup/${type.name.toLowerCase()}`}
