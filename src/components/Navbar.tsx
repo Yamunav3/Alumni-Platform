@@ -22,19 +22,11 @@ const Navbar = () => {
     { name: "Staff", icon: User, path: "/login/staff" },
     { name: "Admin", icon: Shield, path: "/login/admin" },
   ];
-<<<<<<< HEAD
-   const user = [
-    { name: "Student", icon: GraduationCap, path: "/login/student" },
-    { name: "Alumni", icon: Users, path: "/login/alumni" },
-    { name: "Staff", icon: User, path: "/login/staff" },
-   
-=======
   const user = [
     { name: "Student", icon: GraduationCap, path: "/login/student" },
     { name: "Alumni", icon: Users, path: "/login/alumni" },
     { name: "Staff", icon: User, path: "/login/staff" },
 
->>>>>>> origin/main
   ];
 
   return (
