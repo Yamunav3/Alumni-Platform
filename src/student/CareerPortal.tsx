@@ -253,10 +253,10 @@ const StudentCareerPortal = () => {
                 <Filter className="h-4 w-4 mr-2" />
                 Filters
               </Button>
-              <Button>
+              {/* <Button>
                 <Briefcase className="h-4 w-4 mr-2" />
                 Post Job
-              </Button>
+              </Button> */}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

@@ -132,12 +132,12 @@ const StudentEventManagement = () => {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="upcoming" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="upcoming">Upcoming Events</TabsTrigger>
             <TabsTrigger value="past">Past Events</TabsTrigger>
-            <TabsTrigger value="create">Create Event</TabsTrigger>
+            {/* <TabsTrigger value="create">Create Event</TabsTrigger> */}
             <TabsTrigger value="categories">Categories</TabsTrigger>
           </TabsList>
 
@@ -157,10 +157,10 @@ const StudentEventManagement = () => {
                 <Filter className="h-4 w-4 mr-2" />
                 Filter
               </Button>
-              <Button>
+              {/* <Button>
                 <Plus className="h-4 w-4 mr-2" />
                 Create Event
-              </Button>
+              </Button> */}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -279,7 +279,7 @@ const StudentEventManagement = () => {
           </TabsContent>
 
           {/* Create Event */}
-          <TabsContent value="create" className="space-y-6">
+          {/* <TabsContent value="create" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle>Create New Event</CardTitle>
@@ -336,16 +336,16 @@ const StudentEventManagement = () => {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+          </TabsContent> */}
 
           {/* Categories */}
           <TabsContent value="categories" className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-semibold">Event Categories</h2>
-              <Button>
+              {/* <Button>
                 <Plus className="h-4 w-4 mr-2" />
                 Add Category
-              </Button>
+              </Button> */}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
