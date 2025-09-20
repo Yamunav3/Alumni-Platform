@@ -26,6 +26,10 @@ import {
   Eye
 } from "lucide-react";
 import { AlumniNavbar } from "@/components/AlumniNavbar";
+import Reunion from "@/assets/reunion.png";
+import Tech from "@/assets/tech.png";
+import Mentor from "@/assets/mentor.png";
+
 
 const AlumniEvents = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -33,6 +37,7 @@ const AlumniEvents = () => {
   const upcomingEvents = [
     {
       id: 1,
+      imageUrl: Reunion, 
       title: "Annual Alumni Reunion 2025",
       date: "March 15, 2025",
       time: "6:00 PM - 11:00 PM",
@@ -48,6 +53,7 @@ const AlumniEvents = () => {
     },
     {
       id: 2,
+       imageUrl: Tech, 
       title: "Tech Industry Networking Night",
       date: "January 20, 2025",
       time: "7:00 PM - 9:00 PM",
@@ -63,6 +69,7 @@ const AlumniEvents = () => {
     },
     {
       id: 3,
+       imageUrl: Mentor, 
       title: "Career Mentorship Workshop",
       date: "February 5, 2025",
       time: "2:00 PM - 5:00 PM",
@@ -167,7 +174,18 @@ const AlumniEvents = () => {
               {upcomingEvents.map((event) => (
                 <Card key={event.id} className="hover:shadow-lg transition-shadow">
                   <div className="relative">
-                    <div className="h-48 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-t-lg" />
+                    {/* <div className="h-48 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-t-lg" /> */}
+                     {event.imageUrl ? (
+            <img 
+              src={event.imageUrl} 
+              alt={event.title}
+              className="h-48 w-full object-cover rounded-t-lg"
+            />
+          ) : (
+            <div className="h-48 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-t-lg flex items-center justify-center">
+              <span className="text-muted-foreground">No image</span>
+            </div>
+          )}
                     <Badge 
                       className="absolute top-4 left-4" 
                       variant={event.isVirtual ? "secondary" : "default"}
