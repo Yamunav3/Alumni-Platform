@@ -105,7 +105,7 @@ export default function AlumniNotifications() {
     <div className="min-h-screen bg-background">
     <AlumniNavbar/>
       {/* Header */}
-      <section className="py-16 px-4 bg-gradient-hero">
+      <section className="py-16 px-4 bg-indigo-200">
         <div className="container mx-auto">
           <div className="flex items-center justify-between">
             <div>

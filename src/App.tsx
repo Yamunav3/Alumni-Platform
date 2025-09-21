@@ -46,6 +46,7 @@ import StudentProfile from "./student/Profile";
 import StudentNotifications from "./student/Notifications";
 import ChatBot from "./components/ChatBot";
   import Register from  "./AlumniPage/forms/register";
+  import AlumniAnalytics from "./AlumniPage/forms/Analytics";
 
 
 const queryClient = new QueryClient();
@@ -60,6 +61,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/register" element={<Register />} />
+          <Route path="/analytics" element={<AlumniAnalytics/>}/>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
           <Route path="/career" element={<CareerPortal />} />
