@@ -15,7 +15,8 @@ import {
   Maximize2
 } from "lucide-react";
 import astraLogo from "@/assets/image.png"; // adjust path
-import chatbot from "@/assets/chatBot1.jpg";
+// import chatbot from "@/assets/chatBot1.jpg";
+import chatbot from "@/assets/asthra.jpg";
 interface Message {
   id: number;
   text: string;
@@ -103,8 +104,8 @@ const ChatBot = () => {
       >
         {/* Full circle occupied by image */}
         <img 
-          // src={chatbot} 
-          src={astraLogo}
+          src={chatbot} 
+          // src={astraLogo}
           alt="Asthra Chatbot" 
           className="h-full w-full object-cover rounded-full" 
         />

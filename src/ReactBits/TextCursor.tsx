@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
-
+import { AnimatePresence } from "motion/react";
+import { motion } from "framer-motion";
 interface TextCursorProps {
   text: string;
   delay?: number;
