@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, GraduationCap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import axios from "axios";
 
 const AlumniSignup = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const AlumniSignup = () => {
     confirmPassword: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
@@ -46,11 +47,41 @@ const AlumniSignup = () => {
       return;
     }
     
-    toast({
-      title: "Account Created",
-      description: "Your alumni account has been created successfully!",
-    });
-  };
+    // toast({
+    //   title: "Account Created",
+    //   description: "Your alumni account has been created successfully!",
+    // });
+ 
+    //signing up logic here
+    try{
+        const response=await axios.post('http://localhost:8000/account/register',{
+            college_id:formData.collegeId,
+            college_email:formData.collegeEmail,
+            name:formData.name,
+            graduation_year:formData.graduationYear,
+            branch:formData.branch,
+            current_company:formData.currentCompany,
+            job_title:formData.jobTitle,
+            interests:formData.interests,
+            password:formData.password,
+        });
+
+        if(response.status === 201){
+          toast({
+            title: "Account Created",
+            description: "Your alumni account has been created successfully!",
+          });
+          navigate("/login/alumni");
+        }
+    }catch(error){
+        toast({
+            title: "Error",
+            description: "There was an error creating your account. Please try again.",
+            variant: "destructive",
+          });
+          console.error("There was an error creating the account!", error);
+        }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">

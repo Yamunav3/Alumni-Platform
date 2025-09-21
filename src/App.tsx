@@ -22,7 +22,7 @@ import AlumniProfile from "./AlumniPage/Profile";
 import AlumniGamification from "./AlumniPage/Gamification";
 import AlumniHome from "./AlumniPage/Home";
 import AlumniEvents from "./AlumniPage/Events";
-import Hello from "./API/api";
+
 
 import StaffAbout from "./staff/About";
 import StaffCareerPortal from "./staff/CareerPortal";
@@ -55,7 +55,7 @@ const App = () => (
    <TooltipProvider>
       <Toaster />
       <Sonner />
-      <Hello />
+      
       <BrowserRouter></BrowserRouter>
       <BrowserRouter>
         <Routes>

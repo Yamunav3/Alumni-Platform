@@ -46,7 +46,7 @@ const Analytics = () => {
     },
     { 
       label: "Avg. Starting Salary", 
-      value: "$85K", 
+      value: "₹85K", 
       change: 15, 
       changeType: "increase",
       icon: Briefcase, 
@@ -94,14 +94,14 @@ const Analytics = () => {
   ];
 
   const topCompanies = [
-    { name: "Google", hires: 145, avgSalary: "$165K", retention: "92%" },
-    { name: "Microsoft", hires: 132, avgSalary: "$155K", retention: "89%" },
-    { name: "Apple", hires: 98, avgSalary: "$170K", retention: "94%" },
-    { name: "Amazon", hires: 89, avgSalary: "$145K", retention: "87%" },
-    { name: "Meta", hires: 76, avgSalary: "$180K", retention: "91%" },
-    { name: "Netflix", hires: 54, avgSalary: "$190K", retention: "95%" },
-    { name: "Tesla", hires: 43, avgSalary: "$140K", retention: "88%" },
-    { name: "Uber", hires: 38, avgSalary: "$135K", retention: "85%" }
+    { name: "Google", hires: 145, avgSalary: "₹165K", retention: "92%" },
+    { name: "Microsoft", hires: 132, avgSalary: "₹155K", retention: "89%" },
+    { name: "Apple", hires: 98, avgSalary: "₹170K", retention: "94%" },
+    { name: "Amazon", hires: 89, avgSalary: "₹145K", retention: "87%" },
+    { name: "Meta", hires: 76, avgSalary: "₹180K", retention: "91%" },
+    { name: "Netflix", hires: 54, avgSalary: "₹190K", retention: "95%" },
+    { name: "Tesla", hires: 43, avgSalary: "₹140K", retention: "88%" },
+    { name: "Uber", hires: 38, avgSalary: "₹135K", retention: "85%" }
   ];
 
   const engagementMetrics = [

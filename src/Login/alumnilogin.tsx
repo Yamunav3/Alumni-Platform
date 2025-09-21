@@ -26,10 +26,12 @@ const AlumniLogin = () => {
       return;
     }
     
-    toast({
-      title: "Login Successful",
-      description: "Welcome back, Alumni!",
-    });
+    // toast({
+    //   title: "Login Successful",
+    //   description: "Welcome back, Alumni!",
+    // });
+
+    //login logic here
   };
 
   return (

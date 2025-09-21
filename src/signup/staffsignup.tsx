@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import axios from "axios";
 
 const StaffSignup = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const StaffSignup = () => {
     confirmPassword: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
@@ -44,10 +45,37 @@ const StaffSignup = () => {
       return;
     }
     
-    toast({
-      title: "Account Created",
-      description: "Your staff account has been created successfully!",
-    });
+    // toast({
+    //   title: "Account Created",
+    //   description: "Your staff account has been created successfully!",
+    // });
+    //signing logic here
+    try {
+      const response = await axios.post('http://localhost:8000/staff/register', {
+        staffId: formData.staffId,
+        name: formData.name,
+        email: formData.email,
+        staffRole: formData.staffRole,
+        department: formData.department,
+        interests: formData.interests,
+        password: formData.password,
+        confirmpassword: formData.confirmPassword,
+      });
+      if(response.status===201){
+        toast({
+          title: "Account Created",
+          description: "Your staff account has been created successfully!",
+        });
+        navigate("/login/staff");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "There was an error creating your account. Please try again.",
+        variant: "destructive",
+      });
+      console.error("There was an error!", error);
+    }
   };
 
   return (

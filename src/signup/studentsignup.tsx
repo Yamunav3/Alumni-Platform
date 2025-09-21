@@ -24,7 +24,7 @@ const StudentSignup = () => {
     confirmPassword: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
@@ -45,10 +45,37 @@ const StudentSignup = () => {
       return;
     }
     
-    toast({
-      title: "Account Created",
-      description: "Your student account has been created successfully!",
-    });
+    // toast({
+    //   title: "Account Created",
+    //   description: "Your student account has been created successfully!",
+    // });
+
+    //signing logic here
+    try {
+      const response= await fetch('http://localhost:8000/student/register',{
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body:JSON.stringify({
+          collegeId:formData.collegeId,
+          collegeEmail:formData.collegeEmail,
+          name:formData.name,
+          branch:formData.branch,
+          section:formData.section,
+          yearOfGraduation:formData.yearOfGraduation,
+          interests:formData.interests,
+          password:formData.password,
+          confirmpassword:formData.confirmPassword,
+        })
+      });
+    } catch (error) {
+      console.error("There was an error!", error);
+      toast({
+        title: "Error",
+        description: "There was an error creating your account. Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
   };
 
   return (
