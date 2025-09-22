@@ -14,8 +14,9 @@ import {
   FolderOpen,
   Heart
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AlumniNavbar } from "@/components/AlumniNavbar";
+
 
 const celebrationsData = [
   { title: "Alumni Annual Gala", date: "Dec 15, 2024", type: "Event", attendees: 250 },
@@ -55,11 +56,11 @@ export default function AlumniHome() {
     <div className="min-h-screen bg-background">
       <AlumniNavbar/>
       {/* Hero Section */}
-      <section className="relative py-20 px-4 bg-gradient-hero">
+      <section className="relative py-20 px-4 bg-indigo-200">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center mb-6">
             <Sparkles className="h-8 w-8 text-primary mr-3" />
-            <h1 className="text-4xl md:text-6xl font-bold gradient-text">
+            <h1 className="text-4xl md:text-6xl font-semi-bold gradient-text">
               Welcome to Asthra
             </h1>
           </div>
@@ -68,13 +69,14 @@ export default function AlumniHome() {
             Build meaningful relationships, advance your career, and give back to your community.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              className="bg-gradient-primary hover:opacity-90 text-primary-foreground"
-              onClick={() => navigate("/career-portal")}
-            >
-              Explore Career Portal
-            </Button>
+           <Link to="/career">
+      <Button 
+        size="lg" 
+        className="bg-gradient-primary hover:opacity-90 text-primary-foreground"
+      >
+        Explore Career Portal
+      </Button>
+    </Link>
             <Button 
               variant="outline" 
               size="lg"
