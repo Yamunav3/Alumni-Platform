@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import GradientText from "../ReactBits/GradientText";
 import CountUp from "../ReactBits/CountUp";
+import ParticleBackground from "./BackGround";
 
 const CTA = () => {
   return (
     <section className="py-20 bg-gradient-hero relative overflow-hidden">
       {/* Background */}
+        <ParticleBackground />
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-white/10 rounded-full blur-xl animate-pulse"></div>
         <div

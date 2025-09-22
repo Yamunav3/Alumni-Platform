@@ -12,7 +12,19 @@ const Hero = () => {
     <>
       {/* Cursor Trail */}
       <TextCursor
-        text="•"
+        //  text = {<span style={{ color: "yellow" }}>{">"}</span>}
+
+         text={
+    <span
+      style={{
+        background: "linear-gradient(90deg, #ff0000, #00ff00, #0000ff)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+      }}
+    >
+      {">"}
+    </span>
+  }
         delay={0.2}
         spacing={80}
         followMouseDirection={true}
