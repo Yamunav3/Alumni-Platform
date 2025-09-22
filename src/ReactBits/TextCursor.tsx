@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, ReactNode } from "react";
-import { motion, AnimatePresence } from "motion/react";
-
+import React, { useState, useEffect, useRef } from "react";
+import { AnimatePresence } from "motion/react";
+import { motion } from "framer-motion";
 interface TextCursorProps {
-  text: ReactNode;
+  text: String;
   delay?: number;
   spacing?: number;
   followMouseDirection?: boolean;

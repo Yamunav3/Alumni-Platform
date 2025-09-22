@@ -73,7 +73,7 @@ export default function AlumniProfile() {
     <div className="min-h-screen bg-background">
       <AlumniNavbar/>
       {/* Profile Header */}
-      <section className="py-16 px-4 bg-gradient-hero">
+      <section className="py-16 px-4 bg-indigo-200">
         <div className="container mx-auto max-w-4xl">
           <div className="flex flex-col md:flex-row items-start md:items-center space-y-6 md:space-y-0 md:space-x-8">
             <Avatar className="h-32 w-32 border-4 border-white shadow-elegant">
