@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import ParticleBackground from "../components/BackGround";
 
 const StaffSignup = () => {
   const navigate = useNavigate();
@@ -52,6 +53,8 @@ const StaffSignup = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
+      <ParticleBackground/>
+      
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
           

@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Shield } from "lucide-react";
+import { ArrowLeft, Shield,Link } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import ParticleBackGround from "../components/BackGround";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -33,9 +34,15 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
+
+    
+   <div className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden">
+      
+< ParticleBackGround/>
+
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
+         
           
           <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center mb-4">
             <Shield className="w-8 h-8 text-white" />
@@ -69,10 +76,14 @@ const AdminLogin = () => {
               />
             </div>
 
-            <Button type="submit" className="w-full">
+            {/* <Button type="submit" className="w-full">
               Sign In
             </Button>
-          </form>
+          </form> */}
+          <Button asChild type="button" className="w-full">
+  <Link to="/student">Sign In</Link>
+</Button>
+</form>
 
           <div className="text-center mt-6">
             <p className="text-sm text-muted-foreground">

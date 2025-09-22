@@ -26,7 +26,7 @@ import {
   CheckCircle,
   Eye
 } from "lucide-react";
-import StudentNavbar from "@/components/StudentNavbar";
+import StudentNavbar from "./StudentNavbar";
 
 const StudentEventManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");

@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, GraduationCap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import ParticleBackGround from "../components/BackGround";
 
 const AlumniLogin = () => {
   const navigate = useNavigate();
@@ -34,6 +35,9 @@ const AlumniLogin = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
+     
+     <ParticleBackGround/>
+     
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           

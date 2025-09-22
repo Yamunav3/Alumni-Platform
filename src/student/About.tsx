@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Target, Lightbulb, Award } from "lucide-react";
-import StudentNavbar from "@/components/StudentNavbar";
+import StudentNavbar from "./StudentNavbar";
 import LogoLoop from "../ReactBits/LogoLoop";
 import CountUp from "../ReactBits/CountUp";
 import ClickSpark from "../ReactBits/ClickSpark";
