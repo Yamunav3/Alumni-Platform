@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,14 +12,15 @@ import ParticleBackGround from "../components/BackGround";
 const AlumniLogin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    collegeEmail: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.collegeEmail || !formData.password) {
+    if (!email || !password) {
       toast({
         title: "Error",
         description: "Please fill in all required fields",
@@ -26,11 +28,38 @@ const AlumniLogin = () => {
       });
       return;
     }
-    
-    toast({
-      title: "Login Successful",
-      description: "Welcome back, Alumni!",
-    });
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    try {
+      // Django session login /account/login/ or /api/session-auth/login/
+      await axios.post(
+        "http://localhost:8000/account/login/",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      setSuccess("Login successful!");
+      toast({
+        title: "Login Successful",
+        description: "Welcome back, Alumni!",
+      });
+      // Optionally navigate to dashboard here
+      // navigate("/alumni/dashboard");
+    } catch (err: any) {
+      setError(
+        err.response?.data?.detail || "Login failed. Please check your credentials."
+      );
+      toast({
+        title: "Login Failed",
+        description: err.response?.data?.detail || "Login failed. Please check your credentials.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -55,26 +84,26 @@ const AlumniLogin = () => {
                 id="collegeEmail"
                 type="email"
                 placeholder="Enter your college email"
-                value={formData.collegeEmail}
-                onChange={(e) => setFormData(prev => ({ ...prev, collegeEmail: e.target.value }))}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            
             <div className="space-y-2">
               <Label htmlFor="password">Password *</Label>
               <Input
                 id="password"
                 type="password"
                 placeholder="Enter your password"
-                value={formData.password}
-                onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-
-            <Button type="submit" className="w-full">
-              Sign In
+            {error && <div className="mb-4 text-red-500">{error}</div>}
+            {success && <div className="mb-4 text-green-500">{success}</div>}
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Logging in..." : "Sign In"}
             </Button>
           </form>
 

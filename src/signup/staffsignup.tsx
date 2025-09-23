@@ -49,6 +49,7 @@ const StaffSignup = () => {
       title: "Account Created",
       description: "Your staff account has been created successfully!",
     });
+    
   };
 
   return (
