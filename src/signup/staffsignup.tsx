@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
+import ParticleBackground from "../components/BackGround";
 
 const StaffSignup = () => {
   const navigate = useNavigate();
@@ -45,23 +46,19 @@ const StaffSignup = () => {
       return;
     }
     
-    // toast({
-    //   title: "Account Created",
-    //   description: "Your staff account has been created successfully!",
-    // });
-    //signing logic here
     try {
-      const response = await axios.post('http://localhost:8000/staff/register', {
-        staffId: formData.staffId,
+      const response = await axios.post('http://localhost:8000/account/register/staff/', {
+        staff_Id: formData.staffId,
         name: formData.name,
         email: formData.email,
         staffRole: formData.staffRole,
         department: formData.department,
         interests: formData.interests,
         password: formData.password,
-        confirmpassword: formData.confirmPassword,
+        confirmPassword: formData.confirmPassword,
       });
-      if(response.status===201){
+
+      if(response.status === 201) {
         toast({
           title: "Account Created",
           description: "Your staff account has been created successfully!",
@@ -80,6 +77,8 @@ const StaffSignup = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
+      <ParticleBackground/>
+      
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
           

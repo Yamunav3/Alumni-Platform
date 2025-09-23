@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { name: "Home", href: "/staff", icon: Home },
+  { name: "Home", href: "/staff/home", icon: Home },
   { name: "About Us", href: "/staff/about", icon: Users },
   { name: "Career Portal", href: "/staff/career", icon: Briefcase },
   { name: "Profile", href: "/staff/profile", icon: User },

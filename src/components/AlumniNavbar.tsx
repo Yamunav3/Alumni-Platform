@@ -171,9 +171,8 @@
 
 
 
-
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -189,7 +188,6 @@ import {
   Users, 
   User,
   Menu,
-  Building,
   Trophy,
   X,
   Calendar1Icon,
@@ -200,7 +198,7 @@ import {
   Settings
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
+import { Badge } from "@/components/ui/badge";
 const navigation = [
   { name: "Home", href: "/alumni/home", icon: Home },
   { name: "Career Portal", href: "/alumni/career", icon: Briefcase },
@@ -215,6 +213,14 @@ const navigation = [
 export const AlumniNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear session/auth if needed
+    // localStorage.removeItem("token");
+
+    navigate("/"); // Redirects to home page
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border-light/20 bg-card-glass backdrop-blur-xl supports-[backdrop-filter]:bg-card-glass shadow-nav animate-fade-in">
@@ -226,6 +232,9 @@ export const AlumniNavbar = () => {
               <span className="text-primary-foreground font-bold text-xl">A</span>
             </div>
             <span className="text-2xl font-bold gradient-text tracking-wide">Asthra</span>
+             <Badge variant="secondary" className="ml-2 text-xs">
+              Alumni
+            </Badge>
           </Link>
 
           {/* Desktop Navigation */}
@@ -242,14 +251,22 @@ export const AlumniNavbar = () => {
                     isActive && "active bg-card-secondary/50 shadow-glass"
                   )}
                 >
-                  <Icon className={cn(
-                    "h-4 w-4 transition-all duration-300",
-                    isActive ? "text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.6)]" : "group-hover:text-primary"
-                  )} />
-                  <span className={cn(
-                    "transition-all duration-300",
-                    isActive && "text-primary font-semibold"
-                  )}>{item.name}</span>
+                  <Icon
+                    className={cn(
+                      "h-4 w-4 transition-all duration-300",
+                      isActive
+                        ? "text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.6)]"
+                        : "group-hover:text-primary"
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "transition-all duration-300",
+                      isActive && "text-primary font-semibold"
+                    )}
+                  >
+                    {item.name}
+                  </span>
                   {isActive && (
                     <div className="absolute inset-0 bg-gradient-primary opacity-10 rounded-xl" />
                   )}
@@ -284,7 +301,10 @@ export const AlumniNavbar = () => {
                   <span>Help</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="my-1" /> {/* Reduced separator margin */}
-                <DropdownMenuItem className="flex items-center space-x-2 cursor-pointer text-destructive py-2">
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="flex items-center space-x-2 cursor-pointer text-destructive py-2"
+                >
                   <LogOut className="h-4 w-4" />
                   <span>Logout</span>
                 </DropdownMenuItem>
@@ -312,8 +332,10 @@ export const AlumniNavbar = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t border-border-light/20 animate-fade-in"> {/* Reduced padding */}
-            <div className="flex flex-col space-y-2"> {/* Reduced spacing */}
+          <div className="md:hidden py-4 border-t border-border-light/20 animate-fade-in">
+            {/* Reduced padding */}
+            <div className="flex flex-col space-y-2">
+              {/* Reduced spacing */}
               {navigation.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.href;
@@ -327,14 +349,22 @@ export const AlumniNavbar = () => {
                       isActive && "active bg-card-secondary/50 shadow-glass"
                     )}
                   >
-                    <Icon className={cn(
-                      "h-5 w-5 transition-all duration-300",
-                      isActive ? "text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.6)]" : ""
-                    )} />
-                    <span className={cn(
-                      "transition-all duration-300",
-                      isActive && "text-primary font-semibold"
-                    )}>{item.name}</span>
+                    <Icon
+                      className={cn(
+                        "h-5 w-5 transition-all duration-300",
+                        isActive
+                          ? "text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.6)]"
+                          : ""
+                      )}
+                    />
+                    <span
+                      className={cn(
+                        "transition-all duration-300",
+                        isActive && "text-primary font-semibold"
+                      )}
+                    >
+                      {item.name}
+                    </span>
                   </Link>
                 );
               })}

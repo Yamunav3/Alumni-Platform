@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence } from "motion/react";
 import { motion } from "framer-motion";
 interface TextCursorProps {
-  text: string;
+  text: String;
   delay?: number;
   spacing?: number;
   followMouseDirection?: boolean;

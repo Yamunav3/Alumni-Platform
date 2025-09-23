@@ -234,66 +234,6 @@ const AlumniEvents = () => {
                     />
                   </div>
                   
-                  {/* <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
-                      placeholder="Enter your phone number"
-                    />
-                  </div> */}
-                  
-                  {/* <div>
-                    <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">
-                      Company
-                    </label>
-                    <input
-                      type="text"
-                      id="company"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
-                      placeholder="Where do you work?"
-                    />
-                  </div> */}
-                  
-                  {/* <div>
-                    <label htmlFor="position" className="block text-sm font-medium text-gray-700 mb-1">
-                      Position
-                    </label>
-                    <input
-                      type="text"
-                      id="position"
-                      name="position"
-                      value={formData.position}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
-                      placeholder="What is your role?"
-                    />
-                  </div>
-                   */}
-                  {/* <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                      Questions or Comments
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      rows={3}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
-                      placeholder="Any specific topics you'd like to discuss?"
-                    ></textarea>
-                  </div> */}
-                  
                   <div className="flex gap-3 pt-4">
                     <button
                       type="submit"
