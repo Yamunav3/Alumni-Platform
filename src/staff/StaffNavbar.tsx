@@ -8,7 +8,7 @@ import {
   Bell,
   Menu,
   X,
-} from "lucide-react";
+}from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 

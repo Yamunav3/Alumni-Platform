@@ -5,9 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Navigation from "../components/StaffNavbar"
-
 import { Textarea } from "@/components/ui/textarea";
+import { Link } from "react-router-dom";
 import { 
   Calendar, 
   MapPin, 
@@ -26,14 +25,19 @@ import {
   CheckCircle,
   Eye
 } from "lucide-react";
-import StudentNavbar from "./StudentNavbar";
+import { AlumniNavbar } from "@/components/AlumniNavbar";
+import Reunion from "@/assets/reunion.png";
+import Tech from "@/assets/tech.png";
+import Mentor from "@/assets/mentor.png";
 
-const StudentEventManagement = () => {
+
+const AlumniEvents = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const upcomingEvents = [
     {
       id: 1,
+      imageUrl: Reunion, 
       title: "Annual Alumni Reunion 2025",
       date: "March 15, 2025",
       time: "6:00 PM - 11:00 PM",
@@ -49,6 +53,7 @@ const StudentEventManagement = () => {
     },
     {
       id: 2,
+       imageUrl: Tech, 
       title: "Tech Industry Networking Night",
       date: "January 20, 2025",
       time: "7:00 PM - 9:00 PM",
@@ -64,6 +69,7 @@ const StudentEventManagement = () => {
     },
     {
       id: 3,
+       imageUrl: Mentor, 
       title: "Career Mentorship Workshop",
       date: "February 5, 2025",
       time: "2:00 PM - 5:00 PM",
@@ -119,25 +125,26 @@ const StudentEventManagement = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <AlumniNavbar/>
       {/* Header */}
-     <StudentNavbar/>
-      <section className="relative py-20 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5">
+       <section className="relative py-20 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-fade-in">
-            Event Management
+           Event Management
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Discover, organize, and participate in alumni events and networking opportunities</p>
+              Discover, organize, and participate in alumni events and networking opportunities
+            </p>
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="upcoming" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="upcoming">Upcoming Events</TabsTrigger>
             <TabsTrigger value="past">Past Events</TabsTrigger>
-            {/* <TabsTrigger value="create">Create Event</TabsTrigger> */}
+            <TabsTrigger value="create">Create Event</TabsTrigger>
             <TabsTrigger value="categories">Categories</TabsTrigger>
           </TabsList>
 
@@ -157,17 +164,25 @@ const StudentEventManagement = () => {
                 <Filter className="h-4 w-4 mr-2" />
                 Filter
               </Button>
-              {/* <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Create Event
-              </Button> */}
+
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
               {upcomingEvents.map((event) => (
                 <Card key={event.id} className="hover:shadow-lg transition-shadow">
                   <div className="relative">
-                    <div className="h-48 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-t-lg" />
+                    {/* <div className="h-48 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-t-lg" /> */}
+                     {event.imageUrl ? (
+            <img 
+              src={event.imageUrl} 
+              alt={event.title}
+              className="h-48 w-full object-cover rounded-t-lg"
+            />
+          ) : (
+            <div className="h-48 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-t-lg flex items-center justify-center">
+              <span className="text-muted-foreground">No image</span>
+            </div>
+          )}
                     <Badge 
                       className="absolute top-4 left-4" 
                       variant={event.isVirtual ? "secondary" : "default"}
@@ -213,10 +228,12 @@ const StudentEventManagement = () => {
                           <Eye className="h-4 w-4 mr-1" />
                           Details
                         </Button>
-                        <Button size="sm">
-                          <UserPlus className="h-4 w-4 mr-1" />
-                          Register
-                        </Button>
+                       <Link to={"/register"}>
+                       <Button size="sm">
+                       <UserPlus className="h-4 w-4 mr-1" />
+                       Register
+                          </Button>
+                         </Link>
                       </div>
                     </div>
                   </CardContent>
@@ -229,10 +246,18 @@ const StudentEventManagement = () => {
           <TabsContent value="past" className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-semibold">Event History</h2>
-              <Button variant="outline">
+              {/* <Button variant="outline">
                 <Eye className="h-4 w-4 mr-2" />
                 View Analytics
-              </Button>
+              </Button> */}
+               <Link to={"/analytics"}>
+                       <Button size="sm">
+                        <Eye className="h-4 w-4 mr-2" />
+                        View Analytics
+                          </Button>
+                        </Link>
+
+
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -268,9 +293,10 @@ const StudentEventManagement = () => {
                       <Button size="sm" variant="outline" className="flex-1">
                         View Photos
                       </Button>
-                      <Button size="sm" variant="outline" className="flex-1">
-                        Feedback
+                       <Button size="sm" variant="outline" className="flex-1">
+                        About
                       </Button>
+                      
                     </div>
                   </CardContent>
                 </Card>
@@ -279,7 +305,7 @@ const StudentEventManagement = () => {
           </TabsContent>
 
           {/* Create Event */}
-          {/* <TabsContent value="create" className="space-y-6">
+          <TabsContent value="create" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle>Create New Event</CardTitle>
@@ -336,16 +362,16 @@ const StudentEventManagement = () => {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent> */}
+          </TabsContent>
 
           {/* Categories */}
           <TabsContent value="categories" className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-semibold">Event Categories</h2>
-              {/* <Button>
+              <Button>
                 <Plus className="h-4 w-4 mr-2" />
                 Add Category
-              </Button> */}
+              </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -372,4 +398,7 @@ const StudentEventManagement = () => {
   );
 };
 
-export default StudentEventManagement;
+export default AlumniEvents;
+
+
+
