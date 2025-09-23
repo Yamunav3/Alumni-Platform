@@ -12,7 +12,7 @@ import {
   X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
+import { Badge } from "@/components/ui/badge";
 const navigation = [
   { name: "Home", href: "/admin/home", icon: Home },
   { name: "Career Portal", href: "/admin/career", icon: Briefcase },
@@ -37,6 +37,9 @@ export const AdminNavbar = () => {
               <span className="text-primary-foreground font-bold text-xl">A</span>
             </div>
             <span className="text-2xl font-bold gradient-text tracking-wide">Asthra</span>
+             <Badge variant="secondary" className="ml-2 text-xs">
+              Admin
+            </Badge>
           </Link>
 
           {/* Desktop Navigation */}
