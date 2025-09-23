@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +19,11 @@ interface CreateWebinarFormProps {
   onWebinarCreated: (webinar: any) => void;
 }
 
-const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebinarFormProps) => {
+const CreateWebinarForm = ({
+  open,
+  onOpenChange,
+  onWebinarCreated,
+}: CreateWebinarFormProps) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -38,28 +40,27 @@ const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebin
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    setErrors({});
-    if (!formData.meetingLink.trim()) {
-      setErrors({ meetingLink: "Meeting link is required to create a webinar" });
-      toast.error("Meeting link is required to create a webinar");
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
     if (!formData.title.trim()) newErrors.title = "Title is required";
-    if (!formData.description.trim()) newErrors.description = "Description is required";
-    if (!formData.presenter.trim()) newErrors.presenter = "Presenter name is required";
-    if (!formData.presenterTitle.trim()) newErrors.presenterTitle = "Presenter title is required";
+    if (!formData.description.trim())
+      newErrors.description = "Description is required";
+    if (!formData.presenter.trim())
+      newErrors.presenter = "Presenter name is required";
+    if (!formData.presenterTitle.trim())
+      newErrors.presenterTitle = "Presenter title is required";
     if (!formData.date.trim()) newErrors.date = "Date is required";
     if (!formData.time.trim()) newErrors.time = "Time is required";
     if (!formData.duration.trim()) newErrors.duration = "Duration is required";
-    if (!formData.meetingLink.trim()) newErrors.meetingLink = "Meeting link is required";
+    if (!formData.meetingLink.trim())
+      newErrors.meetingLink = "Meeting link is required";
     return newErrors;
   };
 
@@ -83,17 +84,13 @@ const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebin
       duration: formData.duration,
       maxAttendees: parseInt(formData.maxAttendees) || 100,
       registrations: 0,
-      topics: formData.topics.split(",").map((topic) => topic.trim()).filter((topic) => topic),
-      requirements: formData.requirements,
-      meetingLink: formData.meetingLink,
-      registrationDeadline: formData.registrationDeadline,
-      ...formData,
-      maxAttendees: parseInt(formData.maxAttendees) || 100,
-      registrations: 0,
       topics: formData.topics
         .split(",")
         .map((topic) => topic.trim())
         .filter((topic) => topic),
+      requirements: formData.requirements,
+      meetingLink: formData.meetingLink,
+      registrationDeadline: formData.registrationDeadline,
       status: "Upcoming",
       createdBy: "Current User",
       createdAt: new Date().toISOString(),
@@ -122,7 +119,6 @@ const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebin
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="max-w-2xl mx-auto max-h-[90vh] overflow-y-auto rounded-t-2xl">
       <DrawerContent className="max-w-2xl mx-auto max-h-[90vh] rounded-t-2xl flex flex-col">
         <DrawerHeader>
           <DrawerTitle>Create New Webinar</DrawerTitle>
@@ -131,8 +127,6 @@ const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebin
           </DrawerDescription>
         </DrawerHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4 py-4 px-4">
-        {/* Scrollable Form */}
         <form
           id="webinarForm"
           onSubmit={handleSubmit}
@@ -149,7 +143,9 @@ const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebin
               placeholder="e.g. Introduction to React Development"
               className={errors.title ? "border-destructive" : ""}
             />
-            {errors.title && <p className="text-sm text-destructive">{errors.title}</p>}
+            {errors.title && (
+              <p className="text-sm text-destructive">{errors.title}</p>
+            )}
           </div>
 
           {/* Description */}
@@ -163,13 +159,11 @@ const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebin
               rows={3}
               placeholder="Describe what participants will learn..."
               required
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
               className={errors.description ? "border-destructive" : ""}
-             />
-            {errors.description && <p className="text-sm text-destructive">{errors.description}</p>}
+            />
+            {errors.description && (
+              <p className="text-sm text-destructive">{errors.description}</p>
+            )}
           </div>
 
           {/* Presenter & Title */}
@@ -182,10 +176,11 @@ const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebin
                 value={formData.presenter}
                 onChange={handleChange}
                 required
-              />
                 className={errors.presenter ? "border-destructive" : ""}
               />
-              {errors.presenter && <p className="text-sm text-destructive">{errors.presenter}</p>}
+              {errors.presenter && (
+                <p className="text-sm text-destructive">{errors.presenter}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -197,14 +192,13 @@ const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebin
                 onChange={handleChange}
                 placeholder="e.g. Senior Software Engineer at Google"
                 required
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-4">
                 className={errors.presenterTitle ? "border-destructive" : ""}
               />
-              {errors.presenterTitle && <p className="text-sm text-destructive">{errors.presenterTitle}</p>}
+              {errors.presenterTitle && (
+                <p className="text-sm text-destructive">
+                  {errors.presenterTitle}
+                </p>
+              )}
             </div>
           </div>
 
@@ -219,10 +213,11 @@ const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebin
                 value={formData.date}
                 onChange={handleChange}
                 required
-              />
                 className={errors.date ? "border-destructive" : ""}
               />
-              {errors.date && <p className="text-sm text-destructive">{errors.date}</p>}
+              {errors.date && (
+                <p className="text-sm text-destructive">{errors.date}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -234,10 +229,11 @@ const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebin
                 value={formData.time}
                 onChange={handleChange}
                 required
-              />
                 className={errors.time ? "border-destructive" : ""}
               />
-              {errors.time && <p className="text-sm text-destructive">{errors.time}</p>}
+              {errors.time && (
+                <p className="text-sm text-destructive">{errors.time}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -250,14 +246,11 @@ const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebin
                 onChange={handleChange}
                 placeholder="60"
                 required
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
                 className={errors.duration ? "border-destructive" : ""}
               />
-              {errors.duration && <p className="text-sm text-destructive">{errors.duration}</p>}
+              {errors.duration && (
+                <p className="text-sm text-destructive">{errors.duration}</p>
+              )}
             </div>
           </div>
 
@@ -341,25 +334,6 @@ const CreateWebinarForm = ({ open, onOpenChange, onWebinarCreated }: CreateWebin
             <Button type="submit">Create Webinar</Button>
           </DrawerFooter>
         </form>
-              className={errors.meetingLink ? "border-destructive" : ""}
-            />
-            {errors.meetingLink && <p className="text-sm text-destructive">{errors.meetingLink}</p>}
-          </div>
-        </form>
-
-        {/* Footer */}
-        <DrawerFooter className="flex justify-end space-x-2 border-t p-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-          >
-            Cancel
-          </Button>
-          <Button type="submit" form="webinarForm">
-            Create Webinar
-          </Button>
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );

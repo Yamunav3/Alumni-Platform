@@ -1,11 +1,8 @@
 import { useState } from 'react';
 import { Calendar, Clock, MapPin, Users, User, Mail, Phone, Building } from 'lucide-react';
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
-import { StudentNavbar } from './StudentNavbar';
-=======
 import { StudentNavbar } from '@/student/StudentNavbar';
->>>>>>> hepsiba
+
 interface Event {
   id: string;
   title: string;
