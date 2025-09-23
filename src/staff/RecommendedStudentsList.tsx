@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Search, UserCheck } from "lucide-react";
-import { students } from "./data/staffData"; // Assume this imports a list of student objects
+import { students } from "./data/staffData";
 import { useToast } from "@/hooks/use-toast";
 
 interface RecommendedStudentsListProps {

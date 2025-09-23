@@ -1,3 +1,4 @@
+
 import { Briefcase, Users, Trophy, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -11,7 +12,6 @@ const Features = () => {
       description:
         "Access thousands of career opportunities from top companies. Filter by location, experience, and industry to find your perfect match.",
       link: "/career",
-      color: "text-primary",
     },
     {
       icon: Users,
@@ -19,7 +19,6 @@ const Features = () => {
       description:
         "Track your application status, manage deadlines, and get insights on your career journey. Stay organized and never miss an opportunity.",
       link: "/career",
-      color: "text-accent",
     },
     {
       icon: Trophy,
@@ -27,7 +26,6 @@ const Features = () => {
       description:
         "Get inspired by alumni achievements and career transformations. Learn from real experiences and chart your own path to success.",
       link: "/career",
-      color: "text-success",
     },
   ];
 
@@ -49,21 +47,18 @@ const Features = () => {
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="group feature-card p-8 rounded-2xl bg-card/40 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10"
+              className="group feature-card p-8 rounded-2xl bg-blue-50 backdrop-blur-sm border border-blue-200 hover:border-blue-400 transition-all duration-500 hover:shadow-xl hover:shadow-blue-100"
             >
               <div className="flex items-start gap-8">
-                <div
-                  className={`flex-shrink-0 p-4 rounded-xl bg-gradient-to-br from-${feature.color
-                    .split("-")[1]}/20 to-${feature.color.split("-")[1]}/10 group-hover:scale-110 transition-transform duration-300`}
-                >
-                  <feature.icon className={`w-8 h-8 ${feature.color}`} />
+                <div className="flex-shrink-0 p-4 rounded-xl bg-blue-100 group-hover:scale-110 transition-transform duration-300">
+                  <feature.icon className="w-8 h-8 text-blue-600" />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">
+                  <h3 className="text-2xl font-bold mb-3 text-gray-900 group-hover:text-blue-700 transition-colors duration-300">
                     {feature.title}
                   </h3>
-                  <p className="text-muted-foreground mb-6 leading-relaxed text-lg">
+                  <p className="text-gray-600 mb-6 leading-relaxed text-lg">
                     {feature.description}
                   </p>
 
@@ -71,7 +66,7 @@ const Features = () => {
                     asChild
                     variant="outline"
                     size="lg"
-                    className="group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300"
+                    className="group-hover:bg-blue-600 group-hover:text-white border-blue-300 text-blue-700 transition-all duration-300"
                   >
                     <Link
                       to={feature.link}

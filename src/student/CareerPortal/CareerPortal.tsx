@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import career from "@/assets/career.jpg";
 import { 
   MapPin, 
   Clock, 
@@ -351,18 +352,27 @@ const StudentCareerPortal = () => {
       <Toaster position="top-right" />
       <StudentNavbar/>
       
-       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-fade-in">
-            Career Portal
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-slide-up">
-            Discover opportunities, track applications, and advance your career with alumni connections
-          </p>
-        </div>
-      </section>
+  {/* Background Image */}
+  <img
+    src={career}
+    alt="Career Portal"
+    className="absolute inset-0 w-full h-full object-cover opacity-100 pointer-events-none"
+  />
+
+  {/* Grid Overlay */}
+  <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+
+  {/* Content */}
+  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h1 className="text-5xl  text-white md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-fade-in">
+      Career Portal
+    </h1>
+    <p className="text-xl text-white text-muted-foreground max-w-3xl mx-auto animate-slide-up">
+      Discover opportunities, track applications, and advance your career with alumni connections
+    </p>
+  </div>
+</section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="jobs" className="space-y-6">

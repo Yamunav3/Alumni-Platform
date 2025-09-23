@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { Calendar, Clock, MapPin, Users, User, Mail, Phone, Building } from 'lucide-react';
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
-import { StudentNavbar } from './StudentNavbar';
-=======
-import { StudentNavbar } from '@/student/StudentNavbar';
->>>>>>> hepsiba
+import { Navigation } from './StaffNavbar';
 interface Event {
   id: string;
   title: string;
@@ -93,7 +89,7 @@ const AlumniEvents = () => {
   return (
     // <div className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-50 py-6">
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-50 ">
- 
+         <Navigation/>
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
        

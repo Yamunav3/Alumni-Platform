@@ -128,7 +128,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { name: "Home", href: "/student", icon: Home },
+  { name: "Home", href: "/student/home", icon: Home },
   { name: "About Us", href: "/student/about", icon: Users },
   { name: "Career Portal", href: "/student/career", icon: Briefcase },
   { name: "Events", href: "/student/events", icon: Calendar },
@@ -151,6 +151,21 @@ export const StudentNavbar = () => {
             </div>
             <span className="text-2xl font-bold gradient-text tracking-wide">Asthra</span>
           </Link>
+
+          <div className="flex items-center w-full max-w-xs mx-4">
+{/* Search Bar */}
+<div className="flex items-center w-full max-w-xs mx-4">
+  <input
+    type="text"
+    placeholder="Search..."
+    className="rounded-l-md border px-3 py-2 focus:outline-none focus:ring-0 focus:border-blue-500"
+  />
+  <button className="rounded-l-none bg-blue-600 text-white px-3 py-2 hover:bg-blue-700">
+    Search
+  </button>
+</div>
+
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-2">
@@ -235,3 +250,49 @@ export const StudentNavbar = () => {
 };
 
 export default StudentNavbar;
+
+
+
+
+// import { Link } from "react-router-dom";
+// import { Input } from "@/components/ui/input";
+// import { Button } from "@/components/ui/button";
+
+// const Navbar = () => {
+//   return (
+//     <nav className="w-full bg-white shadow-md px-6 py-3 flex items-center justify-between">
+//       {/* Logo */}
+//       <Link to="/" className="text-2xl font-bold text-blue-600">
+//         Asthra
+//       </Link>
+
+//       {/* Search Bar */}
+//       <div className="hidden md:flex items-center w-1/3">
+//         <Input
+//           type="text"
+//           placeholder="Search..."
+//           className="rounded-l-md border-r-0 focus:ring-0 focus:border-blue-500"
+//         />
+//         <Button className="rounded-l-none bg-blue-600 text-white hover:bg-blue-700">
+//           Search
+//         </Button>
+//       </div>
+
+//       {/* Links */}
+//       <div className="flex items-center gap-6">
+//         <Link to="/career" className="text-gray-700 hover:text-blue-600">
+//           Career
+//         </Link>
+//         <Link to="/about" className="text-gray-700 hover:text-blue-600">
+//           About
+//         </Link>
+//         <Link to="/contact" className="text-gray-700 hover:text-blue-600">
+//           Contact
+//         </Link>
+//       </div>
+//     </nav>
+//   );
+// };
+
+// export default Navbar;
+

@@ -32,7 +32,7 @@ import AlumniAnalytics from "./AlumniPage/forms/Analytics";
 
 // Staff Pages
 import StaffAbout from "./staff/About";
-import StaffCareerPortal from "./staff/CareerPortal";
+import StaffCareerPortal from "./staff/CareerPortal/CareerPortal";
 import StaffHome from "./staff/StaffHome";
 import StaffProfile from "./staff/StaffProfile";
 import StaffNotifications from "./staff/StaffNotifications";
@@ -68,7 +68,7 @@ const App = () => (
       <Sonner />
 
       <div className="relative min-h-screen overflow-hidden">
-       
+        {/* 🔥 Animated Background */}
         <ParticleBackground />
 
         {/* Main App Content */}
@@ -81,6 +81,7 @@ const App = () => (
 
               {/* Alumni Special Forms */}
               <Route path="/register" element={<Register />} />
+
               <Route path="/analytics" element={<AlumniAnalytics />} />
 
               {/* Admin Routing */}
@@ -102,7 +103,8 @@ const App = () => (
               <Route path="/alumni/gamification" element={<AlumniGamification />} />
 
               {/* Student Routing */}
-              <Route path="/student" element={<StudentHome />} />
+               <Route path="/student/register" element={<Register />} />
+              <Route path="/student/home" element={<StudentHome />} />
               <Route path="/student/about" element={<StudentAbout />} />
               <Route path="/student/career" element={<StudentCareerPortal />} />
               <Route path="/student/events" element={<StudentEvents />} />
