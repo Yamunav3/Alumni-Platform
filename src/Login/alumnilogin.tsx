@@ -60,6 +60,7 @@ const AlumniLogin = () => {
     } finally {
       setLoading(false);
     }
+    navigate('/alumni/home/');
   };
 
   return (
