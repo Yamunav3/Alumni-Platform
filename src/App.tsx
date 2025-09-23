@@ -70,7 +70,7 @@ const App = () => (
       <Hello />
 
       <div className="relative min-h-screen overflow-hidden">
-        {/* 🔥 Animated Background */}
+       
         <ParticleBackground />
 
         {/* Main App Content */}
@@ -80,7 +80,6 @@ const App = () => (
               {/* Public Routes */}
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
-              <Route path="/career" element={<CareerPortal />} />
 
               {/* Alumni Special Forms */}
               <Route path="/register" element={<Register />} />

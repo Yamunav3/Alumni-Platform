@@ -5,6 +5,15 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+
 import { 
    Trophy,
   Star,
@@ -63,66 +72,42 @@ const AlumniGamification = () => {
     const [streak, setStreak] = useState(15);
     const [coins, setCoins] = useState(150);
       const [level, setLevel] = useState(12);
-  // const leaderboard = [
-  //   {
-  //     id: 1,
-  //     name: "Sarah Johnson",
-  //     title: "Senior Software Engineer",
-  //     company: "Google",
-  //     points: 2850,
-  //     rank: 1,
-  //     avatar: "/placeholder.svg?height=100&width=100",
-  //     badges: ["Mentor Master", "Knowledge Sharer", "Community Builder"],
-  //     contributions: {
-  //       mentorships: 45,
-  //       webinars: 12,
-  //       donations: 8
-  //     },
-  //     mentions: ["Featured in Alumni Spotlight", "Top Donor 2024"],
-  //     donationTotal: 2500,
-  //     trend: "up",
-  //     change: 120
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Michael Chen",
-  //     title: "Product Manager",
-  //     company: "Microsoft",
-  //     points: 2720,
-  //     rank: 2,
-  //     avatar: "/placeholder.svg?height=100&width=100",
-  //     badges: ["Webinar Hero", "Donation Champion"],
-  //     contributions: {
-  //       mentorships: 38,
-  //       webinars: 18,
-  //       donations: 15
-  //     },
-  //     mentions: ["Webinar of the Year Award"],
-  //     donationTotal: 5000,
-  //     trend: "down",
-  //     change: 45
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Emily Davis",
-  //     title: "Data Scientist",
-  //     company: "Netflix",
-  //     points: 2650,
-  //     rank: 3,
-  //     avatar: "/placeholder.svg?height=100&width=100",
-  //     badges: ["Rising Star", "Tech Guru"],
-  //     contributions: {
-  //       mentorships: 42,
-  //       webinars: 8,
-  //       donations: 12
-  //     },
-  //     mentions: ["Innovation Leader"],
-  //     donationTotal: 3500,
-  //     trend: "up",
-  //     change: 85
-  //   }
-  // ];
-
+        const [searchTerm, setSearchTerm] = useState("");
+       const [filterBy, setFilterBy] = useState("all");
+      const [powerUps, setPowerUps] = useState({
+    doublePoints: 2,
+    streak: 1,
+    boost: 0
+  });
+   const powerUpStore = [
+    {
+      id: 1,
+      name: "2x Points Multiplier",
+      description: "Double points for next 24 hours",
+      cost: 50,
+      icon: Sparkles,
+      duration: "24h",
+      owned: powerUps.doublePoints
+    },
+    {
+      id: 2,
+      name: "Streak Protector",
+      description: "Protect your streak for 3 days",
+      cost: 75,
+      icon: Shield,
+      duration: "3 days",
+      owned: powerUps.streak
+    },
+    {
+      id: 3,
+      name: "XP Booster",
+      description: "50% more XP for all activities",
+      cost: 100,
+      icon: TrendingUp,
+      duration: "48h",
+      owned: powerUps.boost
+    }
+  ];
 
 
   const leaderboard = [
@@ -302,6 +287,23 @@ const AlumniGamification = () => {
     { id: 4, action: "Donated $200", points: 50, time: "1 week ago", type: "donation" }
   ];
 
+    const handleBuyPowerUp = (powerUp) => {
+    if (coins >= powerUp.cost) {
+      setCoins(prev => prev - powerUp.cost);
+      setPowerUps(prev => ({
+        ...prev,
+        [powerUp.name.includes('Points') ? 'doublePoints' : 
+         powerUp.name.includes('Streak') ? 'streak' : 'boost']: 
+         prev[powerUp.name.includes('Points') ? 'doublePoints' : 
+             powerUp.name.includes('Streak') ? 'streak' : 'boost'] + 1
+      }));
+      toast.success(`Purchased ${powerUp.name}!`, {
+        icon: <ShoppingCart className="h-4 w-4" />,
+      });
+    } else {
+      toast.error(`You need ${powerUp.cost - coins} more coins!`);
+    }
+  };
   // Simulate real-time updates
   useEffect(() => {
     const interval = setInterval(() => {
@@ -426,6 +428,17 @@ const AlumniGamification = () => {
       },
     });
   };
+
+   const filteredLeaderboard = leaderboard.filter(alumni => {
+    const matchesSearch = alumni.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         alumni.company.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = filterBy === "all" || 
+                         (filterBy === "mentors" && alumni.contributions.mentorships > 20) ||
+                         (filterBy === "donors" && alumni.donationTotal > 1000) ||
+                         (filterBy === "webinar" && alumni.contributions.webinars > 5);
+    return matchesSearch && matchesFilter;
+  });
+
 
   return (
     <TooltipProvider>
@@ -571,141 +584,200 @@ const AlumniGamification = () => {
             {/* Main Content */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6 ">
               <div className="flex items-center justify-between">
-                <TabsList className="grid w-full md:w-auto grid-cols-2 md:grid-cols-4 bg-card/70 backdrop-blur-md shadow-lg">
-                  <TabsTrigger value="leaderboard" className="hover:bg-primary/10 transition-colors">
-                    <Trophy className="h-4 w-4 mr-4" />
-                    Leaderboard
-                  </TabsTrigger>
-                  <TabsTrigger value="achievements" className="hover:bg-primary/10 transition-colors">
-                    <Award className="h-4 w-4 mr-2" />
-                    Achievements
-                  </TabsTrigger>
-                  <TabsTrigger value="points" className="hover:bg-primary/10 transition-colors">
-                    <Star className="h-4 w-4 mr-2" />
-                    Points System
-                  </TabsTrigger>
-                  <TabsTrigger value="rewards" className="hover:bg-primary/10 transition-colors">
-                    <Gift className="h-4 w-4 mr-2" />
-                    Rewards
-                  </TabsTrigger>
-                </TabsList>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={handleRefresh}
-                  disabled={isRefreshing}
-                  className="ml-4"
-                >
-                  <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-                  Refresh
-                </Button>
-              </div>
-
-              {/* Leaderboard Tab */}
-              <TabsContent value="leaderboard" className="space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    {/* Left Side: Original Leaderboard Content */}
-  <div className="lg:col-span-2">
-    <Card className="bg-card/70 backdrop-blur-md shadow-xl">
-      <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
-          <Trophy className="h-6 w-6 text-primary " />
-          <span>Top Contributors</span>
-        </CardTitle>
-        <CardDescription>
-          Alumni making the biggest impact on student success
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {leaderboard.map((alumni, index) => (
-            <Dialog key={alumni.id}>
-              <DialogTrigger asChild>
-                <div 
-                  className="flex items-center space-x-4 p-4 rounded-lg bg-background/70 
-                             hover:bg-background/90 hover:scale-105 hover:shadow-lg 
-                             transition-all duration-300 cursor-pointer animate-fade-in"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                  onClick={() => setSelectedAlumni(alumni)}
-                >
-                  <div className="flex items-center space-x-3 hover:scale-105 transition-transform duration-300">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      index === 0 ? 'bg-yellow-500' : index === 1 ? 'bg-gray-400' : index === 2 ? 'bg-orange-500' : 'bg-muted'
-                    }`}>
-                      <span className="text-white font-bold text-sm">#{alumni.rank}</span>
-                    </div>
-                    <Avatar className="h-12 w-12">
-                      <AvatarImage src={gamify} />
-                      <AvatarFallback>{alumni.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                    </Avatar>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                      <div>
-                        <h3 className="font-semibold">{alumni.name}</h3>
-                        <p className="text-sm text-muted-foreground">{alumni.title} at {alumni.company}</p>
-                      </div>
-                      <div className="flex items-center space-x-4 mt-2 sm:mt-0">
-                        <div className="flex items-center space-x-1">
-                          {alumni.trend === "up" ? (
-                            <ChevronUp className="h-4 w-4 text-green-500" />
-                          ) : (
-                            <ChevronDown className="h-4 w-4 text-red-500" />
-                          )}
-                          <span className={`text-sm ${alumni.trend === "up" ? "text-green-500" : "text-red-500"}`}>
-                            {alumni.change}
-                          </span>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-bold text-primary text-lg">{alumni.points.toLocaleString()}</p>
-                          <p className="text-xs text-muted-foreground">points</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {alumni.badges.map((badge) => (
-                        <Tooltip key={badge}>
-                          <TooltipTrigger>
-                            <Badge variant="secondary" className="text-xs hover:bg-secondary/80 transition-colors">
-                              {badge}
-                            </Badge>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Earned for outstanding contributions</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      ))}
-                    </div>
-                    <div className="grid grid-cols-3 gap-4 mt-3 text-sm">
-                      <div className="text-center">
-                        <p className="font-medium">{alumni.contributions.mentorships}</p>
-                        <p className="text-muted-foreground text-xs">Mentorships</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="font-medium">{alumni.contributions.webinars}</p>
-                        <p className="text-muted-foreground text-xs">Webinars</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="font-medium">{alumni.contributions.donations}</p>
-                        <p className="text-muted-foreground text-xs">Donations</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </DialogTrigger>
-              <DialogContent>
-                {/* Dialog content remains unchanged */}
-              </DialogContent>
-            </Dialog>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+    <TabsList className="grid w-full md:w-auto grid-cols-2 md:grid-cols-6 bg-card/70 backdrop-blur-md shadow-lg">
+      <TabsTrigger value="leaderboard" className="hover:bg-primary/10 transition-colors">
+        <Trophy className="h-4 w-4 mr-4" />
+        Leaderboard
+      </TabsTrigger>
+      <TabsTrigger value="achievements" className="hover:bg-primary/10 transition-colors">
+        <Award className="h-4 w-4 mr-2" />
+        Achievements
+      </TabsTrigger>
+      <TabsTrigger value="points" className="hover:bg-primary/10 transition-colors">
+        <Star className="h-4 w-4 mr-2" />
+        Points System
+      </TabsTrigger>
+      <TabsTrigger value="rewards" className="hover:bg-primary/10 transition-colors">
+        <Gift className="h-4 w-4 mr-2" />
+        Rewards
+      </TabsTrigger>
+      <TabsTrigger value="powerups" className="hover:bg-primary/10 transition-colors">
+        ⚡ Power Ups
+      </TabsTrigger>
+      <TabsTrigger value="challenges">Challenges</TabsTrigger>
+    </TabsList>
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={handleRefresh}
+      disabled={isRefreshing}
+      className="ml-4"
+    >
+      <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+      Refresh
+    </Button>
   </div>
 
+<TabsContent value="leaderboard" className="space-y-6">
+  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    {/* Search + Filter on the top */}
+    <div className="lg:col-span-3 flex flex-wrap items-center gap-4 mb-6">
+      {/* Search Box */}
+      <div className="relative flex-1 min-w-[200px]">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Search alumni..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-10"
+        />
+      </div>
 
-                  {/* Right Side: Highlighted Leaderboard */}
-                  <div className="lg:col-span-1">
+      {/* Filter Select */}
+      <Select value={filterBy} onValueChange={setFilterBy}>
+        <SelectTrigger className="w-[200px]">
+          <Filter className="h-4 w-4 mr-2" />
+          <SelectValue placeholder="Filter Players" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All Players</SelectItem>
+          <SelectItem value="top-scorers">Top Scorers</SelectItem>
+          <SelectItem value="badge-earners">Badge Earners</SelectItem>
+          <SelectItem value="challenge-winners">Challenge Winners</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+
+    {/* Left Side: Original Leaderboard Content */}
+    <div className="lg:col-span-2 mt-2">
+      <Card className="bg-card/70 backdrop-blur-md shadow-xl">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <Trophy className="h-6 w-6 text-primary " />
+            <span>Top Contributors</span>
+          </CardTitle>
+          <CardDescription>
+            Alumni making the biggest impact on student success
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {leaderboard.map((alumni, index) => (
+              <Dialog key={alumni.id}>
+                <DialogTrigger asChild>
+                  <div 
+                    className="flex items-center space-x-4 p-4 rounded-lg bg-background/70 hover:bg-background/90 hover:scale-105 hover:shadow-lg transition-all duration-300 cursor-pointer animate-fade-in"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                    onClick={() => setSelectedAlumni(alumni)}
+                  >
+                    <div className="flex items-center space-x-3 hover:scale-105 transition-transform duration-300">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        index === 0 ? 'bg-yellow-500' : index === 1 ? 'bg-gray-400' : index === 2 ? 'bg-orange-500' : 'bg-muted'
+                      }`}>
+                        <span className="text-white font-bold text-sm">#{alumni.rank}</span>
+                      </div>
+                      <Avatar className="h-12 w-12">
+                        <AvatarImage src={gamify} />
+                        <AvatarFallback>{alumni.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                      </Avatar>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                          <h3 className="font-semibold">{alumni.name}</h3>
+                          <p className="text-sm text-muted-foreground">{alumni.title} at {alumni.company}</p>
+                        </div>
+                        <div className="flex items-center space-x-4 mt-2 sm:mt-0">
+                          <div className="flex items-center space-x-1">
+                            {alumni.trend === "up" ? (
+                              <ChevronUp className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <ChevronDown className="h-4 w-4 text-red-500" />
+                            )}
+                            <span className={`text-sm ${alumni.trend === "up" ? "text-green-500" : "text-red-500"}`}>
+                              {alumni.change}
+                            </span>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-bold text-primary text-lg">{alumni.points.toLocaleString()}</p>
+                            <p className="text-xs text-muted-foreground">points</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {alumni.badges.map((badge) => (
+                          <Tooltip key={badge}>
+                            <TooltipTrigger>
+                              <Badge variant="secondary" className="text-xs hover:bg-secondary/80 transition-colors">
+                                {badge}
+                              </Badge>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Earned for outstanding contributions</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        ))}
+                      </div>
+                      <div className="grid grid-cols-3 gap-4 mt-3 text-sm">
+                        <div className="text-center">
+                          <p className="font-medium">{alumni.contributions.mentorships}</p>
+                          <p className="text-muted-foreground text-xs">Mentorships</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="font-medium">{alumni.contributions.webinars}</p>
+                          <p className="text-muted-foreground text-xs">Webinars</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="font-medium">{alumni.contributions.donations}</p>
+                          <p className="text-muted-foreground text-xs">Donations</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </DialogTrigger>
+                <DialogContent>
+  <DialogHeader>
+    <DialogTitle>{alumni.name}'s Profile</DialogTitle>
+    <DialogDescription>
+      {alumni.title} at {alumni.company}
+    </DialogDescription>
+  </DialogHeader>
+
+  <div className="space-y-4">
+    <div>
+      <h4 className="font-semibold">Donations</h4>
+      <p>Total Donated: ${alumni.donationTotal}</p>
+      <p>Number of Donations: {alumni.contributions.donations}</p>
+    </div>
+    <div>
+      <h4 className="font-semibold">Mentions & Recognitions</h4>
+      <ul className="list-disc pl-5">
+        {alumni.mentions.map((mention, idx) => (
+          <li key={idx}>{mention}</li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <h4 className="font-semibold">Badges</h4>
+      <div className="flex flex-wrap gap-2">
+        {alumni.badges.map((badge) => (
+          <Badge key={badge} variant="outline">{badge}</Badge>
+        ))}
+      </div>
+    </div>
+  </div>
+</DialogContent>
+
+              </Dialog>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+
+    {/* Right Side: Highlighted Leaderboard */}
+    <div className="lg:col-span-1">
                     <Card className="bg-card/70 backdrop-blur-md shadow-xl">
                       <CardHeader>
                         <CardTitle className="flex items-center space-x-2">
@@ -864,8 +936,9 @@ const AlumniGamification = () => {
                       </CardContent>
                     </Card>
                   </div>
-                </div>
-              </TabsContent>
+  </div>
+</TabsContent>
+
 
               {/* Achievements Tab */}  
  <TabsContent value="achievements" className="space-y-6">
