@@ -57,7 +57,6 @@ import StudentNotifications from "./student/Notifications";
 // Components
 import Footer from "./components/Footer";
 import ChatBot from "./components/ChatBot";
-import Hello from "./API/api";
 import ParticleBackground from "./components/BackGround"; // ✅ Make sure this file exists
 
 const queryClient = new QueryClient();
@@ -67,7 +66,6 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <Hello />
 
       <div className="relative min-h-screen overflow-hidden">
        

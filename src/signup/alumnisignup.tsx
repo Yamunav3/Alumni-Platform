@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, GraduationCap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ParticleBackground from "../components/BackGround";
+import axios from "axios";
+import form from "antd/es/form";
 
 const AlumniSignup = () => {
   const navigate = useNavigate();
@@ -26,7 +28,7 @@ const AlumniSignup = () => {
     confirmPassword: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
@@ -46,11 +48,36 @@ const AlumniSignup = () => {
       });
       return;
     }
-    
-    toast({
-      title: "Account Created",
-      description: "Your alumni account has been created successfully!",
+    try{
+    const response= await axios.post('http://localhost:8000/account/register/alumni/',{
+        college_Id:formData.collegeId,
+    college_Email: formData.collegeEmail,
+    name: formData.name,
+    graduationYear: formData.graduationYear,
+    branch: formData.branch,
+    currentCompany: formData.currentCompany,
+    jobTitle:formData.jobTitle,
+    interests: formData.interests,
+    password: formData.password,
+    confirmPassword: formData.confirmPassword,
     });
+    if(response.status===201){
+      toast({
+        title:"Account created",
+        description:"Your Alumni account has been successfully created",
+      });
+      navigate('/login/alumni');
+    }
+  }catch(error){
+    toast({
+      title: "There was an error in creating you account",
+      variant: "destructive",
+    })
+  }
+    // toast({
+    //   title: "Account Created",
+    //   description: "Your alumni account has been created successfully!",
+    // });
   };
 
   return (
