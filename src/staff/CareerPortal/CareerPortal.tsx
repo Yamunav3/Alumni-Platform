@@ -29,7 +29,7 @@ import JobDetailsModal from "./JobDetailsModal";
 import JobPostingForm from "./JobPostingForm";
 import CreateWebinarForm from "./CreateWebinarForm";
 import ShareStoryForm from "./ShareStoryForm";
-import StudentNavbar from "../StudentNavbar";
+import StaffNavbar from "../StaffNavbar";
 
 // Sample data
 const initialJobs = [
@@ -350,8 +350,9 @@ const StudentCareerPortal = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-primary-light/20">
       <Toaster position="top-right" />
-      <StudentNavbar/>
+      <StaffNavbar/>
       
+       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5">
   {/* Background Image */}
   <img
@@ -373,6 +374,7 @@ const StudentCareerPortal = () => {
     </p>
   </div>
 </section>
+
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="jobs" className="space-y-6">

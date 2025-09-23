@@ -187,4 +187,22 @@ All colors MUST be HSL.
   .nav-link:hover::after {
     @apply w-full;
   }
+
+
+  @layer components {
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl;
+    @apply shadow-[var(--shadow-primary)] transition-all duration-300;
+  }
+
+  .glass-card:hover {
+    @apply shadow-[var(--shadow-glow)] scale-[1.02];
+    background: linear-gradient(
+      145deg,
+      hsl(220 20% 10%) 0%,
+      hsl(210 100% 56% / 0.1) 100%
+    );
+  }
+}
+
 }

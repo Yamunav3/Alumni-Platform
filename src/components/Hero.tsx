@@ -14,17 +14,10 @@ const Hero = () => {
       <TextCursor
         //  text = {<span style={{ color: "yellow" }}>{">"}</span>}
 
-         text={
-    <span
-      style={{
-        background: "linear-gradient(90deg, #ff0000, #00ff00, #0000ff)",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-      }}
-    >
-      {">"}
-    </span>
-  }
+         text={""}
+    
+    
+      
         delay={0.2}
         spacing={80}
         followMouseDirection={true}
@@ -40,7 +33,7 @@ const Hero = () => {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${heroBackground})` }}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-accent/80 to-primary/90" />
+          <div className="absolute inset-0 bg-gradient-to-br from-#1E90FF/90 via-accent/80 to-#1E90FF/90" />
         </div>
 
         {/* Content */}
@@ -72,7 +65,7 @@ const Hero = () => {
                 </Button>
               </ClickSpark>
 
-              <ClickSpark sparkColor="#fff" sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
+              <ClickSpark sparkColor="#fff" sparkSize={20} sparkRadius={15} sparkCount={8} duration={400}>
                 <Button
                   asChild
                   variant="outline"
@@ -86,7 +79,7 @@ const Hero = () => {
 
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="glass-card p-6 text-center">
+              <div className="glass-card bg-black p-6 text-center">
                 <Users className="w-8 h-8 text-primary-glow mx-auto mb-2" />
                 <div className="text-3xl font-bold text-white mb-1">
                   <CountUp startVal={0} end={10000} duration={3} separator="," suffix="+" />
@@ -94,7 +87,7 @@ const Hero = () => {
                 <div className="text-white/80">Active Members</div>
               </div>
 
-              <div className="glass-card p-6 text-center">
+              <div className="glass-card bg-black p-6 text-center">
                 <TrendingUp className="w-8 h-8 text-success mx-auto mb-2" />
                 <div className="text-3xl font-bold text-white mb-1">
                   <CountUp startVal={0} end={95} duration={2} suffix="%" />
@@ -102,7 +95,7 @@ const Hero = () => {
                 <div className="text-white/80">Success Rate</div>
               </div>
 
-              <div className="glass-card p-6 text-center">
+              <div className="glass-card bg-black p-6 text-center">
                 <Star className="w-8 h-8 text-accent mx-auto mb-2" />
                 <div className="text-3xl font-bold text-white mb-1">
                   <CountUp startVal={0} end={500} duration={2.5} suffix="+" />
