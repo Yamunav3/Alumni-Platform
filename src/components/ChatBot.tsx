@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import astraLogo from "@/assets/image.png"; // adjust path
 // import chatbot from "@/assets/chatBot1.jpg";
-import chatbot from "@/assets/asthra.jpg";
+import chatbot from "@/assets/asthra1.jpg";
 interface Message {
   id: number;
   text: string;

@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  Trophy,
+   Trophy,
   Star,
   Award,
   Target,
@@ -29,7 +29,18 @@ import {
   RefreshCw,
   Share2,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Search,
+  Filter,
+  Download,
+  BarChart3,
+  PieChart,
+  Timer,
+  Flame,
+  Gamepad2,
+  Coins,
+  ShoppingCart,
+  Shield
 } from "lucide-react";
 import { AlumniNavbar } from "@/components/AlumniNavbar";
 import { useState, useEffect } from "react";
@@ -49,6 +60,69 @@ const AlumniGamification = () => {
   const [showNotifications, setShowNotifications] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
+    const [streak, setStreak] = useState(15);
+    const [coins, setCoins] = useState(150);
+      const [level, setLevel] = useState(12);
+  // const leaderboard = [
+  //   {
+  //     id: 1,
+  //     name: "Sarah Johnson",
+  //     title: "Senior Software Engineer",
+  //     company: "Google",
+  //     points: 2850,
+  //     rank: 1,
+  //     avatar: "/placeholder.svg?height=100&width=100",
+  //     badges: ["Mentor Master", "Knowledge Sharer", "Community Builder"],
+  //     contributions: {
+  //       mentorships: 45,
+  //       webinars: 12,
+  //       donations: 8
+  //     },
+  //     mentions: ["Featured in Alumni Spotlight", "Top Donor 2024"],
+  //     donationTotal: 2500,
+  //     trend: "up",
+  //     change: 120
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Michael Chen",
+  //     title: "Product Manager",
+  //     company: "Microsoft",
+  //     points: 2720,
+  //     rank: 2,
+  //     avatar: "/placeholder.svg?height=100&width=100",
+  //     badges: ["Webinar Hero", "Donation Champion"],
+  //     contributions: {
+  //       mentorships: 38,
+  //       webinars: 18,
+  //       donations: 15
+  //     },
+  //     mentions: ["Webinar of the Year Award"],
+  //     donationTotal: 5000,
+  //     trend: "down",
+  //     change: 45
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Emily Davis",
+  //     title: "Data Scientist",
+  //     company: "Netflix",
+  //     points: 2650,
+  //     rank: 3,
+  //     avatar: "/placeholder.svg?height=100&width=100",
+  //     badges: ["Rising Star", "Tech Guru"],
+  //     contributions: {
+  //       mentorships: 42,
+  //       webinars: 8,
+  //       donations: 12
+  //     },
+  //     mentions: ["Innovation Leader"],
+  //     donationTotal: 3500,
+  //     trend: "up",
+  //     change: 85
+  //   }
+  // ];
+
 
 
   const leaderboard = [
@@ -69,7 +143,9 @@ const AlumniGamification = () => {
       mentions: ["Featured in Alumni Spotlight", "Top Donor 2024"],
       donationTotal: 2500,
       trend: "up",
-      change: 120
+      change: 120,
+      level: 15,
+      streak: 25
     },
     {
       id: 2,
@@ -88,7 +164,9 @@ const AlumniGamification = () => {
       mentions: ["Webinar of the Year Award"],
       donationTotal: 5000,
       trend: "down",
-      change: 45
+      change: 45,
+      level: 14,
+      streak: 18
     },
     {
       id: 3,
@@ -107,10 +185,32 @@ const AlumniGamification = () => {
       mentions: ["Innovation Leader"],
       donationTotal: 3500,
       trend: "up",
-      change: 85
-    }
+      change: 85,
+      level: 13,
+      streak: 12
+    },
+    {
+      id: 4,
+      name: "Alex Rodriguez",
+      title: "UX Designer",
+      company: "Adobe",
+      points: 2480,
+      rank: 4,
+      avatar: "/placeholder.svg?height=100&width=100",
+      badges: ["Design Master", "Mentor Plus"],
+      contributions: {
+        mentorships: 35,
+        webinars: 6,
+        donations: 10
+      },
+      mentions: ["Design Innovation Award"],
+      donationTotal: 2000,
+      trend: "up",
+      change: 95,
+      level: 12,
+      streak: 8
+    },
   ];
-
   const achievements = [
     {
       id: 1,
@@ -334,44 +434,63 @@ const AlumniGamification = () => {
         <div className="bg-gradient-to-r from-primary/20 to-secondary/20 py-4 px-4">
           <div className="max-w-7xl mx-auto">
             
-            {/* Header with dynamic points */}
-           <div className="mb-8 text-center relative rounded-lg overflow-hidden">
-  {/* Background Image */}
-  <img 
-    src={gamify}
-    alt="Alumni Hub Background" 
-    className="w-full h-full object-cover absolute inset-0"
-  />
-
-  {/* Optional overlay to make text readable */}
-  <div className="absolute bg-black/30"></div>
-
-  {/* Content on top of the image */}
-  <div className="relative z-10 px-4 py-12">
-    <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2 animate-pulse">
-      Alumni Gamification Hub
-    </h1>
-    <div className="flex items-center justify-center space-x-4 mb-4">
-      <div className="bg-white/80 backdrop-blur-sm rounded-full px-6 py-2 shadow-lg">
-        <p className="text-2xl font-bold text-primary animate-bounce">
-          {userPoints.toLocaleString()} points
-        </p>
-      </div>
-      {/* <Button 
-        variant="outline" 
-        size="sm" 
-        onClick={() => setUserPoints(userPoints + 50)}
-        className="animate-pulse"
-      >
-        <Sparkles className="h-4 w-4 mr-2" />
-        Test +50
-      </Button> */}
-    </div>
-    <p className="text-muted-foreground text-lg">
-      Earn points, unlock achievements, and make a difference in students' lives
-    </p>
-  </div>
-</div>
+               <div className="mb-6 text-center relative rounded-lg overflow-hidden">
+              <img 
+                src={gamify}
+                alt="Alumni Gamification Hub" 
+                className="w-full h-64 object-cover absolute inset-0"
+              />
+              <div className="absolute inset-0 bg-black/40"></div>
+              
+              <div className="relative z-10 px-4 py-12">
+                <h1 className="text-4xl font-bold text-white mb-2 animate-fade-in">
+                  Alumni Gamification Hub
+                </h1>
+                
+                {/* Enhanced User Stats */}
+                <div className="flex items-center justify-center space-x-6 mb-4">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
+                    <div className="flex items-center space-x-2">
+                      <Trophy className="h-5 w-5 text-yellow-500" />
+                      <span className="text-lg font-bold text-primary">
+                        Level {level}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
+                    <div className="flex items-center space-x-2">
+                      <Sparkles className="h-5 w-5 text-purple-500" />
+                      <span className="text-lg font-bold text-primary">
+                        {userPoints.toLocaleString()} XP
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
+                    <div className="flex items-center space-x-2">
+                      <Flame className="h-5 w-5 text-orange-500" />
+                      <span className="text-lg font-bold text-primary">
+                        {streak} day streak
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
+                    <div className="flex items-center space-x-2">
+                      <Coins className="h-5 w-5 text-yellow-600" />
+                      <span className="text-lg font-bold text-primary">
+                        {coins} coins
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+                <p className="text-white/90 text-lg">
+                  Earn XP, unlock achievements, and make a difference in students' lives
+                </p>
+              </div>
+            </div>
 
             {/* Stats Overview with animations */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
