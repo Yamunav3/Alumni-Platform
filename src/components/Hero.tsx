@@ -13,11 +13,7 @@ const Hero = () => {
       {/* Cursor Trail */}
       <TextCursor
         //  text = {<span style={{ color: "yellow" }}>{">"}</span>}
-
-         text={""}
-    
-    
-      
+         text={""}     
         delay={0.2}
         spacing={80}
         followMouseDirection={true}

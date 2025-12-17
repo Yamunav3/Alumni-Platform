@@ -38,7 +38,7 @@ const AdminLogin = () => {
     
    <div className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden">
       
-< ParticleBackGround/>
+{/* < ParticleBackGround/> */}
 
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
@@ -85,7 +85,7 @@ const AdminLogin = () => {
 </Button>
 </form>
 
-          <div className="text-center mt-6">
+          {/* <div className="text-center mt-6">
             <p className="text-sm text-muted-foreground">
               Don't have an account?{" "}
               <Button 
@@ -96,7 +96,7 @@ const AdminLogin = () => {
                 Sign up here
               </Button>
             </p>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
     </div>

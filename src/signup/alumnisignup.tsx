@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, GraduationCap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ParticleBackground from "../components/BackGround";
+import { useQuery } from "@tanstack/react-query";  //we can fetch the data effectively using QueryClientProvider
 import axios from "axios";
 
 const AlumniSignup = () => {
@@ -81,7 +82,7 @@ const AlumniSignup = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
-      <ParticleBackground/>
+      {/* <ParticleBackground/> */}
       
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">

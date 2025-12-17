@@ -11,12 +11,8 @@ import CareerPortal from "./pages/CareerPortal";
 import NotFound from "./pages/NotFound";
 
 // Admin Pages
-import AdminAboutUs from "./AdminPage/AboutUs";
-import Analytics from "./AdminPage/Analytics";
-import AdminCareerPortal from "./AdminPage/CareerPortal";
-import AdminNotifications from "./AdminPage/Notifications";
 import Admin from "./AdminPage/Admin";
-import AdminHome from "./AdminPage/Home";
+import AlumniSection from "./AdminPage/AlumniSection";
 
 // Alumni Pages
 import AlumniDonations from "./AlumniPage/Donations";
@@ -58,6 +54,10 @@ import StudentNotifications from "./student/Notifications";
 import Footer from "./components/Footer";
 import ChatBot from "./components/ChatBot";
 import ParticleBackground from "./components/BackGround"; // ✅ Make sure this file exists
+import Home from "./AdminPage/Home";
+import StaffSection from "./AdminPage/StaffSection";
+import StudentSection from "./AdminPage/StudentSection";
+import EventS from "./AdminPage/EventS";
 
 const queryClient = new QueryClient();
 
@@ -68,8 +68,9 @@ const App = () => (
       <Sonner />
 
       <div className="relative min-h-screen overflow-hidden">
+
         {/* 🔥 Animated Background */}
-        <ParticleBackground />
+        {/* <ParticleBackground />  */}
 
         {/* Main App Content */}
         <div className="relative z-10">
@@ -83,12 +84,16 @@ const App = () => (
               <Route path="/analytics" element={<AlumniAnalytics />} />
 
               {/* Admin Routes */}
-              <Route path="/admin/about" element={<AdminAboutUs />} />
-              <Route path="/admin/analytics" element={<Analytics />} />
-              <Route path="/admin/career" element={<AdminCareerPortal />} />
-              <Route path="/admin/notification" element={<AdminNotifications />} />
+              {/* <Route path="/admin/about" element={<AdminAboutUs />} /> */}
+              {/* <Route path="/admin/analytics" element={<Analytics />} /> */}
+          
+              {/* <Route path="/admin/notification" element={<AdminNotifications />} /> */}
               <Route path="/admin/profile" element={<Admin />} />
-              <Route path="/admin/home" element={<AdminHome />} />
+              <Route path="/admin/home" element={<Home />} />
+              <Route path="/admin/alumnisection" element={<AlumniSection />} />
+              <Route path="/admin/staffsection" element={<StaffSection />} />
+              <Route path="/admin/studentsection" element={<StudentSection />}/>
+              <Route path="/admin/events" element={<EventS />} />
 
               {/* Alumni Routes */}
               <Route path="/alumni/events" element={<AlumniEvents />} />
@@ -130,7 +135,7 @@ const App = () => (
             </Routes>
 
             <ChatBot />
-            <Footer />
+            {/* <Footer /> */}
           </BrowserRouter>
         </div>
       </div>

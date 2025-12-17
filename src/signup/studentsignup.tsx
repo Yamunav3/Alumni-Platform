@@ -82,7 +82,7 @@ const StudentSignup = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
       
-      <ParticleBackground/>
+      {/* <ParticleBackground/> */}
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
          

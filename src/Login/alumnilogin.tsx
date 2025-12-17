@@ -28,7 +28,6 @@ const AlumniLogin = () => {
       });
       return;
     }
-<<<<<<< HEAD
     
     // toast({
     //   title: "Login Successful",
@@ -36,7 +35,7 @@ const AlumniLogin = () => {
     // });
 
     //login logic here
-=======
+
     setLoading(true);
     setError("");
     setSuccess("");
@@ -70,13 +69,13 @@ const AlumniLogin = () => {
       setLoading(false);
     }
     navigate('/alumni/home/');
->>>>>>> ec291d76b953e4e7dfed9c06beb2d9eab33a988d
+
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
      
-     <ParticleBackGround/>
+     {/* <ParticleBackGround/> */}
      
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
