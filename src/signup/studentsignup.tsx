@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, BookOpen } from "lucide-react";
+import api from "@/api/api"
 import { useToast } from "@/hooks/use-toast";
 import ParticleBackground from "../components/BackGround";
 
@@ -25,7 +26,7 @@ const StudentSignup = () => {
     confirmPassword: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
@@ -37,46 +38,50 @@ const StudentSignup = () => {
       return;
     }
 
-    if (!formData.collegeId || !formData.collegeEmail || !formData.name || !formData.password) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    // toast({
-    //   title: "Account Created",
-    //   description: "Your student account has been created successfully!",
-    // });
+
 
     //signing logic here
-    try {
-      const response= await fetch('http://localhost:8000/student/register',{
-        method:'POST',
-        headers:{ 'Content-Type':'application/json' },
-        body:JSON.stringify({
-          collegeId:formData.collegeId,
-          collegeEmail:formData.collegeEmail,
-          name:formData.name,
-          branch:formData.branch,
-          section:formData.section,
-          yearOfGraduation:formData.yearOfGraduation,
-          interests:formData.interests,
-          password:formData.password,
-          confirmpassword:formData.confirmPassword,
-        })
-      });
-    } catch (error) {
-      console.error("There was an error!", error);
-      toast({
-        title: "Error",
-        description: "There was an error creating your account. Please try again.",
-        variant: "destructive",
-      });
-      return;
-    }
+   try {
+  const response = await api.post(
+    "/student/register",
+    {
+      collegeId: formData.collegeId,
+      collegeEmail: formData.collegeEmail,
+      name: formData.name,
+      branch: formData.branch,
+      section: formData.section,
+      yearOfGraduation: formData.yearOfGraduation,
+      interests: formData.interests,
+      password: formData.password,
+      confirmpassword: formData.confirmPassword, // same as your fetch code
+    },
+  );
+
+ 
+  if (response.status === 201 || response.status === 200) {
+     const jwtToken =
+  response.data.token ||
+  response.data.accessToken ||
+  response.data.access;
+
+  if(jwtToken)
+  localStorage.setItem("jwtToken",jwtToken);
+  
+    toast({
+      title: "Account Created",
+      description: "Your account has been successfully created",
+    });
+  }
+
+} catch (error) {
+  console.error("There was an error!", error);
+
+  toast({
+    title: "Error",
+    description: "There was an error creating your account. Please try again.",
+    variant: "destructive",
+  });
+}
   };
 
   return (

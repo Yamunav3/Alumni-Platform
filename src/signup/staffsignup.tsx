@@ -8,8 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import axios from "axios";
-import ParticleBackground from "../components/BackGround";
+import api from "@/api/api";
 
 const StaffSignup = () => {
   const navigate = useNavigate();
@@ -25,7 +24,7 @@ const StaffSignup = () => {
     confirmPassword: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
@@ -36,18 +35,9 @@ const StaffSignup = () => {
       });
       return;
     }
-
-    if (!formData.staffId || !formData.name || !formData.email || !formData.staffRole || !formData.password) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
     
     try {
-      const response = await axios.post('http://localhost:8000/account/register/staff/', {
+      const response = await api.post('/account/register/staff/', {
         staff_Id: formData.staffId,
         name: formData.name,
         email: formData.email,
@@ -59,6 +49,14 @@ const StaffSignup = () => {
       });
 
       if(response.status === 201) {
+
+        const jwtToken =
+  response.data.token ||
+  response.data.accessToken ||
+  response.data.access;
+   if(jwtToken)
+      localStorage.setItem("jwtToken",jwtToken);
+  
         toast({
           title: "Account Created",
           description: "Your staff account has been created successfully!",

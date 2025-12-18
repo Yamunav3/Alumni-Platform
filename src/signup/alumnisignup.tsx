@@ -6,12 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, GraduationCap } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import ParticleBackground from "../components/BackGround";
-import { useQuery } from "@tanstack/react-query";  //we can fetch the data effectively using QueryClientProvider
-import axios from "axios";
-
+import api from "@/api/api"
 const AlumniSignup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -28,7 +25,7 @@ const AlumniSignup = () => {
     confirmPassword: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
@@ -40,17 +37,10 @@ const AlumniSignup = () => {
       return;
     }
 
-    if (!formData.collegeId || !formData.collegeEmail || !formData.name || !formData.password) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
+    
 
     try {
-      const response = await axios.post('http://localhost:8000/account/register/alumni/', {
+      const response = await api.post('/account/register/alumni/', {
         college_Id: formData.collegeId,
         college_Email: formData.collegeEmail,
         name: formData.name,
@@ -64,6 +54,16 @@ const AlumniSignup = () => {
       });
 
       if (response.status === 201) {
+        // ✅ ACCESS JWT TOKEN FROM BACKEND
+      const jwtToken =
+      response.data.token ||
+      response.data.accessToken ||
+      response.data.access;
+
+
+      // ✅ STORE JWT TOKEN
+      if(jwtToken)
+      localStorage.setItem("jwtToken", jwtToken);
         toast({
           title: "Account Created",
           description: "Your Alumni account has been successfully created",
