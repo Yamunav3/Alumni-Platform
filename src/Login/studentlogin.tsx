@@ -6,20 +6,22 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import ParticleBackGround from "../components/BackGround";
+import api from '../api/api';
+
 
 const StudentLogin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    collegeId: "",
+    username: "",
     password: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Frontend validation only
-    if (!formData.collegeId || !formData.password) {
+    //login through username and password
+    if (!formData.username || !formData.password) {
       toast({
         title: "Error",
         description: "Please fill in all required fields",
@@ -27,12 +29,36 @@ const StudentLogin = () => {
       });
       return;
     }
-    
-    toast({
-      title: "Login Successful",
-      description: "Welcome back, Student!",
+
+    try{
+      setLoading(true);
+      const response = await api.post('api/v1/auth/signin', {
+      username: formData.username,
+      password: formData.password,
     });
+       if(response.status === 200){
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('refreshToken', response.data.refreshToken);
+        if(localStorage.getItem('token')!=null){
+          console.log("token :",localStorage.getItem('token'));
+          toast({
+        title: "Login Successful",
+        description: "Welcome back, Student!",
+       });
+    navigate("/student/home");}     
+  }
+    
     // Here you would typically handle authentication
+  }catch(error){
+    toast({
+      title: "Login Failed",
+      description: "Invalid username or password.",
+      variant: "destructive",
+    });
+  }finally{
+    setLoading(false);
+  }
+
   };
 
   return (
@@ -52,13 +78,13 @@ const StudentLogin = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="collegeId">College ID *</Label>
+              <Label htmlFor="collegeId">Username *</Label>
               <Input
-                id="collegeId"
+                id="username"
                 type="text"
-                placeholder="Enter your college ID"
-                value={formData.collegeId}
-                onChange={(e) => setFormData(prev => ({ ...prev, collegeId: e.target.value }))}
+                placeholder="Enter your username"
+                value={formData.username}
+                onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
                 required
               />
             </div>
@@ -75,8 +101,10 @@ const StudentLogin = () => {
               />
             </div>
 
-            <Button type="submit" className="w-full">
-              Sign In
+            <Button type="submit" className="w-full" disabled={loading}>
+             {loading ?( <div>
+              <span className="animate-ping h-4 w-4 rounded-full border-2 border-white "></span>"logging in .."</div>):("Login")}
+            
             </Button>
           </form>
 

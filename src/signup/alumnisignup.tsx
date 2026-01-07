@@ -12,10 +12,11 @@ import api from "@/api/api"
 const AlumniSignup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const[loading,setLoading]=useState(false);
   const [formData, setFormData] = useState({
     collegeId: "",
     collegeEmail: "",
-    name: "",
+    username: "",
     graduationYear: "",
     branch: "",
     currentCompany: "",
@@ -23,6 +24,8 @@ const AlumniSignup = () => {
     interests: "",
     password: "",
     confirmPassword: "",
+    fullname:"",
+    mobilenumber:"",
   });
 
   const handleSubmit = async (e) => {
@@ -40,30 +43,22 @@ const AlumniSignup = () => {
     
 
     try {
-      const response = await api.post('/account/register/alumni/', {
-        college_Id: formData.collegeId,
-        college_Email: formData.collegeEmail,
-        name: formData.name,
-        graduationYear: formData.graduationYear,
+      setLoading(true);
+      const response = await api.post('api/v1/auth/alumnisignup', {
+        collegeID: formData.collegeId,
+         email: formData.collegeEmail,
+        username: formData.username,
+        fullname: formData.fullname,
+        yearofpassing: formData.graduationYear,
         branch: formData.branch,
-        currentCompany: formData.currentCompany,
-        jobTitle: formData.jobTitle,
+        workingcompany: formData.currentCompany,
+        jobrole: formData.jobTitle,
         interests: formData.interests,
         password: formData.password,
-        confirmPassword: formData.confirmPassword,
+        // confirmPassword: formData.confirmPassword,
       });
 
-      if (response.status === 201) {
-        // ✅ ACCESS JWT TOKEN FROM BACKEND
-      const jwtToken =
-      response.data.token ||
-      response.data.accessToken ||
-      response.data.access;
-
-
-      // ✅ STORE JWT TOKEN
-      if(jwtToken)
-      localStorage.setItem("jwtToken", jwtToken);
+      if (response.status === 201 || response.status === 200) {
         toast({
           title: "Account Created",
           description: "Your Alumni account has been successfully created",
@@ -77,6 +72,8 @@ const AlumniSignup = () => {
         variant: "destructive",
       });
       console.error("There was an error creating the account!", error);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -124,13 +121,20 @@ const AlumniSignup = () => {
             <div className="space-y-2">
               <Label htmlFor="name">Full Name *</Label>
               <Input
-                id="name"
+                id="fullname"
                 type="text"
                 placeholder="Enter your full name"
-                value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                value={formData.fullname}
+                onChange={(e) => setFormData(prev => ({ ...prev, fullname: e.target.value }))}
                 required
               />
+            </div>
+             
+             <div className="space-y-2">
+              <Label htmlFor="username">Username *</Label>
+              <Input id="username" type="text" placeholder="Enter your username"
+               value={formData.username} onChange={(e)=>setFormData(prev =>({...prev ,username:e.target.value}))}  required>
+              </Input>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -171,6 +175,13 @@ const AlumniSignup = () => {
                 </Select>
               </div>
             </div>
+
+             <div className="space-y-2">
+                <Label htmlFor="mobilenumber">Mobile Number</Label>
+                  <Input id="mobilenumber" type="tel" maxLength={10} pattern="[6-9][0-9]{9}" placeholder="Enter Your Mobile Number" 
+                                            required/>
+                
+              </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -233,8 +244,13 @@ const AlumniSignup = () => {
               </div>
             </div>
 
-            <Button type="submit" className="w-full">
-              Create Account
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading?(
+                <div className="flex items-center gap-2">
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />     
+                   Creating Alumni Spot....
+                </div>
+              ):("Create Account")}     
             </Button>
           </form>
 

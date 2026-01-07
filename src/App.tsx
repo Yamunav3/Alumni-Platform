@@ -53,7 +53,7 @@ import StudentNotifications from "./student/Notifications";
 // Components
 import Footer from "./components/Footer";
 import ChatBot from "./components/ChatBot";
-import ParticleBackground from "./components/BackGround"; // ✅ Make sure this file exists
+import ParticleBackground from "./components/BackGround"; //  Make sure this file exists
 import Home from "./AdminPage/Home";
 import StaffSection from "./AdminPage/StaffSection";
 import StudentSection from "./AdminPage/StudentSection";

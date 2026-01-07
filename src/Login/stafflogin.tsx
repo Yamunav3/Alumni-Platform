@@ -6,19 +6,22 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import ParticleBackGround from "../components/BackGround"
+import ParticleBackGround from "../components/BackGround";
+import api from '../api/api';
+
 
 const StaffLogin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const[loading,setLoading]= useState(false);
   const [formData, setFormData] = useState({
-    staffId: "",
+    username: "",
     password: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.staffId || !formData.password) {
+    if (!formData.username|| !formData.password) {
       toast({
         title: "Error",
         description: "Please fill in all required fields",
@@ -26,11 +29,35 @@ const StaffLogin = () => {
       });
       return;
     }
-    
-    toast({
+
+    try{
+      setLoading(true);
+       const response = await  api.post('api/v1/auth/signin',{
+        username:formData.username,
+        password:formData.password,
+       })
+       
+        if(response.status ===200){
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('refreshToken', response.data.refreshToken);
+        if(localStorage.getItem('token')!=null){
+        toast({
       title: "Login Successful",
       description: "Welcome back, Staff Member!",
     });
+    navigate("/staff/home");
+     }
+  }
+    }catch(error){
+      toast({
+        title: "Login Failed",
+        description: "Invalid username or password.",
+        variant: "destructive",
+      });
+    }finally{
+      setLoading(false);
+    }
+    
   };
 
   return (
@@ -49,13 +76,13 @@ const StaffLogin = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="staffId">Staff ID *</Label>
+              <Label htmlFor="username">Username *</Label>
               <Input
-                id="staffId"
+                id="username"
                 type="text"
-                placeholder="Enter your staff ID"
-                value={formData.staffId}
-                onChange={(e) => setFormData(prev => ({ ...prev, staffId: e.target.value }))}
+                placeholder="Enter your username"
+                value={formData.username}
+                onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
                 required
               />
             </div>
@@ -72,8 +99,8 @@ const StaffLogin = () => {
               />
             </div>
 
-            <Button type="submit" className="w-full">
-              Sign In
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading?( <div><span className="animate-spin w-2 h-2 border-white border-2"></span>loggin in ....</div>):("Login")}
             </Button>
           </form>
 

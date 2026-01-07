@@ -7,18 +7,20 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Shield,Link } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ParticleBackGround from "../components/BackGround";
+import api from '../api/api';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const[loading, setLoading]=useState(false);
   const [formData, setFormData] = useState({
-    adminId: "",
+    username: "",
     password: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.adminId || !formData.password) {
+    if (!formData.username || !formData.password) {
       toast({
         title: "Error",
         description: "Please fill in all required fields",
@@ -26,11 +28,39 @@ const AdminLogin = () => {
       });
       return;
     }
-    
-    toast({
+
+    try{
+      setLoading(true);
+      // Admin login logic here
+       const response = await api.post("api/v1/auth/signin",{
+        username:formData.username,
+        password:formData.password,
+       });
+       if(response.status ===200 || response.status ===201){
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('refreshToken', response.data.refreshToken);
+          
+    if(localStorage.getItem('token')!=null){
+      toast({
       title: "Login Successful",
       description: "Welcome back, Admin!",
     });
+      navigate("/admin/home");
+    }
+           
+       }
+    
+    }catch(error){
+      toast({
+        title: "Login Failed",
+        description: "Invalid username or password.",
+        variant: "destructive",
+      });
+    }finally{
+      setLoading(false);
+    }
+    
+   
   };
 
   return (
@@ -53,13 +83,13 @@ const AdminLogin = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="adminId">Admin ID *</Label>
+              <Label htmlFor="username">Usename *</Label>
               <Input
-                id="adminId"
+                id="username"
                 type="text"
-                placeholder="Enter your admin ID"
-                value={formData.adminId}
-                onChange={(e) => setFormData(prev => ({ ...prev, adminId: e.target.value }))}
+                placeholder="Enter your admin username"
+                value={formData.username}
+                onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
                 required
               />
             </div>
@@ -76,14 +106,16 @@ const AdminLogin = () => {
               />
             </div>
 
-            {/* <Button type="submit" className="w-full">
-              Sign In
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ?( <div>
+        <span className="animate-ping h-4 w-4 rounded-full border-2 border-white "></span>"logging in .."</div>):("login")}
+      
             </Button>
-          </form> */}
-          <Button asChild type="button" className="w-full">
+          </form>
+          {/* <Button asChild type="button" className="w-full">
   <Link to="/student">Sign In</Link>
-</Button>
-</form>
+</Button> */}
+{/* </form> */}
 
           {/* <div className="text-center mt-6">
             <p className="text-sm text-muted-foreground">

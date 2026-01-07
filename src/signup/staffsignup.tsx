@@ -13,6 +13,7 @@ import api from "@/api/api";
 const StaffSignup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const[loading,setLoading]=useState(false);
   const [formData, setFormData] = useState({
     staffId: "",
     name: "",
@@ -22,6 +23,8 @@ const StaffSignup = () => {
     interests: "",
     password: "",
     confirmPassword: "",
+    username:"",
+    mobilenumber:"",
   });
 
   const handleSubmit = async (e) => {
@@ -37,39 +40,39 @@ const StaffSignup = () => {
     }
     
     try {
-      const response = await api.post('/account/register/staff/', {
-        staff_Id: formData.staffId,
-        name: formData.name,
+      setLoading(true);
+      const response = await api.post('api/v1/auth/staffsignup', {
+        collegeID: formData.staffId,
+        fullname: formData.name,
+        username:formData.username,
         email: formData.email,
-        staffRole: formData.staffRole,
-        department: formData.department,
+        jobrole: formData.staffRole,
+        branch: formData.department,
         interests: formData.interests,
         password: formData.password,
-        confirmPassword: formData.confirmPassword,
+        mobilenumber: formData.mobilenumber,
+        // confirmPassword: formData.confirmPassword,
       });
 
-      if(response.status === 201) {
-
-        const jwtToken =
-  response.data.token ||
-  response.data.accessToken ||
-  response.data.access;
-   if(jwtToken)
-      localStorage.setItem("jwtToken",jwtToken);
+      if(response.status === 201 || response.status === 200){ {
   
         toast({
           title: "Account Created",
           description: "Your staff account has been created successfully!",
         });
+        //navigate to login page
         navigate("/login/staff");
       }
-    } catch (error) {
+    }
+   } catch (error) {
       toast({
         title: "Error",
         description: "There was an error creating your account. Please try again.",
         variant: "destructive",
       });
       console.error("There was an error!", error);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -113,6 +116,12 @@ const StaffSignup = () => {
                 />
               </div>
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="username">Username *</Label>
+              <Input id="username" type="text" placeholder="Enter your username"
+               value={formData.username} onChange={(e)=>setFormData(prev =>({...prev ,username:e.target.value}))}  required>
+              </Input>
+            </div>
 
             <div className="space-y-2">
               <Label htmlFor="email">Email *</Label>
@@ -147,19 +156,27 @@ const StaffSignup = () => {
               </div>
 
               <div className="space-y-2">
+                <Label htmlFor="mobilenumber">Mobile Number</Label>
+                  <Input id="mobilenumber" type="tel" maxLength={10} pattern="[6-9][0-9]{9}" placeholder="Enter Your Mobile Number" 
+                                            required/>
+                
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="department">Department</Label>
                 <Select onValueChange={(value) => setFormData(prev => ({ ...prev, department: value }))}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select department" />
                   </SelectTrigger>
                   <SelectContent className="bg-background border shadow-lg z-50">
-                    <SelectItem value="cse">Computer Science</SelectItem>
-                    <SelectItem value="ece">Electronics & Communication</SelectItem>
-                    <SelectItem value="me">Mechanical Engineering</SelectItem>
-                    <SelectItem value="ce">Civil Engineering</SelectItem>
-                    <SelectItem value="ee">Electrical Engineering</SelectItem>
-                    <SelectItem value="admin">Administration</SelectItem>
-                    <SelectItem value="library">Library</SelectItem>
+                    <SelectItem value="CSE">Computer Science</SelectItem>
+                    <SelectItem value="IT">Information Technology</SelectItem>
+                    <SelectItem value="ECE">Electronics & Communication</SelectItem>
+                    <SelectItem value="ME">Mechanical Engineering</SelectItem>
+                    <SelectItem value="CE">Civil Engineering</SelectItem>
+                    <SelectItem value="EEE">Electrical Engineering</SelectItem>
+                    <SelectItem value="ADMIN">Administration</SelectItem>
+                    <SelectItem value="LIBRARY">Library</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -202,8 +219,13 @@ const StaffSignup = () => {
               </div>
             </div>
 
-            <Button type="submit" className="w-full">
-              Create Account
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading?(
+                <div className="flex items-center gap-2">
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />     
+                   Creating Staff Account....
+                </div>
+              ):("Create Account")}     
             </Button>
           </form>
 

@@ -10,79 +10,87 @@ import { ArrowLeft, BookOpen } from "lucide-react";
 import api from "@/api/api"
 import { useToast } from "@/hooks/use-toast";
 import ParticleBackground from "../components/BackGround";
+import { set } from "date-fns";
 
 const StudentSignup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [loading,setLoading]=useState(false); //loading animation state
   const [formData, setFormData] = useState({
     collegeId: "",
     collegeEmail: "",
-    name: "",
+    fullname: "",
     branch: "",
     section: "",
     yearOfGraduation: "",
     interests: "",
     password: "",
     confirmPassword: "",
+    username: "",
+    mobilenumber:"",
   });
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: "Error",
-        description: "Passwords do not match",
-        variant: "destructive",
-      });
-      return;
-    }
+  e.preventDefault();
 
-
-
-    //signing logic here
-   try {
-  const response = await api.post(
-    "/student/register",
-    {
-      collegeId: formData.collegeId,
-      collegeEmail: formData.collegeEmail,
-      name: formData.name,
-      branch: formData.branch,
-      section: formData.section,
-      yearOfGraduation: formData.yearOfGraduation,
-      interests: formData.interests,
-      password: formData.password,
-      confirmpassword: formData.confirmPassword, // same as your fetch code
-    },
-  );
-
- 
-  if (response.status === 201 || response.status === 200) {
-     const jwtToken =
-  response.data.token ||
-  response.data.accessToken ||
-  response.data.access;
-
-  if(jwtToken)
-  localStorage.setItem("jwtToken",jwtToken);
-  
+  if (formData.password !== formData.confirmPassword) {
     toast({
-      title: "Account Created",
-      description: "Your account has been successfully created",
+      title: "Error",
+      description: "Passwords do not match",
+      variant: "destructive",
     });
+    return;
   }
 
-} catch (error) {
-  console.error("There was an error!", error);
+  try {
+    setLoading(true);
+    const response = await api.post(
+      "api/v1/auth/studentsignup",
+      {
+        collegeID: formData.collegeId,
+        email: formData.collegeEmail,
+        fullname: formData.fullname,
+        username: formData.username,
+        branch: formData.branch,
+        section: formData.section,
+        yearofpassing: formData.yearOfGraduation,
+        interests: formData.interests,
+        password: formData.password,
+        mobilenumber: formData.mobilenumber,
+        // role: "STUDENT"
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-  toast({
-    title: "Error",
-    description: "There was an error creating your account. Please try again.",
-    variant: "destructive",
-  });
-}
-  };
+    if (response.status === 201 || response.status ===200) {
+      toast({
+        title: "Account Created",
+        description: "Please login to continue",
+      });
+
+      // redirect to login page
+      navigate("/login/student");
+    }
+
+  } catch (error) {
+    console.error("Signup error:", error);
+
+    toast({
+      title: "Error",
+      description:
+        error.response?.data?.message ||
+        "There was an error creating your account.",
+      variant: "destructive",
+    });
+  }finally{
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
@@ -128,15 +136,27 @@ const StudentSignup = () => {
             <div className="space-y-2">
               <Label htmlFor="name">Full Name *</Label>
               <Input
-                id="name"
+                id="fullname"
                 type="text"
                 placeholder="Enter your full name"
-                value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                value={formData.fullname}
+                onChange={(e) => setFormData(prev => ({ ...prev, fullname: e.target.value }))}
                 required
               />
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="name">Username *</Label>
+              <Input
+                id="username"
+                type="text"
+                placeholder="Enter your username"
+                value={formData.username}
+                onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
+                required
+              />
+            </div>
+             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="branch">Branch</Label>
@@ -145,11 +165,12 @@ const StudentSignup = () => {
                     <SelectValue placeholder="Select branch" />
                   </SelectTrigger>
                   <SelectContent className="bg-background border shadow-lg z-50">
-                    <SelectItem value="cse">Computer Science</SelectItem>
-                    <SelectItem value="ece">Electronics & Communication</SelectItem>
-                    <SelectItem value="me">Mechanical Engineering</SelectItem>
-                    <SelectItem value="ce">Civil Engineering</SelectItem>
-                    <SelectItem value="ee">Electrical Engineering</SelectItem>
+                    <SelectItem value="CSE">Computer Science & Allied</SelectItem>
+                    <SelectItem value="IT">Information Technology & Allied</SelectItem>
+                    <SelectItem value="ECE">Electronics & Communication Engineering</SelectItem>
+                    <SelectItem value="ME">Mechanical Engineering</SelectItem>
+                    <SelectItem value="CE">Civil Engineering</SelectItem>
+                    <SelectItem value="EEE">Electrical & Electronics Engineering</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -165,6 +186,7 @@ const StudentSignup = () => {
                     <SelectItem value="b">Section B</SelectItem>
                     <SelectItem value="c">Section C</SelectItem>
                     <SelectItem value="d">Section D</SelectItem>
+                    <SelectItem value="e">Section E</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -176,6 +198,7 @@ const StudentSignup = () => {
                     <SelectValue placeholder="Select year" />
                   </SelectTrigger>
                   <SelectContent className="bg-background border shadow-lg z-50">
+                    <SelectItem value="2023">2023</SelectItem>
                     <SelectItem value="2024">2024</SelectItem>
                     <SelectItem value="2025">2025</SelectItem>
                     <SelectItem value="2026">2026</SelectItem>
@@ -195,6 +218,14 @@ const StudentSignup = () => {
                 onChange={(e) => setFormData(prev => ({ ...prev, interests: e.target.value }))}
                 className="min-h-[80px]"
               />
+            </div>
+              
+            <div className="space-y-2">
+              <Label htmlFor="mobilenumber">Mobile Number *</Label>
+              <Input id="mobilenumber"
+              placeholder="enter your 10-digit mobile number"
+              onChange={(e)=>setFormData(prev =>({...prev,mobilenumber:e.target.value}))}
+              required />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -223,8 +254,14 @@ const StudentSignup = () => {
               </div>
             </div>
 
-            <Button type="submit" className="w-full">
-              Create Account
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading?(
+                <div className="flex items-center gap-2">
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent">
+                  </span>
+                   Creating....
+                </div>
+              ):("Create Account")}
             </Button>
           </form>
 
