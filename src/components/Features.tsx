@@ -62,7 +62,7 @@ const Features = () => {
                     {feature.description}
                   </p>
 
-                  <Button
+                  {/* <Button
                     asChild
                     variant="outline"
                     size="lg"
@@ -77,7 +77,7 @@ const Features = () => {
                       </span>
                       <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
                     </Link>
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </div>

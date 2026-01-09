@@ -58,6 +58,7 @@ import Home from "./AdminPage/Home";
 import StaffSection from "./AdminPage/StaffSection";
 import StudentSection from "./AdminPage/StudentSection";
 import EventS from "./AdminPage/EventS";
+import ExploreOpp from "./pages/ExploreOpportunities";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +81,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
               <Route path="/career" element={<CareerPortal />} />
+              <Route path="/explore" element={<ExploreOpp />} />
               <Route path="/register" element={<Register />} />
               <Route path="/analytics" element={<AlumniAnalytics />} />
 

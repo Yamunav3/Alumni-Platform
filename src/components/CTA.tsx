@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import GradientText from "../ReactBits/GradientText";
 import CountUp from "../ReactBits/CountUp";
 import ParticleBackground from "./BackGround";
+import Footer from "./Footer";
 
 const CTA = () => {
   return (
     <section className="py-20 bg-gradient-hero relative overflow-hidden">
       {/* Background */}
         <ParticleBackground />
+       
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-white/10 rounded-full blur-xl animate-pulse"></div>
         <div
@@ -59,7 +61,7 @@ const CTA = () => {
             asChild
             variant="outline"
             size="lg"
-            className="text-lg px-8 py-6 border-white/30 text-white hover:bg-white/10"
+            className="text-lg px-4 py-6 border-white/30 bg-white/20  hover:bg-white/10"
           >
             <Link to="/career/success-stories">View Success Stories</Link>
           </Button>
@@ -104,7 +106,9 @@ const CTA = () => {
           </div>
         </div>
       </div>
+      <div className="py-20"><Footer /></div>     
     </section>
+     
   );
 };
 

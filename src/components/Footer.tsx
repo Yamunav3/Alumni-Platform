@@ -41,7 +41,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gradient-to-br from-primary via-primary to-accent text-white">
+    <footer className=" from-primary via-primary to-accent text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {/* Brand Section */}
@@ -61,15 +61,15 @@ const Footer = () => {
             <div className="space-y-1 text-white/70 text-sm">
               <div className="flex items-center space-x-2">
                 <Mail className="w-3 h-3" />
-                <span>contact@asthra.career</span>
+                <span>contact@college.career</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="w-3 h-3" />
-                <span>+1 (555) 123-4567</span>
+                <span>+91 9959976895</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="w-3 h-3" />
-                <span>123 Career Avenue, Success City</span>
+                <span>543201 Bhimavaram , west godavari , Andhra pradesh </span>
               </div>
             </div>
           </div>

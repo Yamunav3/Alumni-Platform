@@ -38,7 +38,7 @@ import {
   MessageSquare
 } from "lucide-react";
 
-const CareerPortal = () => {
+const ExploreOpp = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -412,21 +412,21 @@ const CareerPortal = () => {
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-fade-in">
-            Career Portal
+            
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-slide-up">
-            Discover opportunities, track applications, and advance your career with alumni connections
+            Discover opportunities, track applications, and advance your career
           </p>
         </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="jobs" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-1">
             <TabsTrigger value="jobs">Job Board</TabsTrigger>
-            <TabsTrigger value="applications">My Applications</TabsTrigger>
-            <TabsTrigger value="success-stories">Success Stories</TabsTrigger>
-            <TabsTrigger value="webinars">Webinars</TabsTrigger>
+            {/* <TabsTrigger value="applications">My Applications</TabsTrigger> */}
+            {/* <TabsTrigger value="success-stories">Success Stories</TabsTrigger>
+            <TabsTrigger value="webinars">Webinars</TabsTrigger> */}
           </TabsList>
 
           {/* Job Board */}
@@ -726,4 +726,4 @@ const CareerPortal = () => {
   );
 };
 
-export default CareerPortal;
+export default ExploreOpp;

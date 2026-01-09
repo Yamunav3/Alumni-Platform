@@ -54,14 +54,14 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <ClickSpark sparkColor="#fff" sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
                 <Button asChild size="lg" className="btn-hero text-lg px-8 py-6">
-                  <Link to="/career/jobs" className="flex items-center space-x-2">
+                  <Link to="/explore" className="flex items-center">
                     <span>Explore Opportunities</span>
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                 </Button>
               </ClickSpark>
 
-              <ClickSpark sparkColor="#fff" sparkSize={20} sparkRadius={15} sparkCount={8} duration={400}>
+              {/* <ClickSpark sparkColor="#fff" sparkSize={20} sparkRadius={15} sparkCount={8} duration={400}>
                 <Button
                   asChild
                   variant="outline"
@@ -70,7 +70,7 @@ const Hero = () => {
                 >
                   <Link to="/about">Learn More</Link>
                 </Button>
-              </ClickSpark>
+              </ClickSpark> */}
             </div>
 
             {/* Stats */}
