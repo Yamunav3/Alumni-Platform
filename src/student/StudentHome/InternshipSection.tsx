@@ -156,11 +156,11 @@ const InternshipSection = ({ internships }: InternshipSectionProps) => {
                     View Details
                   </Button>
                   <Button
-                    className={`transition-all duration-300 ${
+                    className={`transition-all duration-300 text-black ${
                       appliedInternships.has(internship.id)
                         ? 'bg-success hover:bg-success/80'
                         : 'bg-gradient-secondary hover:shadow-blue-500/90'
-                    }`}
+                    }` }
                     onClick={() => showApplication(internship)}
                     disabled={appliedInternships.has(internship.id)}
                   >

@@ -27,7 +27,7 @@ export default function StaffProfile() {
             </div>
             <div className="text-center md:text-left">
               <h1 className="text-4xl font-bold text-foreground mb-2">John Doe</h1>
-              <p className="text-xl text-muted-foreground mb-4">Computer Science Student</p>
+              <p className="text-xl  mb-4">CSE Student</p>
               <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                 <Badge className="bg-asthra-green/10 text-asthra-green border-asthra-green/20">Active</Badge>
                 <Badge className="bg-asthra-blue/10 text-asthra-blue border-asthra-blue/20">3rd Year</Badge>
@@ -56,19 +56,19 @@ export default function StaffProfile() {
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Mail className="h-4 w-4 text-asthra-blue" />
-                  <span className="text-sm text-muted-foreground">john.doe@university.edu</span>
+                  <span className="text-sm text-muted-foreground">john.doe@srkrec.ac.in</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="h-4 w-4 text-asthra-green" />
-                  <span className="text-sm text-muted-foreground">+1 (555) 123-4567</span>
+                  <span className="text-sm text-muted-foreground">+91 7397014589</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <MapPin className="h-4 w-4 text-asthra-blue" />
-                  <span className="text-sm text-muted-foreground">San Francisco, CA</span>
+                  <span className="text-sm text-muted-foreground">Bhimavaram , West Godavari</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Calendar className="h-4 w-4 text-asthra-green" />
-                  <span className="text-sm text-muted-foreground">Joined Sept 2022</span>
+                  <span className="text-sm text-muted-foreground">Joined Oct 2022</span>
                 </div>
               </CardContent>
             </Card>
@@ -88,11 +88,11 @@ export default function StaffProfile() {
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-sm font-medium text-foreground">GPA:</span>
-                  <span className="text-sm text-asthra-green font-medium">3.8/4.0</span>
+                  <span className="text-sm text-asthra-green font-medium">9.2/10</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-sm font-medium text-foreground">Expected Graduation:</span>
-                  <span className="text-sm text-muted-foreground">May 2025</span>
+                  <span className="text-sm text-muted-foreground">May 2027</span>
                 </div>
               </CardContent>
             </Card>
@@ -104,7 +104,7 @@ export default function StaffProfile() {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
-                  {["JavaScript", "React", "Python", "Java", "Node.js", "SQL", "Git", "AWS"].map((skill) => (
+                  {["JavaScript", "React", "Python", "Java", "Node.js", "SQL", "Git", "AWS" ,"Spring Boot"].map((skill) => (
                     <Badge key={skill} variant="secondary" className="text-xs">
                       {skill}
                     </Badge>

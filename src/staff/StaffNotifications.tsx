@@ -77,12 +77,12 @@ export default function StaffNotifications() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                <span className="bg-gradient-primary bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-5xl  mb-4">
+                <span className="bg-gradient-primary bg-clip-text ">
                   Notifications
                 </span>
               </h1>
-              <p className="text-xl text-muted-foreground">
+              <p className="text-xl ">
                 Stay updated with your latest activities and opportunities
               </p>
             </div>

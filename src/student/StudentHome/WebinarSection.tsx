@@ -145,7 +145,7 @@ const WebinarSection = ({ webinars }: WebinarSectionProps) => {
                     View Details
                   </Button>
                   <Button
-                    className={`transition-all duration-300 ${
+                    className={`transition-all duration-300 text-black ${
                       registeredWebinars.has(webinar.id)
                         ? "bg-success hover:bg-success/80"
                         : webinar.price === "Free"

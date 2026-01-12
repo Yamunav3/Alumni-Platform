@@ -319,14 +319,14 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
 export default function StudentProfile() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData>({
-    name: "John Doe",
-    email: "john.doe@university.edu",
-    phone: "+1 (555) 123-4567",
-    location: "San Francisco, CA",
+    name: "Arjun",
+    email: "arrj@university.edu",
+    phone: "+91 9969967398",
+    location: "Bhimavaram , India",
     joinDate: "Sept 2022",
     degree: "Bachelor's Degree",
     major: "Computer Science",
-    gpa: "3.8/4.0",
+    gpa: "8.9/10",
     graduationDate: "May 2025",
     skills: [
       { id: 1, name: "JavaScript" },
@@ -460,9 +460,9 @@ export default function StudentProfile() {
             </div>
             <div className="text-center md:text-left">
               <h1 className="text-4xl font-bold text-foreground mb-2">{profileData.name}</h1>
-              <p className="text-xl text-muted-foreground mb-4">Computer Science Student</p>
+              <p className="text-xl text-muted-foreground mb-4 text-white">Computer Science Student</p>
               <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                <Badge className="bg-asthra-green/10 text-asthra-green border-asthra-green/20">Active</Badge>
+                <Badge className="bg-asthra-green/10 text-asthra-green border-asthra-green/10">Active</Badge>
                 <Badge className="bg-asthra-blue/10 text-asthra-blue border-asthra-blue/20">3rd Year</Badge>
                 <Badge className="bg-accent/10 text-accent-foreground border-accent/20">Honors Student</Badge>
               </div>

@@ -425,7 +425,7 @@ const TrainingSection = ({ trainings }: TrainingSectionProps) => {
                     View Details
                   </Button>
                   <Button 
-                    className={`transition-asthra ${
+                    className={`transition-asthra text-black${
                       enrolledTrainings.has(training.id)
                         ? 'bg-success hover:bg-success/80'
                         : 'bg-gradient-secondary hover:shadow-asthra'

@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "react-router-dom";
+import { StudentNavbar } from "./StudentNavbar";
 import { 
   Calendar, 
   MapPin, 
@@ -125,7 +126,7 @@ const AlumniEvents = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <AlumniNavbar/>
+      {/* <AlumniNavbar/> */} <StudentNavbar />
       {/* Header */}
        <section className="relative py-20 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
@@ -141,10 +142,10 @@ const AlumniEvents = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="upcoming" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="upcoming">Upcoming Events</TabsTrigger>
             <TabsTrigger value="past">Past Events</TabsTrigger>
-            <TabsTrigger value="create">Create Event</TabsTrigger>
+            {/* <TabsTrigger value="create">Create Event</TabsTrigger> */}
             <TabsTrigger value="categories">Categories</TabsTrigger>
           </TabsList>
 
@@ -231,7 +232,7 @@ const AlumniEvents = () => {
                        <Link to={"/register"}>
                        <Button size="sm">
                        <UserPlus className="h-4 w-4 mr-1" />
-                       Register
+                        Register
                           </Button>
                          </Link>
                       </div>
@@ -250,12 +251,12 @@ const AlumniEvents = () => {
                 <Eye className="h-4 w-4 mr-2" />
                 View Analytics
               </Button> */}
-               <Link to={"/analytics"}>
+               {/* <Link to={"/analytics"}>
                        <Button size="sm">
                         <Eye className="h-4 w-4 mr-2" />
                         View Analytics
                           </Button>
-                        </Link>
+                        </Link> */}
 
 
             </div>
@@ -304,7 +305,7 @@ const AlumniEvents = () => {
             </div>
           </TabsContent>
 
-          {/* Create Event */}
+          {/* Create Event
           <TabsContent value="create" className="space-y-6">
             <Card>
               <CardHeader>
@@ -362,16 +363,16 @@ const AlumniEvents = () => {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+          </TabsContent> */}
 
           {/* Categories */}
           <TabsContent value="categories" className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-semibold">Event Categories</h2>
-              <Button>
+              {/* <Button>
                 <Plus className="h-4 w-4 mr-2" />
                 Add Category
-              </Button>
+              </Button> */}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

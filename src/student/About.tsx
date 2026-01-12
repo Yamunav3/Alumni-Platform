@@ -60,7 +60,7 @@ export default function StudentAbout() {
                   Asthra
                 </GradientText>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-xl text-white text-muted-foreground max-w-3xl mx-auto">
                 Empowering students with the tools, connections, and opportunities 
                 they need to build successful careers and make a meaningful impact.
               </p>
@@ -198,12 +198,12 @@ export default function StudentAbout() {
                   Ready to transform your career journey?
                 </p>
                 <div className="flex flex-col sm:flex-row gap-2 justify-center mt-3">
-                  <button className="bg-white text-purple-700 px-4 py-1.5 rounded-lg font-medium hover:bg-gray-100 transition-colors text-xs">
+                  {/* <button className="bg-white text-purple-700 px-4 py-1.5 rounded-lg font-medium hover:bg-gray-100 transition-colors text-xs">
                     Get Started Today
-                  </button>
-                  <button className="border border-white/30 px-4 py-1.5 rounded-lg font-medium hover:bg-white/10 transition-colors text-xs">
+                  </button> */}
+                  {/* <button className="border border-white/30 px-4 py-1.5 rounded-lg font-medium hover:bg-white/10 transition-colors text-xs" >
                     Contact Us
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>

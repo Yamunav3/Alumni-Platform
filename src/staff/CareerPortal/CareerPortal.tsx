@@ -378,9 +378,9 @@ const StudentCareerPortal = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="jobs" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="jobs">Job Portal</TabsTrigger>
-            <TabsTrigger value="applications">My Applications</TabsTrigger>
+            {/* <TabsTrigger value="applications">My Applications</TabsTrigger> */}
             <TabsTrigger value="webinars">Webinars</TabsTrigger>
             <TabsTrigger value="success-stories">Success Stories</TabsTrigger>
             <TabsTrigger value="saved">Saved Jobs</TabsTrigger>
