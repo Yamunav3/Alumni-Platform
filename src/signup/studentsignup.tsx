@@ -44,8 +44,7 @@ const StudentSignup = () => {
 
   try {
     setLoading(true);
-    const response = await api.post(
-      "api/v1/auth/studentsignup",
+    const response = await api.post("api/v1/auth/studentsignup",
       {
         collegeID: formData.collegeId,
         email: formData.collegeEmail,
@@ -66,7 +65,7 @@ const StudentSignup = () => {
       }
     );
 
-    if (response.status === 201 || response.status ===200) {
+    if (response.status === 201 || response.status === 200) {
       toast({
         title: "Account Created",
         description: "Please login to continue",

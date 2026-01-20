@@ -443,7 +443,7 @@ useEffect(()=>{
             </div>
             <div className="text-center md:text-left">
               <h1 className="text-4xl font-bold text-foreground mb-2">{profile?.fullname}</h1>
-              <p className="text-xl text-muted-foreground mb-4 text-white">Computer Science Student</p>
+              <p className="text-xl text-muted-foreground mb-4 text-white">{profile?.branch}</p>
               <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                 <Badge className="bg-asthra-green/10 text-asthra-green border-asthra-green/10">Active</Badge>
                 <Badge className="bg-asthra-blue/10 text-asthra-blue border-asthra-blue/20">3rd Year</Badge>
