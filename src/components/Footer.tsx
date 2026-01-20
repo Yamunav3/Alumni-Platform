@@ -97,7 +97,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-white/20 mt-6 pt-4 flex flex-col md:flex-row justify-between items-center text-sm">
           <div className="text-white/70 mb-3 md:mb-0">
-            © 2025 Asthra. All rights reserved.
+            © {new Date().getFullYear()} Asthra. All rights reserved.
           </div>
 
           {/* Social Links */}

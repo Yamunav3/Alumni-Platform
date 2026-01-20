@@ -76,12 +76,12 @@ const ExploreOpp = () => {
               </Link> */}
               
               {/* Career Portal Link - No dropdown */}
-              <Link 
+              {/* <Link 
                 to="/career" 
                 className={`nav-link ${isActive("/career") ? "text-primary" : ""}`}
               >
                 Career Portal
-              </Link>
+              </Link> */}
 
               {/* Login Dropdown */}
               <DropdownMenu>

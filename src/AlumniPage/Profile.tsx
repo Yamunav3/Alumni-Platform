@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -20,55 +20,62 @@ import {
 } from "lucide-react";
 import { AlumniNavbar } from "@/components/AlumniNavbar";
 
-const profileData = {
-  name: "Alex Johnson",
-  title: "Senior Software Engineer",
-  company: "TechCorp Inc.",
-  location: "San Francisco, CA",
-  email: "alex.johnson@email.com",
-  phone: "+1 (555) 123-4567",
-  graduationYear: "2018",
-  degree: "Computer Science",
-  joinedDate: "March 2024",
-  bio: "Passionate software engineer with 5+ years of experience in full-stack development. Alumni mentor and active community contributor.",
-  avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
-};
+interface Profile{
+  username:string;
+  fullname:string;
+  workingcomapny:string;
+  jobrole:string;
+  mobilenumber:number;
+  email:string;
+  yearofpassing:string;
+  collegeID:string;
+  interests:string;
+  branch:string;
+   avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face";
+   location: "San Francisco, CA";
+   bio: "Passionate software engineer with 5+ years of experience in full-stack development. Alumni mentor and active community contributor.";
+}
 
-const achievements = [
-  { title: "Top Performer 2023", icon: Award, color: "text-yellow-600" },
-  { title: "Mentor of the Year", icon: Users, color: "text-blue-600" },
-  { title: "Community Contributor", icon: MessageSquare, color: "text-green-600" }
-];
+export default function Profile(){
+  const[profile,setProfile] =useState<Profile|null>(null);
+  const[loading,setLoading]=useState(true);
+  const[error,setError]=useState("");
+  //  const [isEditing, setIsEditing] = useState(false);
 
-const experience = [
-  {
-    company: "TechCorp Inc.",
-    position: "Senior Software Engineer",
-    duration: "2021 - Present",
-    description: "Leading development of cloud-native applications and mentoring junior developers."
-  },
-  {
-    company: "StartupXYZ",
-    position: "Full Stack Developer",
-    duration: "2019 - 2021",
-    description: "Built scalable web applications using React and Node.js for a growing fintech startup."
-  },
-  {
-    company: "DevAgency",
-    position: "Junior Developer",
-    duration: "2018 - 2019",
-    description: "Started career developing custom websites and web applications for various clients."
-  }
-];
 
-const skills = [
-  "JavaScript", "React", "Node.js", "TypeScript", "Python", "AWS", 
-  "Docker", "GraphQL", "MongoDB", "PostgreSQL", "Git", "Agile"
-];
+  useEffect(()=>{
+      const token=localStorage.getItem("token");
+      if(!token){
+        setError("Profile Can't be Loaded , Try again ..");
+        setLoading(false);
+          return ;
+      }
+  fetch("http://localhost:8080/api/v1/alumni",{
+       method:"GET",
+       headers:{
+         "Content-Type":"Application/json",
+         "Authorization":`Bearer ${token}`
+       },
+  }).then((res)=>{
+      if(!res){
+        throw new Error("Profile Not Found");
+      }
+      return res.json();
+  })
+    .then((data:Profile)=>{
+           setProfile(data);
+    })
+    .catch((err)=>{
+      setError(err.message);
+    })
+    .finally(()=>{
+      setLoading(false);
+    })
 
-export default function AlumniProfile() {
-  const [isEditing, setIsEditing] = useState(false);
+  },[]);
 
+
+  
   return (
     <div className="min-h-screen bg-background">
       <AlumniNavbar/>
@@ -77,35 +84,35 @@ export default function AlumniProfile() {
         <div className="container mx-auto max-w-4xl">
           <div className="flex flex-col md:flex-row items-start md:items-center space-y-6 md:space-y-0 md:space-x-8">
             <Avatar className="h-32 w-32 border-4 border-white shadow-elegant">
-              <AvatarImage src={profileData.avatar} alt={profileData.name} />
+              <AvatarImage src={profile?.avatar} alt={profile?.fullname} />
               <AvatarFallback className="text-2xl">AJ</AvatarFallback>
             </Avatar>
             
             <div className="flex-1">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h1 className="text-3xl font-bold gradient-text mb-2">{profileData.name}</h1>
-                  <p className="text-xl text-muted-foreground mb-2">{profileData.title}</p>
+                  <h1 className="text-3xl font-bold gradient-text mb-2">{profile?.fullname}</h1>
+                  <p className="text-xl text-muted-foreground mb-2">{profile?.jobrole}</p>
                   <div className="flex items-center text-muted-foreground mb-4">
                     <Briefcase className="h-4 w-4 mr-2" />
-                    <span>{profileData.company}</span>
+                    <span>{profile?.workingcomapny}</span>
                     <MapPin className="h-4 w-4 ml-4 mr-2" />
-                    <span>{profileData.location}</span>
+                    <span>{profile?.location}</span>
                   </div>
                 </div>
-                <Button 
+                {/* <Button 
                   variant={isEditing ? "default" : "outline"} 
                   onClick={() => setIsEditing(!isEditing)}
                 >
                   <Edit3 className="h-4 w-4 mr-2" />
                   {isEditing ? "Save" : "Edit Profile"}
-                </Button>
+                </Button> */}
               </div>
               
-              <p className="text-muted-foreground mb-6">{profileData.bio}</p>
+              <p className="text-muted-foreground mb-6">{profile?.bio}</p>
               
               <div className="flex flex-wrap gap-2 mb-6">
-                {achievements.map((achievement, index) => {
+                {/* {achievements.map((achievement, index) => {
                   const IconComponent = achievement.icon;
                   return (
                     <Badge key={index} variant="secondary" className="flex items-center space-x-1">
@@ -113,17 +120,17 @@ export default function AlumniProfile() {
                       <span>{achievement.title}</span>
                     </Badge>
                   );
-                })}
+                })} */}
               </div>
               
               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center">
                   <GraduationCap className="h-4 w-4 mr-2" />
-                  <span>Class of {profileData.graduationYear} • {profileData.degree}</span>
+                  <span>Class of {profile?.yearofpassing} • {"Bachelor of technology(B.Tech)"}</span>
                 </div>
                 <div className="flex items-center">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <span>Joined {profileData.joinedDate}</span>
+                  {/* <Calendar className="h-4 w-4 mr-2" />
+                  <span>Joined {profileData.joinedDate}</span> */}
                 </div>
               </div>
             </div>
@@ -154,15 +161,15 @@ export default function AlumniProfile() {
                   <CardContent className="space-y-4">
                     <div className="flex items-center">
                       <Mail className="h-4 w-4 mr-3 text-muted-foreground" />
-                      <span>{profileData.email}</span>
+                      <span>{profile?.email}</span>
                     </div>
                     <div className="flex items-center">
                       <Phone className="h-4 w-4 mr-3 text-muted-foreground" />
-                      <span>{profileData.phone}</span>
+                      <span>{profile?.mobilenumber}</span>
                     </div>
                     <div className="flex items-center">
                       <MapPin className="h-4 w-4 mr-3 text-muted-foreground" />
-                      <span>{profileData.location}</span>
+                      <span>{profile?.location}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -176,16 +183,16 @@ export default function AlumniProfile() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
-                      <h4 className="font-medium">Bachelor of Science in {profileData.degree}</h4>
+                      <h4 className="font-medium">Bachelor of Science in {profile?.branch}</h4>
                       <p className="text-muted-foreground">Asthra University</p>
-                      <p className="text-sm text-muted-foreground">Graduated {profileData.graduationYear}</p>
+                      <p className="text-sm text-muted-foreground">Graduated {profile?.yearofpassing}</p>
                     </div>
                   </CardContent>
                 </Card>
               </div>
             </TabsContent>
 
-            <TabsContent value="experience" className="space-y-6 mt-6">
+            {/* <TabsContent value="experience" className="space-y-6 mt-6">
               {experience.map((exp, index) => (
                 <Card key={index}>
                   <CardHeader>
@@ -205,9 +212,9 @@ export default function AlumniProfile() {
                   </CardContent>
                 </Card>
               ))}
-            </TabsContent>
+            </TabsContent> */}
 
-            <TabsContent value="skills" className="space-y-6 mt-6">
+            {/* <TabsContent value="skills" className="space-y-6 mt-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Technical Skills</CardTitle>
@@ -225,7 +232,7 @@ export default function AlumniProfile() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
+            </TabsContent> */}
 
             <TabsContent value="activity" className="space-y-6 mt-6">
               <Card>
@@ -261,4 +268,55 @@ export default function AlumniProfile() {
       </section>
     </div>
   );
+
 }
+
+// const profileData = {
+//   name: "Alex Johnson",
+//   title: "Senior Software Engineer",
+//   company: "TechCorp Inc.",
+//   location: "San Francisco, CA",
+//   email: "alex.johnson@email.com",
+//   phone: "+1 (555) 123-4567",
+//   graduationYear: "2018",
+//   degree: "Computer Science",
+//   joinedDate: "March 2024",
+//   bio: "Passionate software engineer with 5+ years of experience in full-stack development. Alumni mentor and active community contributor.",
+//   avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
+// };
+
+// const achievements = [
+//   { title: "Top Performer 2023", icon: Award, color: "text-yellow-600" },
+//   { title: "Mentor of the Year", icon: Users, color: "text-blue-600" },
+//   { title: "Community Contributor", icon: MessageSquare, color: "text-green-600" }
+// ];
+
+// const experience = [
+//   {
+//     company: "TechCorp Inc.",
+//     position: "Senior Software Engineer",
+//     duration: "2021 - Present",
+//     description: "Leading development of cloud-native applications and mentoring junior developers."
+//   },
+//   {
+//     company: "StartupXYZ",
+//     position: "Full Stack Developer",
+//     duration: "2019 - 2021",
+//     description: "Built scalable web applications using React and Node.js for a growing fintech startup."
+//   },
+//   {
+//     company: "DevAgency",
+//     position: "Junior Developer",
+//     duration: "2018 - 2019",
+//     description: "Started career developing custom websites and web applications for various clients."
+//   }
+// ];
+
+// const skills = [
+//   "JavaScript", "React", "Node.js", "TypeScript", "Python", "AWS", 
+//   "Docker", "GraphQL", "MongoDB", "PostgreSQL", "Git", "Agile"
+// ];
+
+// export default function AlumniProfile() {
+ 
+// }

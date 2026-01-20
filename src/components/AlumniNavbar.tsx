@@ -217,7 +217,7 @@ export const AlumniNavbar = () => {
 
   const handleLogout = () => {
     // Clear session/auth if needed
-    // localStorage.removeItem("token");
+    localStorage.removeItem("token");
 
     navigate("/"); // Redirects to home page
   };

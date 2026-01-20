@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Home,
   Users,
@@ -8,9 +8,14 @@ import {
   Bell,
   Menu,
   X,
+  MoreVertical,
+  HelpCircle,
+  Settings,
+  LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 
 const navItems = [
   { name: "Home", href: "/staff/home", icon: Home },
@@ -20,9 +25,19 @@ const navItems = [
   { name: "Notifications", href: "/staff/notifications", icon: Bell },
 ];
 
+
+
+
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+const navigate = useNavigate();
+
+
+  const handleLogout=()=>{
+  localStorage.removeItem("token");
+  navigate("/");
+}
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border-light/20 bg-card-glass backdrop-blur-xl supports-[backdrop-filter]:bg-card-glass shadow-nav animate-fade-in">
@@ -72,6 +87,60 @@ export function Navigation() {
                 </Link>
               );
             })}
+
+             {/* Right side buttons */}
+                      <div className="flex items-center space-x-2">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-5 w-5 rounded-xl hover-lift ml-2"
+                            >
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent 
+                            align="end" 
+                            className="w-10 mt-1" // Reduced margin-top
+                            sideOffset={1} // Reduced offset from trigger
+                          >
+                            <DropdownMenuItem className="flex items-center space-x-2 cursor-pointer py-2">
+                              <Settings className="h-4 w-4" />
+                              <span>Settings</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="flex items-center space-x-2 cursor-pointer py-2">
+                              <HelpCircle className="h-4 w-4" />
+                              <span>Help</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator className="my-1" /> {/* Reduced separator margin */}
+                            <DropdownMenuItem
+                              onClick={handleLogout}
+                              className="flex items-center space-x-2 cursor-pointer text-destructive py-2"
+                            >
+                              <LogOut className="h-4 w-4" />
+                              <span>Logout</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+            
+                        <div className="md:hidden">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="hover-lift"
+                            aria-label="Toggle navigation menu"
+                            aria-expanded={isOpen}
+                          >
+                            {isOpen ? (
+                              <X className="h-5 w-5" />
+                            ) : (
+                              <Menu className="h-5 w-5" />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
           </div>
 
           {/* Mobile menu button */}

@@ -13,8 +13,52 @@ import {
   Briefcase,
   Edit
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
-export default function StaffProfile() {
+
+
+interface Profile{
+  fullname : string;
+  jobrole:string;
+  email:string;
+  mobilenumber:number;
+  branch:string;
+  joindate:"Joined Oct 2022";
+  location:" Bhimavaram, West Godavari";
+}
+
+export default function Profile() {
+const[profile,setProfile]=useState<Profile | null>(null);
+const[error,setError]=useState("");
+const[loading,setLoading]=useState(true);
+  
+useEffect(()=>{
+  const token=localStorage.getItem("token");
+  if(!token){
+    setError("No token found. Please log in.");
+    setLoading(false);
+    return;
+  }
+
+  fetch("http://localhost:8080/api/v1/staff",{
+    method:"GET",
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":`Bearer ${token}` 
+    }
+
+  }).then((res)=>{
+    if(!res.ok){
+      throw new Error("Failed to Fetch profie data");
+    }
+    return res.json();
+  }).then((data:Profile)=>{
+    setProfile(data);
+  }).finally(()=>{
+    setLoading(false);
+  })
+});
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header Section */}
@@ -26,12 +70,12 @@ export default function StaffProfile() {
               <User className="h-16 w-16 text-white" />
             </div>
             <div className="text-center md:text-left">
-              <h1 className="text-4xl font-bold text-foreground mb-2">John Doe</h1>
-              <p className="text-xl  mb-4">CSE Student</p>
+              <h1 className="text-4xl font-bold text-foreground mb-2">{profile?.fullname}</h1>
+              <p className="text-xl  mb-4">{profile?.branch}</p>
               <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                 <Badge className="bg-asthra-green/10 text-asthra-green border-asthra-green/20">Active</Badge>
-                <Badge className="bg-asthra-blue/10 text-asthra-blue border-asthra-blue/20">3rd Year</Badge>
-                <Badge className="bg-accent/10 text-accent-foreground border-accent/20">Honors Student</Badge>
+                {/* <Badge className="bg-asthra-blue/10 text-asthra-blue border-asthra-blue/20"></Badge> */}
+                {/* <Badge className="bg-accent/10 text-accent-foreground border-accent/20"></Badge> */}
               </div>
             </div>
             <div className="ml-auto">
@@ -56,25 +100,25 @@ export default function StaffProfile() {
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Mail className="h-4 w-4 text-asthra-blue" />
-                  <span className="text-sm text-muted-foreground">john.doe@srkrec.ac.in</span>
+                  <span className="text-sm text-muted-foreground">{profile?.email}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="h-4 w-4 text-asthra-green" />
-                  <span className="text-sm text-muted-foreground">+91 7397014589</span>
+                  <span className="text-sm text-muted-foreground">{profile?.mobilenumber}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <MapPin className="h-4 w-4 text-asthra-blue" />
-                  <span className="text-sm text-muted-foreground">Bhimavaram , West Godavari</span>
+                  <span className="text-sm text-muted-foreground">{profile?.location}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Calendar className="h-4 w-4 text-asthra-green" />
-                  <span className="text-sm text-muted-foreground">Joined Oct 2022</span>
+                  <span className="text-sm text-muted-foreground">{profile?.joindate}</span>
                 </div>
               </CardContent>
             </Card>
 
             {/* Academic Info */}
-            <Card className="bg-gradient-card border border-border/50">
+            {/* <Card className="bg-gradient-card border border-border/50">
               <CardHeader>
                 <CardTitle className="text-lg font-semibold">Academic Information</CardTitle>
               </CardHeader>
@@ -95,7 +139,7 @@ export default function StaffProfile() {
                   <span className="text-sm text-muted-foreground">May 2027</span>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Skills */}
             <Card className="bg-gradient-card border border-border/50">
