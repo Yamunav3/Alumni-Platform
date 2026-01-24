@@ -328,9 +328,11 @@ import {
   Target
 } from "lucide-react";
 import { AlumniNavbar } from "@/components/AlumniNavbar";
+import JobPostingForm from "./JobPostingForm";
 
 const AlumniCareerPortal = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isJobFormOpen, setIsJobFormOpen] = useState(false);
 
   const jobListings = [
     {
@@ -550,10 +552,15 @@ const AlumniCareerPortal = () => {
                 <Filter className="h-4 w-4 mr-2" />
                 Filters
               </Button>
-              <Button>
+              <Button onClick={() => setIsJobFormOpen(true)}>
                 <Briefcase className="h-4 w-4 mr-2" />
                 Post Job
               </Button>
+              <JobPostingForm
+                open={isJobFormOpen}
+                onOpenChange={setIsJobFormOpen}
+                onJobPosted={() => setIsJobFormOpen(false)}
+              />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

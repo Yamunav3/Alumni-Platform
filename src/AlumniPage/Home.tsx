@@ -69,14 +69,14 @@ export default function AlumniHome() {
             Build meaningful relationships, advance your career, and give back to your community.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-           <Link to="/alumni/career">
+           {/* <Link to="/alumni/career">
       <Button 
         size="lg" 
         className="bg-gradient-primary hover:opacity-90 text-primary-foreground"
       >
         Explore Career Portal
       </Button>
-    </Link>
+    </Link> */}
             <Button 
               variant="outline" 
               size="lg"

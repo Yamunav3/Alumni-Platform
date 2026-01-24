@@ -26,7 +26,7 @@ import toast, { Toaster } from "react-hot-toast";
 import ApplicationFormDialog from "./ApplicationFormDialog";
 import ApplicationDetailsModal from "./ApplicationDetailsModal";
 import JobDetailsModal from "./JobDetailsModal";
-import JobPostingForm from "./JobPostingForm";
+import JobPostingForm from "../../AlumniPage/JobPostingForm";
 import CreateWebinarForm from "./CreateWebinarForm";
 import ShareStoryForm from "./ShareStoryForm";
 import StudentNavbar from "../StudentNavbar";
@@ -388,10 +388,10 @@ const StudentCareerPortal = () => {
           <TabsContent value="jobs" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Latest Job Opportunities</h2>
-              <Button onClick={() => setShowJobPostForm(true)} className="flex items-center">
+              {/* <Button onClick={() => setShowJobPostForm(true)} className="flex items-center">
                 <PlusIcon className="h-4 w-4 mr-2" />
                 Post Job
-              </Button>
+              </Button> */}
             </div>
             
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -542,10 +542,10 @@ const StudentCareerPortal = () => {
           <TabsContent value="webinars" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Career Webinars</h2>
-              <Button onClick={() => setShowWebinarForm(true)} className="flex items-center">
+              {/* <Button onClick={() => setShowWebinarForm(true)} className="flex items-center">
                 <Video className="h-4 w-4 mr-2" />
                 Host Webinar
-              </Button>
+              </Button> */}
             </div>
             
             <div className="grid gap-6 md:grid-cols-2">

@@ -34,7 +34,7 @@ const StudentHome = () => {
       price: "Free",
       availability: "Available",
       posts: 45,
-      education: "MS Computer Science, Stanford University",
+      education: "MS Computer Science, JNTU University",
       skills: ["JavaScript", "React", "Node.js", "Python", "AWS", "MongoDB", "GraphQL", "TypeScript"],
       workExperience: [
         {
