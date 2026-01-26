@@ -1,250 +1,3 @@
-// import { useState } from "react";
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
-// import { Textarea } from "@/components/ui/textarea";
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogDescription,
-//   DialogHeader,
-//   DialogTitle,
-// } from "@/components/ui/dialog";
-// import { Badge } from "@/components/ui/badge";
-// import { X } from "lucide-react";
-// import toast from "react-hot-toast";
-
-// interface ShareStoryFormProps {
-//   open: boolean;
-//   onOpenChange: (open: boolean) => void;
-//   onStoryShared?: (story: any) => void;
-// }
-
-// const ShareStoryForm: React.FC<ShareStoryFormProps> = ({
-//   open,
-//   onOpenChange,
-//   onStoryShared,
-// }) => {
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     graduationYear: "",
-//     currentRole: "",
-//     company: "",
-//     previousRole: "",
-//     achievement: "",
-//     brief: "",
-//     tags: [] as string[],
-//     linkedin: "",
-//     image: null as File | null,
-//   });
-//   const [newTag, setNewTag] = useState("");
-
-//   const handleInputChange = (field: string, value: string) => {
-//     setFormData((prev) => ({ ...prev, [field]: value }));
-//   };
-
-//   const handleAddTag = () => {
-//     if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
-//       setFormData((prev) => ({
-//         ...prev,
-//         tags: [...prev.tags, newTag.trim()],
-//       }));
-//       setNewTag("");
-//     }
-//   };
-
-//   const handleRemoveTag = (tagToRemove: string) => {
-//     setFormData((prev) => ({
-//       ...prev,
-//       tags: prev.tags.filter((tag) => tag !== tagToRemove),
-//     }));
-//   };
-
-//   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     if (e.target.files && e.target.files[0]) {
-//       setFormData((prev) => ({ ...prev, image: e.target.files![0] }));
-//     }
-//   };
-
-//   const handleSubmit = (e: React.FormEvent) => {
-//     e.preventDefault();
-//     console.log("Story submitted:", formData);
-
-//     if (onStoryShared) {
-//       onStoryShared(formData);
-//     }
-
-//     onOpenChange(false);
-//     toast.success("Your success story has been shared!");
-
-//     // Reset form
-//     setFormData({
-//       name: "",
-//       graduationYear: "",
-//       currentRole: "",
-//       company: "",
-//       previousRole: "",
-//       achievement: "",
-//       brief: "",
-//       tags: [],
-//       linkedin: "",
-//       image: null,
-//     });
-//   };
-
-//   return (
-//     <Dialog open={open} onOpenChange={onOpenChange}>
-//       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-//         <DialogHeader>
-//           <DialogTitle>Share Your Success Story</DialogTitle>
-//           <DialogDescription>
-//             Inspire others by sharing your career journey and achievements.
-//           </DialogDescription>
-//         </DialogHeader>
-
-//         <form onSubmit={handleSubmit} className="space-y-4 py-4">
-//           <div className="grid grid-cols-2 gap-4">
-//             <div className="space-y-2">
-//               <Label htmlFor="name">Full Name *</Label>
-//               <Input
-//                 id="name"
-//                 value={formData.name}
-//                 onChange={(e) => handleInputChange('name', e.target.value)}
-//                 required
-//               />
-//             </div>
-            
-//             <div className="space-y-2">
-//               <Label htmlFor="graduationYear">Graduation Year *</Label>
-//               <Input
-//                 id="graduationYear"
-//                 type="number"
-//                 value={formData.graduationYear}
-//                 onChange={(e) => handleInputChange('graduationYear', e.target.value)}
-//                 required
-//               />
-//             </div>
-//           </div>
-
-//           <div className="grid grid-cols-2 gap-4">
-//             <div className="space-y-2">
-//               <Label htmlFor="currentRole">Current Role *</Label>
-//               <Input
-//                 id="currentRole"
-//                 value={formData.currentRole}
-//                 onChange={(e) => handleInputChange('currentRole', e.target.value)}
-//                 required
-//               />
-//             </div>
-            
-//             <div className="space-y-2">
-//               <Label htmlFor="company">Company *</Label>
-//               <Input
-//                 id="company"
-//                 value={formData.company}
-//                 onChange={(e) => handleInputChange('company', e.target.value)}
-//                 required
-//               />
-//             </div>
-//           </div>
-
-//           <div className="space-y-2">
-//             <Label htmlFor="previousRole">Previous Role</Label>
-//             <Input
-//               id="previousRole"
-//               value={formData.previousRole}
-//               onChange={(e) => handleInputChange('previousRole', e.target.value)}
-//             />
-//           </div>
-
-//           <div className="space-y-2">
-//             <Label htmlFor="achievement">Key Achievement *</Label>
-//             <Textarea
-//               id="achievement"
-//               value={formData.achievement}
-//               onChange={(e) => handleInputChange('achievement', e.target.value)}
-//               rows={3}
-//               required
-//             />
-//           </div>
-
-//           <div className="space-y-2">
-//             <Label htmlFor="brief">Your Story Brief *</Label>
-//             <Textarea
-//               id="brief"
-//               value={formData.brief}
-//               onChange={(e) => handleInputChange('brief', e.target.value)}
-//               rows={4}
-//               required
-//             />
-//           </div>
-
-//           <div className="space-y-2">
-//             <Label htmlFor="tags">Tags</Label>
-//             <div className="flex gap-2 mb-2">
-//               <Input
-//                 value={newTag}
-//                 onChange={(e) => setNewTag(e.target.value)}
-//                 placeholder="Add a tag"
-//               />
-//               <Button type="button" onClick={handleAddTag}>
-//                 Add
-//               </Button>
-//             </div>
-//             <div className="flex flex-wrap gap-2">
-//               {formData.tags.map((tag) => (
-//                 <Badge key={tag} variant="secondary" className="flex items-center gap-1">
-//                   {tag}
-//                   <button
-//                     type="button"
-//                     onClick={() => handleRemoveTag(tag)}
-//                     className="ml-1"
-//                   >
-//                     <X className="h-3 w-3" />
-//                   </button>
-//                 </Badge>
-//               ))}
-//             </div>
-//           </div>
-
-//           <div className="space-y-2">
-//             <Label htmlFor="linkedin">LinkedIn Profile</Label>
-//             <Input
-//               id="linkedin"
-//               type="url"
-//               value={formData.linkedin}
-//               onChange={(e) => handleInputChange('linkedin', e.target.value)}
-//               placeholder="https://linkedin.com/in/yourprofile"
-//             />
-//           </div>
-
-//           <div className="space-y-2">
-//             <Label htmlFor="image">Profile Image (Optional)</Label>
-//             <Input
-//               id="image"
-//               type="file"
-//               accept="image/*"
-//               onChange={handleFileChange}
-//             />
-//           </div>
-
-//           <div className="flex justify-end space-x-2 pt-4">
-//             <Button
-//               type="button"
-//               variant="outline"
-//               onClick={() => onOpenChange(false)}
-//             >
-//               Cancel
-//             </Button>
-//             <Button type="submit">Share Story</Button>
-//           </div>
-//         </form>
-//       </DialogContent>
-//     </Dialog>
-//   );
-// };
-
-// export default ShareStoryForm;
 
 
 
@@ -254,9 +7,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
+import { X, Upload, Star } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import toast from "react-hot-toast";
-import { Drawer } from "antd"; // ✅ Import Ant Design Drawer
 
 interface ShareStoryFormProps {
   open: boolean;
@@ -264,241 +24,74 @@ interface ShareStoryFormProps {
   onStoryShared?: (story: any) => void;
 }
 
-const ShareStoryForm: React.FC<ShareStoryFormProps> = ({
-  open,
-  onOpenChange,
-  onStoryShared,
-}) => {
+const ShareStoryForm: React.FC<ShareStoryFormProps> = ({ open, onOpenChange, onStoryShared }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    graduationYear: "",
-    currentRole: "",
-    company: "",
-    previousRole: "",
-    achievement: "",
-    brief: "",
-    tags: [] as string[],
-    linkedin: "",
-    image: null as File | null,
+    name: "", graduationYear: "", currentRole: "", company: "", 
+    previousRole: "", achievement: "", brief: "", tags: [] as string[], linkedin: "", image: null
   });
   const [newTag, setNewTag] = useState("");
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onStoryShared) onStoryShared({ ...formData, id: Math.random() });
+    onOpenChange(false);
+    toast.success("Success story shared!");
+    setFormData({ name: "", graduationYear: "", currentRole: "", company: "", previousRole: "", achievement: "", brief: "", tags: [], linkedin: "", image: null });
   };
 
-  const handleAddTag = () => {
-    if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
-      setFormData((prev) => ({
-        ...prev,
-        tags: [...prev.tags, newTag.trim()],
-      }));
+  const addTag = () => {
+    if (newTag && !formData.tags.includes(newTag)) {
+      setFormData(prev => ({ ...prev, tags: [...prev.tags, newTag] }));
       setNewTag("");
     }
   };
 
-  const handleRemoveTag = (tagToRemove: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((tag) => tag !== tagToRemove),
-    }));
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData((prev) => ({ ...prev, image: e.target.files![0] }));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Story submitted:", formData);
-
-    if (onStoryShared) {
-      onStoryShared(formData);
-    }
-
-    onOpenChange(false);
-    toast.success("Your success story has been shared!");
-
-    // Reset form
-    setFormData({
-      name: "",
-      graduationYear: "",
-      currentRole: "",
-      company: "",
-      previousRole: "",
-      achievement: "",
-      brief: "",
-      tags: [],
-      linkedin: "",
-      image: null,
-    });
-  };
-
   return (
-    <Drawer
-      title="Share Your Success Story"
-      placement="right"
-      width={600}
-      onClose={() => onOpenChange(false)}
-      open={open}
-    >
-      <p className="text-muted-foreground mb-4">
-        Inspire others by sharing your career journey and achievements.
-      </p>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" /> 
+            Share Success Story
+          </DialogTitle>
+          <DialogDescription>Inspire fellow students with your journey.</DialogDescription>
+        </DialogHeader>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Full Name & Graduation Year */}
-        <div className="grid grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="space-y-4 py-2">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2"><Label>Full Name *</Label><Input required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} /></div>
+            <div className="space-y-2"><Label>Graduation Year *</Label><Input required value={formData.graduationYear} onChange={e => setFormData({...formData, graduationYear: e.target.value})} /></div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2"><Label>Current Role *</Label><Input required value={formData.currentRole} onChange={e => setFormData({...formData, currentRole: e.target.value})} /></div>
+            <div className="space-y-2"><Label>Company *</Label><Input required value={formData.company} onChange={e => setFormData({...formData, company: e.target.value})} /></div>
+          </div>
+          
+          <div className="space-y-2"><Label>Key Achievement</Label><Textarea required value={formData.achievement} onChange={e => setFormData({...formData, achievement: e.target.value})} placeholder="e.g. Promoted within 6 months..." /></div>
+          <div className="space-y-2"><Label>Your Journey (Brief)</Label><Textarea required value={formData.brief} onChange={e => setFormData({...formData, brief: e.target.value})} rows={3} /></div>
+
           <div className="space-y-2">
-            <Label htmlFor="name">Full Name *</Label>
-            <Input
-              id="name"
-              value={formData.name}
-              onChange={(e) => handleInputChange("name", e.target.value)}
-              required
-            />
+            <Label>Tags</Label>
+            <div className="flex gap-2">
+              <Input value={newTag} onChange={e => setNewTag(e.target.value)} placeholder="Add skill/industry tag" onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addTag())} />
+              <Button type="button" onClick={addTag} variant="secondary">Add</Button>
+            </div>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {formData.tags.map(tag => (
+                <Badge key={tag} variant="secondary" className="pl-2 pr-1 py-1 flex items-center gap-1">
+                  {tag} <X className="w-3 h-3 cursor-pointer hover:text-red-500" onClick={() => setFormData(prev => ({...prev, tags: prev.tags.filter(t => t !== tag)}))} />
+                </Badge>
+              ))}
+            </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="graduationYear">Graduation Year *</Label>
-            <Input
-              id="graduationYear"
-              type="number"
-              value={formData.graduationYear}
-              onChange={(e) =>
-                handleInputChange("graduationYear", e.target.value)
-              }
-              required
-            />
-          </div>
-        </div>
 
-        {/* Current Role & Company */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="currentRole">Current Role *</Label>
-            <Input
-              id="currentRole"
-              value={formData.currentRole}
-              onChange={(e) => handleInputChange("currentRole", e.target.value)}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="company">Company *</Label>
-            <Input
-              id="company"
-              value={formData.company}
-              onChange={(e) => handleInputChange("company", e.target.value)}
-              required
-            />
-          </div>
-        </div>
-
-        {/* Previous Role */}
-        <div className="space-y-2">
-          <Label htmlFor="previousRole">Previous Role</Label>
-          <Input
-            id="previousRole"
-            value={formData.previousRole}
-            onChange={(e) => handleInputChange("previousRole", e.target.value)}
-          />
-        </div>
-
-        {/* Achievement */}
-        <div className="space-y-2">
-          <Label htmlFor="achievement">Key Achievement *</Label>
-          <Textarea
-            id="achievement"
-            value={formData.achievement}
-            onChange={(e) => handleInputChange("achievement", e.target.value)}
-            rows={3}
-            required
-          />
-        </div>
-
-        {/* Story Brief */}
-        <div className="space-y-2">
-          <Label htmlFor="brief">Your Story Brief *</Label>
-          <Textarea
-            id="brief"
-            value={formData.brief}
-            onChange={(e) => handleInputChange("brief", e.target.value)}
-            rows={4}
-            required
-          />
-        </div>
-
-        {/* Tags */}
-        <div className="space-y-2">
-          <Label htmlFor="tags">Tags</Label>
-          <div className="flex gap-2 mb-2">
-            <Input
-              value={newTag}
-              onChange={(e) => setNewTag(e.target.value)}
-              placeholder="Add a tag"
-            />
-            <Button type="button" onClick={handleAddTag}>
-              Add
-            </Button>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {formData.tags.map((tag) => (
-              <Badge
-                key={tag}
-                variant="secondary"
-                className="flex items-center gap-1"
-              >
-                {tag}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveTag(tag)}
-                  className="ml-1"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
-          </div>
-        </div>
-
-        {/* LinkedIn */}
-        <div className="space-y-2">
-          <Label htmlFor="linkedin">LinkedIn Profile</Label>
-          <Input
-            id="linkedin"
-            type="url"
-            value={formData.linkedin}
-            onChange={(e) => handleInputChange("linkedin", e.target.value)}
-            placeholder="https://linkedin.com/in/yourprofile"
-          />
-        </div>
-
-        {/* Profile Image */}
-        <div className="space-y-2">
-          <Label htmlFor="image">Profile Image (Optional)</Label>
-          <Input
-            id="image"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </div>
-
-        {/* Footer Buttons */}
-        <div className="flex justify-end space-x-2 pt-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-          >
-            Cancel
-          </Button>
-          <Button type="submit">Share Story</Button>
-        </div>
-      </form>
-    </Drawer>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+            <Button type="submit" className="bg-purple-600 hover:bg-purple-700">Share Story</Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

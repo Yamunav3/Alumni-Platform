@@ -1,8 +1,10 @@
+
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"; // Added Navigate
 
 // Public Pages
 import Index from "./pages/Index";
@@ -49,16 +51,16 @@ import StudentCareerPortal from "./student/CareerPortal/CareerPortal";
 import StudentEvents from "./student/Events";
 import StudentProfile from "./student/Profile";
 import StudentNotifications from "./student/Notifications";
-
+// import StudentMessage from "./student/Messages/StudentMessage"
 // Components
 import Footer from "./components/Footer";
 import ChatBot from "./components/ChatBot";
-import ParticleBackground from "./components/BackGround"; //  Make sure this file exists
 import Home from "./AdminPage/Home";
 import StaffSection from "./AdminPage/StaffSection";
 import StudentSection from "./AdminPage/StudentSection";
 import EventS from "./AdminPage/EventS";
 import ExploreOpp from "./pages/ExploreOpportunities";
+import Messages from "./student/Messages";
 
 const queryClient = new QueryClient();
 
@@ -68,14 +70,13 @@ const App = () => (
       <Toaster />
       <Sonner />
 
-      <div className="relative min-h-screen overflow-hidden">
-
-        {/* 🔥 Animated Background */}
-        {/* <ParticleBackground />  */}
-
+      {/* Allow vertical scrolling across the app; only hide horizontal overflow */}
+      <div className="relative min-h-screen overflow-x-hidden">
+        
         {/* Main App Content */}
         <div className="relative z-10">
-          <BrowserRouter>
+          {/* Added future flags to fix console warnings */}
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Index />} />
@@ -86,10 +87,6 @@ const App = () => (
               <Route path="/analytics" element={<AlumniAnalytics />} />
 
               {/* Admin Routes */}
-              {/* <Route path="/admin/about" element={<AdminAboutUs />} /> */}
-              {/* <Route path="/admin/analytics" element={<Analytics />} /> */}
-          
-              {/* <Route path="/admin/notification" element={<AdminNotifications />} /> */}
               <Route path="/admin/profile" element={<Admin />} />
               <Route path="/admin/home" element={<Home />} />
               <Route path="/admin/alumnisection" element={<AlumniSection />} />
@@ -109,13 +106,17 @@ const App = () => (
 
               {/* Student Routes */}
               <Route path="/student/register" element={<Register />} />
+              
+              {/* ✅ THIS WAS MISSING: Fixes the 404 error */}
+              <Route path="/student" element={<StudentHome />} /> 
+              
               <Route path="/student/home" element={<StudentHome />} />
               <Route path="/student/about" element={<StudentAbout />} />
               <Route path="/student/career" element={<StudentCareerPortal />} />
               <Route path="/student/events" element={<StudentEvents />} />
               <Route path="/student/profile" element={<StudentProfile />} />
               <Route path="/student/notifications" element={<StudentNotifications />} />
-
+              <Route path="/student/messages" element={<Messages />} />
               {/* Staff Routes */}
               <Route path="/staff/about" element={<StaffAbout />} />
               <Route path="/staff/career" element={<StaffCareerPortal />} />

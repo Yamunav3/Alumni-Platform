@@ -1,44 +1,22 @@
-import { useState ,useEffect } from "react";
+
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
-  User, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Calendar, 
-  GraduationCap, 
-  Briefcase,
-  Edit,
-  Award,
-  BookOpen,
-  Settings,
-  HelpCircle,
-  LogOut,
-  Menu,
-  MoreVertical,
-  X
+  User, Mail, Phone, Briefcase, Award, BookOpen, Edit, MapPin, Calendar,
+  Linkedin, Github, FileText, ExternalLink, Download, Upload
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import StudentNavbar from "./StudentNavbar";
+import StudentLayout from "./StudentLayout";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { useNavigate } from "react-router-dom";
 
 // Types
 interface Skill {
@@ -52,7 +30,6 @@ interface Activity {
   title: string;
   description: string;
   date: string;
-  company?: string;
 }
 
 interface Application {
@@ -71,549 +48,438 @@ interface Achievement {
   description: string;
 }
 
-// interface ProfileData {
-//   name: string;
-//   email: string;
-//   phone: string;
+interface Profile {
+  fullname: string;
+  branch: string;
+  yearofpassing: string;
+  collegeID: string;
+  email: string;
+  interests: string;
+  mobilenumber: number;
+  location?: string;
+  joinDate?: string;
+  degree?: string;
+  major?: string;
+  gpa?: string;
   
-//   graduationDate: string;
-  
-// }
+  // ✅ New Fields
+  linkedin?: string;
+  github?: string;
+  resume?: string; // Storing filename or URL
 
-interface Profile{
-  fullname:string;
-  branch:string;
-  yearofpassing:string;
-  collegeID:string;
-  email:string;
-  interests:string;
-  mobilenumber:number;
-
-
-  location: string;
-  joinDate: string;
-  degree: string;
-  major: string;
-  gpa: string;
-  skills: Skill[];
-  activities: Activity[];
-  applications: Application[];
-  achievements: Achievement[];
+  skills?: Skill[];
+  activities?: Activity[];
+  applications?: Application[];
+  achievements?: Achievement[];
 }
 
-// Profile Edit Form Component
-// interface ProfileEditFormProps {
-//   profile: Profile;
-//   onSave: (data: Profile) => void;
-//   onCancel: () => void;
-//   isOpen: boolean;
-// }
-
-// const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
-//   profile,
-//   onSave,
-//   onCancel,
-//   isOpen
-// }) => {
-//   const [formData, setFormData] = useState<Profile>(profile);
-//   const [newSkill, setNewSkill] = useState("");
-
-//   const handleInputChange = (field: keyof Profile, value: string) => {
-//     setFormData(prev => ({ ...prev, [field]: value }));
-//   };
-
-//   const handleSkillAdd = () => {
-//     if (newSkill.trim()) {
-//       setFormData(prev => ({
-//         ...prev,
-//         skills: [...prev.skills, { id: Date.now(), name: newSkill.trim() }]
-//       }));
-//       setNewSkill("");
-//     }
-//   };
-
-//   const handleSkillRemove = (id: number) => {
-//     setFormData(prev => ({
-//       ...prev,
-//       skills: prev.skills.filter(skill => skill.id !== id)
-//     }));
-//   };
-
-//   const handleSubmit = (e: React.FormEvent) => {
-//     e.preventDefault();
-//     onSave(formData);
-//   };
-
-//   return (
-// //     <Dialog open={isOpen} onOpenChange={(open) => !open && onCancel()}>
-//       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-//         <DialogHeader>
-//           <DialogTitle>Edit Profile</DialogTitle>
-//           <DialogDescription>
-//             Update your profile information below.
-//           </DialogDescription>
-//         </DialogHeader>
-        
-//         <form onSubmit={handleSubmit} className="space-y-6 py-4">
-//           {/* Contact Information */}
-//           <div>
-//             <h3 className="text-lg font-semibold mb-4">Contact Information</h3>
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//               <div className="space-y-2">
-//                 <Label htmlFor="email">Email</Label>
-//                 <Input
-//                   id="email"
-//                   type="email"
-//                   value={formData.email}
-//                   onChange={(e) => handleInputChange('email', e.target.value)}
-//                 />
-//               </div>
-//               <div className="space-y-2">
-//                 <Label htmlFor="phone">Phone</Label>
-//                 <Input
-//                   id="phone"
-//                   value={formData.mobilenumber}
-//                   onChange={(e) => handleInputChange('mobilenumber', e.target.value)}
-//                 />
-//               </div>
-//               <div className="space-y-2">
-//                 <Label htmlFor="location">Location</Label>
-//                 <Input
-//                   id="location"
-//                   value={formData.location}
-//                   onChange={(e) => handleInputChange('location', e.target.value)}
-//                 />
-//               </div>
-//               <div className="space-y-2">
-//                 <Label htmlFor="joinDate">Join Date</Label>
-//                 <Input
-//                   id="joinDate"
-//                   value={formData.joinDate}
-//                   onChange={(e) => handleInputChange('joinDate', e.target.value)}
-//                 />
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Academic Information */}
-//           <div>
-//             <h3 className="text-lg font-semibold mb-4">Academic Information</h3>
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//               <div className="space-y-2">
-//                 <Label htmlFor="degree">Degree</Label>
-//                 <Input
-//                   id="degree"
-//                   value={formData.degree}
-//                   onChange={(e) => handleInputChange('degree', e.target.value)}
-//                 />
-//               </div>
-//               <div className="space-y-2">
-//                 <Label htmlFor="major">Major</Label>
-//                 <Input
-//                   id="major"
-//                   value={formData.major}
-//                   onChange={(e) => handleInputChange('major', e.target.value)}
-//                 />
-//               </div>
-//               <div className="space-y-2">
-//                 <Label htmlFor="gpa">GPA</Label>
-//                 <Input
-//                   id="gpa"
-//                   value={formData.gpa}
-//                   onChange={(e) => handleInputChange('gpa', e.target.value)}
-//                 />
-//               </div>
-//               <div className="space-y-2">
-//                 <Label htmlFor="graduationDate">Graduation Date</Label>
-//                 <Input
-//                   id="graduationDate"
-//                   value={formData.yearofpassing}
-//                   onChange={(e) => handleInputChange('yearofpassing', e.target.value)}
-//                 />
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Skills */}
-//           <div>
-//             <h3 className="text-lg font-semibold mb-4">Skills</h3>
-//             <div className="flex gap-2 mb-4">
-//               <Input
-//                 value={newSkill}
-//                 onChange={(e) => setNewSkill(e.target.value)}
-//                 placeholder="Add a skill"
-//               />
-//               <Button type="button" onClick={handleSkillAdd}>
-//                 Add
-//               </Button>
-//             </div>
-//             <div className="flex flex-wrap gap-2">
-//               {formData.skills.map((skill) => (
-//                 <Badge key={skill.id} variant="secondary" className="flex items-center gap-1">
-//                   {skill.name}
-//                   <button
-//                     type="button"
-//                     onClick={() => handleSkillRemove(skill.id)}
-//                     className="ml-1 text-xs"
-//                   >
-//                     ×
-//                   </button>
-//                 </Badge>
-//               ))}
-//             </div>
-//           </div>
-
-//           {/* Achievements */}
-//           <div>
-//             <h3 className="text-lg font-semibold mb-4">Achievements & Certifications</h3>
-//             <div className="space-y-4">
-//               {formData.achievements.map((achievement, index) => (
-//                 <div key={achievement.id} className="grid grid-cols-1 md:grid-cols-4 gap-4">
-//                   <Input
-//                     value={achievement.title}
-//                     onChange={(e) => {
-//                       const newAchievements = [...formData.achievements];
-//                       newAchievements[index].title = e.target.value;
-//                       setFormData(prev => ({ ...prev, achievements: newAchievements }));
-//                     }}
-//                     placeholder="Title"
-//                   />
-//                   <Input
-//                     value={achievement.issuer}
-//                     onChange={(e) => {
-//                       const newAchievements = [...formData.achievements];
-//                       newAchievements[index].issuer = e.target.value;
-//                       setFormData(prev => ({ ...prev, achievements: newAchievements }));
-//                     }}
-//                     placeholder="Issuer"
-//                   />
-//                   <Input
-//                     value={achievement.date}
-//                     onChange={(e) => {
-//                       const newAchievements = [...formData.achievements];
-//                       newAchievements[index].date = e.target.value;
-//                       setFormData(prev => ({ ...prev, achievements: newAchievements }));
-//                     }}
-//                     placeholder="Date"
-//                   />
-//                   <Button
-//                     type="button"
-//                     variant="destructive"
-//                     onClick={() => {
-//                       const newAchievements = formData.achievements.filter(a => a.id !== achievement.id);
-//                       setFormData(prev => ({ ...prev, achievements: newAchievements }));
-//                     }}
-//                   >
-//                     Remove
-//                   </Button>
-//                 </div>
-//               ))}
-//               <Button
-//                 type="button"
-//                 variant="outline"
-//                 onClick={() => {
-//                   setFormData(prev => ({
-//                     ...prev,
-//                     achievements: [
-//                       ...prev.achievements,
-//                       {
-//                         id: Date.now(),
-//                         title: "",
-//                         issuer: "",
-//                         date: "",
-//                         description: ""
-//                       }
-//                     ]
-//                   }));
-//                 }}
-//               >
-//                 Add Achievement
-//               </Button>
-//             </div>
-//           </div>
-
-//           <div className="flex justify-end space-x-2">
-//             <Button type="button" variant="outline" onClick={onCancel}>
-//               Cancel
-//             </Button>
-//             <Button type="submit">Save Changes</Button>
-//           </div>
-//         </form>
-//       </DialogContent>
-//     </Dialog>
-//   );
-// };
-
 export default function Profile() {
- const[profile,setProfile]=useState<Profile | null>(null);
- const[isEditModalOpen,setIsEditModalOpen] = useState(true);
- const[loading,setLoading]=useState(true);
- const[error,setError]=useState("");
- 
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState<Profile | null>(null);
 
-useEffect(()=>{
-  const token=localStorage.getItem("token");
-  if(!token){
-    setError("user not logged in");
-    setLoading(false);
-    return ;
-
-  }
-
-  fetch("http://localhost:8080/api/v1/student",{
-    method:"GET",
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":`Bearer ${token}`
-    },
-  })  
-   .then((res)=>{
-      if(!res.ok){
-        throw new Error("Failed to fetch profile data");
-      }
-      return res.json();
-   })
-   .then((data:Profile)=>{
-     setProfile(data);
-   })
-   .catch((err)=>{
-    setError(err.message);
-   })
-   .finally(()=>{
-    setLoading(false);
-   });
-  },[]);
-
-  const handleSaveProfile = (newData: Profile) => {
-    setProfile(newData);
-    setIsEditModalOpen(false);
-  };
-
-  const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      applied: { label: "Application Sent", className: "bg-gray-100 text-gray-800 border-gray-200" },
-      "under-review": { label: "Under Review", className: "bg-yellow-100 text-yellow-800 border-yellow-200" },
-      interview: { label: "Interview Scheduled", className: "bg-blue-100 text-blue-800 border-blue-200" },
-      offer: { label: "Offer Received", className: "bg-green-100 text-green-800 border-green-200" },
-      rejected: { label: "Not Selected", className: "bg-red-100 text-red-800 border-red-200" }
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    
+    // Fallback mock data with new fields
+    const mockProfile: Profile = {
+        fullname: "John Doe",
+        branch: "Computer Science",
+        yearofpassing: "2025",
+        collegeID: "AST-2022-001",
+        email: "john.doe@asthra.com",
+        interests: "AI, Web Development",
+        mobilenumber: 9876543210,
+        location: "New York, USA",
+        joinDate: "Sept 2021",
+        linkedin: "https://linkedin.com/in/johndoe",
+        github: "https://github.com/johndoe",
+        resume: "john_doe_resume.pdf",
+        skills: [{id: 1, name: "React"}, {id: 2, name: "Node.js"}],
+        activities: [],
+        applications: [],
+        achievements: []
     };
 
-    const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.applied;
-    return <Badge className={config.className}>{config.label}</Badge>;
-  };
+    if (!token) {
+        setProfile(mockProfile);
+        setFormData(mockProfile);
+        setLoading(false);
+        return;
+    }
 
-  const getActivityIcon = (type: string) => {
-    switch (type) {
-      case "applied":
-        return <Briefcase className="h-4 w-4 text-asthra-green" />;
-      case "completed":
-        return <BookOpen className="h-4 w-4 text-asthra-blue" />;
-      case "attended":
-        return <Award className="h-4 w-4 text-asthra-green" />;
-      default:
-        return <Briefcase className="h-4 w-4 text-asthra-green" />;
+    fetch("http://localhost:8080/api/v1/student", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+           setProfile(mockProfile);
+           setFormData(mockProfile);
+           return; 
+        }
+        return res.json();
+      })
+      .then((data: Profile) => {
+        setProfile(data);
+        setFormData(data);
+      })
+      .catch((err) => {
+        console.error(err);
+        setProfile(mockProfile);
+        setFormData(mockProfile);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (formData) {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
     }
   };
-    if (loading) return <p>Loading profile...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+
+  // ✅ Handle Resume File Upload
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (formData && e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      // In a real app, you would upload this file to a server here.
+      // For now, we simulate by just setting the filename.
+      setFormData({ ...formData, resume: file.name });
+    }
+  };
+
+  const handleSave = () => {
+    if (formData) {
+      setProfile(formData);
+      setIsEditModalOpen(false);
+      // Add API call here to save changes (PUT request)
+    }
+  };
+
+  if (loading) return (
+    <StudentLayout>
+        <div className="flex items-center justify-center h-[80vh]">
+            <div className="animate-pulse flex flex-col items-center">
+                <div className="h-32 w-32 bg-gray-200 rounded-full mb-4"></div>
+                <div className="h-6 w-48 bg-gray-200 rounded"></div>
+            </div>
+        </div>
+    </StudentLayout>
+  );
+
   return (
-    // <div className="min-h-screen bg-background">
-    //   {/* Header Section */}
-    <div>
-      <StudentNavbar/>
-      {/* <div style={{ maxWidth: "500px", margin: "auto" }}>
-      <h2>User Profile</h2>
-      <p><strong>Full Name:</strong> {profile?.fullname}</p>
-      <p><strong>Branch:</strong> {profile?.branch}</p>
-      <p><strong>Year of Passing:</strong> {profile?.yearofpassing}</p>
-      <p><strong>College ID:</strong> {profile?.collegeID}</p>
-      <p><strong>Email:</strong> {profile?.email}</p>
-      <p><strong>Interests:</strong> {profile?.interests}</p>
-      <p><strong>Mobile Number:</strong> {profile?.mobilenumber}</p>
-    </div>
-    </div> */}
-         
+    <StudentLayout>
+      {/* Profile Header */}
+      <section className="bg-gradient-to-r from-purple-900 to-indigo-900 rounded-3xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl"></div>
+        
+        <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
+          <div className="w-32 h-32 rounded-full border-4 border-white/20 bg-white/10 flex items-center justify-center backdrop-blur-sm shadow-2xl overflow-hidden">
+             {/* If user has image, show it here, else icon */}
+            <User className="h-16 w-16 text-white" />
+          </div>
+          
+          <div className="text-center md:text-left flex-1">
+            <h1 className="text-4xl font-bold mb-2">{profile?.fullname}</h1>
+            <p className="text-xl text-indigo-100 mb-4">{profile?.branch} • {profile?.yearofpassing}</p>
+            
+            <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+              <Badge className="bg-green-500/20 text-green-100 hover:bg-green-500/30 border-none px-3 py-1">Active Student</Badge>
+              <Badge className="bg-white/10 text-white hover:bg-white/20 border-none px-3 py-1">ID: {profile?.collegeID}</Badge>
+            </div>
+          </div>
 
-
-      <section className="bg-gradient-hero border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="w-32 h-32 bg-gradient-primary rounded-full flex items-center justify-center shadow-asthra">
-              <User className="h-16 w-16 text-white" />
-            </div>
-            <div className="text-center md:text-left">
-              <h1 className="text-4xl font-bold text-foreground mb-2">{profile?.fullname}</h1>
-              <p className="text-xl text-muted-foreground mb-4 text-white">{profile?.branch}</p>
-              <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                <Badge className="bg-asthra-green/10 text-asthra-green border-asthra-green/10">Active</Badge>
-                <Badge className="bg-asthra-blue/10 text-asthra-blue border-asthra-blue/20">3rd Year</Badge>
-                <Badge className="bg-accent/10 text-accent-foreground border-accent/20">Honors Student</Badge>
-              </div>
-            </div>
-            <div className="ml-auto">
-              <Button 
-                className="bg-gradient-primary hover:opacity-90"
-                onClick={() => setIsEditModalOpen(true)}
-              >
-                <Edit className="h-4 w-4 mr-2" />
-                Edit Profile
-              </Button>
-            </div>
+          <div className="flex-shrink-0">
+            <Button 
+              onClick={() => setIsEditModalOpen(true)}
+              className="bg-white text-indigo-900 hover:bg-indigo-50 border-none shadow-lg transition-transform hover:scale-105"
+            >
+              <Edit className="h-4 w-4 mr-2" /> Edit Profile
+            </Button>
           </div>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Personal Info */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Contact Information */}
-            <Card className="bg-gradient-card border border-border/50">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold">Contact Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Mail className="h-4 w-4 text-asthra-blue" />
-                  <span className="text-sm text-muted-foreground">{profile?.email}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Phone className="h-4 w-4 text-asthra-green" />
-                  <span className="text-sm text-muted-foreground">{profile?.mobilenumber}</span>
-                </div>
-                {/* <div className="flex items-center gap-3">
-                  <MapPin className="h-4 w-4 text-asthra-blue" />
-                  <span className="text-sm text-muted-foreground">{profile?.location}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Calendar className="h-4 w-4 text-asthra-green" />
-                  <span className="text-sm text-muted-foreground">Joined {profile?.joinDate}</span>
-                </div> */}
-              </CardContent>
-            </Card>
-
-            {/* Academic Info */}
-            <Card className="bg-gradient-card border border-border/50">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold">Academic Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* <div className="flex items-center gap-3">
-                  <GraduationCap className="h-4 w-4 text-asthra-blue" />
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{profile?.major}</p>
-                    <p className="text-xs text-muted-foreground">{profile?.degree}</p>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Left Column - Details */}
+        <div className="lg:col-span-1 space-y-6">
+          
+          {/* ✅ Professional Links Card */}
+          <Card className="border-none shadow-md">
+            <CardHeader>
+              <CardTitle className="text-lg">Professional Profile</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {profile?.resume && (
+                <div className="p-4 border border-dashed border-indigo-200 rounded-xl bg-indigo-50/50 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-white rounded-lg shadow-sm text-red-500">
+                      <FileText className="h-6 w-6" />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-xs text-muted-foreground font-medium">Resume</p>
+                      <p className="text-sm font-semibold truncate w-32">{profile.resume}</p>
+                    </div>
                   </div>
+                  <Button variant="ghost" size="icon" className="text-indigo-600 hover:bg-indigo-100">
+                    <Download className="h-5 w-5" />
+                  </Button>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-foreground">GPA:</span>
-                  <span className="text-sm text-asthra-green font-medium">{profile?.gpa}</span>
-                </div> */}
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-foreground">Expected Graduation:</span>
-                  <span className="text-sm text-muted-foreground">{profile?.yearofpassing}</span>
-                </div>
-              </CardContent>
-            </Card>
+              )}
 
-            {/* Skills */}
-            <Card className="bg-gradient-card border border-border/50">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold">Skills</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {/* <div className="flex flex-wrap gap-2">
-                  {profile?.skills.map((skill) => (
-                    <Badge key={skill.id} variant="secondary" className="text-xs">
-                      {skill.name}
+              <div className="grid grid-cols-2 gap-3">
+                {profile?.linkedin ? (
+                  <a href={profile.linkedin} target="_blank" rel="noreferrer" className="block">
+                    <Button variant="outline" className="w-full justify-start gap-2 border-indigo-100 hover:bg-blue-50 hover:text-blue-700">
+                      <Linkedin className="h-4 w-4" /> LinkedIn
+                    </Button>
+                  </a>
+                ) : (
+                  <Button variant="outline" disabled className="w-full justify-start gap-2 opacity-50">
+                    <Linkedin className="h-4 w-4" /> Add LinkedIn
+                  </Button>
+                )}
+
+                {profile?.github ? (
+                  <a href={profile.github} target="_blank" rel="noreferrer" className="block">
+                    <Button variant="outline" className="w-full justify-start gap-2 border-indigo-100 hover:bg-gray-50 hover:text-gray-900">
+                      <Github className="h-4 w-4" /> GitHub
+                    </Button>
+                  </a>
+                ) : (
+                  <Button variant="outline" disabled className="w-full justify-start gap-2 opacity-50">
+                    <Github className="h-4 w-4" /> Add GitHub
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-none shadow-md">
+            <CardHeader>
+              <CardTitle className="text-lg">Contact Info</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <Mail className="h-5 w-5 text-indigo-500" />
+                <div className="overflow-hidden">
+                    <p className="text-xs text-muted-foreground">Email</p>
+                    <p className="text-sm font-medium truncate">{profile?.email}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <Phone className="h-5 w-5 text-green-500" />
+                <div>
+                    <p className="text-xs text-muted-foreground">Phone</p>
+                    <p className="text-sm font-medium">{profile?.mobilenumber}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <MapPin className="h-5 w-5 text-red-500" />
+                <div>
+                    <p className="text-xs text-muted-foreground">Location</p>
+                    <p className="text-sm font-medium">{profile?.location || "Not set"}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-none shadow-md">
+            <CardHeader><CardTitle className="text-lg">Skills</CardTitle></CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {profile?.skills && profile.skills.length > 0 ? (
+                    profile.skills.map((skill) => (
+                    <Badge key={skill.id} variant="secondary" className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100">
+                        {skill.name}
                     </Badge>
-                  ))}
-                </div> */}
-              </CardContent>
-            </Card>
+                    ))
+                ) : (
+                    <p className="text-sm text-muted-foreground">No skills added yet.</p>
+                )}
+                {/* Fallback for comma separated string */}
+                {(!profile?.skills || profile.skills.length === 0) && profile?.interests && (
+                    profile.interests.split(',').map((int, i) => (
+                        <Badge key={i} variant="outline">{int.trim()}</Badge>
+                    ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Right Column - Stats & Activity */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+             <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
+                <div className="mx-auto w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-2">
+                    <Briefcase className="h-5 w-5" />
+                </div>
+                <div className="text-2xl font-bold text-gray-800">{profile?.applications?.length || 0}</div>
+                <div className="text-xs text-gray-500">Applications</div>
+             </div>
+             <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
+                <div className="mx-auto w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mb-2">
+                    <BookOpen className="h-5 w-5" />
+                </div>
+                <div className="text-2xl font-bold text-gray-800">{profile?.activities?.length || 0}</div>
+                <div className="text-xs text-gray-500">Activities</div>
+             </div>
+             <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
+                <div className="mx-auto w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-2">
+                    <Award className="h-5 w-5" />
+                </div>
+                <div className="text-2xl font-bold text-gray-800">{profile?.achievements?.length || 0}</div>
+                <div className="text-xs text-gray-500">Awards</div>
+             </div>
+             <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
+                <div className="mx-auto w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 mb-2">
+                    <Calendar className="h-5 w-5" />
+                </div>
+                <div className="text-2xl font-bold text-gray-800">4</div>
+                <div className="text-xs text-gray-500">Events</div>
+             </div>
           </div>
 
-          {/* Right Column - Activity & Achievements */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Recent Activity */}
-            <Card className="bg-gradient-card border border-border/50">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* <div className="space-y-3">
-                  {profile?.activities.map((activity) => (
-                    <div key={activity.id} className="flex items-start gap-3 p-3 bg-background rounded-lg border border-border/30">
-                      <div className="pt-1">
-                        {getActivityIcon(activity.type)}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-foreground">{activity.title}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {activity.description} • {activity.date}
-                        </p>
-                      </div>
+          <Card className="border-none shadow-md">
+            <CardHeader><CardTitle>Recent Activity</CardTitle></CardHeader>
+            <CardContent>
+                {profile?.activities && profile.activities.length > 0 ? (
+                    <div className="space-y-4">
+                        {profile.activities.map((activity) => (
+                            <div key={activity.id} className="flex gap-4 items-start pb-4 border-b last:border-0 last:pb-0">
+                                <div className={`mt-1 p-2 rounded-full ${
+                                    activity.type === 'applied' ? 'bg-blue-100 text-blue-600' : 
+                                    activity.type === 'completed' ? 'bg-green-100 text-green-600' : 
+                                    'bg-purple-100 text-purple-600'
+                                }`}>
+                                    {activity.type === 'applied' ? <Briefcase size={16}/> : 
+                                     activity.type === 'completed' ? <Award size={16}/> : <User size={16}/>}
+                                </div>
+                                <div>
+                                    <h4 className="font-semibold text-sm">{activity.title}</h4>
+                                    <p className="text-xs text-muted-foreground">{activity.description}</p>
+                                    <p className="text-[10px] text-gray-400 mt-1">{activity.date}</p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                  ))}
-                </div> */}
-              </CardContent>
-            </Card>
-
-            {/* Applications Status */}
-            <Card className="bg-gradient-card border border-border/50">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                  <Briefcase className="h-5 w-5" />
-                  Application Status
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {/* <div className="space-y-4">
-                  {profile?.applications.map((application) => (
-                    <div key={application.id} className="flex items-center justify-between p-3 bg-background rounded-lg border border-border/30">
-                      <div>
-                        <p className="text-sm font-medium text-foreground">{application.company} - {application.position}</p>
-                        <p className="text-xs text-muted-foreground">Applied {application.appliedDate}</p>
-                      </div>
-                      {getStatusBadge(application.status)}
+                ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                        No recent activity to show.
                     </div>
-                  ))}
-                </div> */}
-              </CardContent>
-            </Card>
-
-            {/* Achievements */}
-            <Card className="bg-gradient-card border border-border/50">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold">Achievements & Certifications</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {profile?.achievements.map((achievement) => (
-                    <div key={achievement.id} className="p-4 bg-background rounded-lg border border-border/30">
-                      <h4 className="font-medium text-foreground mb-2">{achievement.title}</h4>
-                      <p className="text-xs text-muted-foreground">
-                        {achievement.issuer} • {achievement.date}
-                        {achievement.description && ` • ${achievement.description}`}
-                      </p>
-                    </div>
-                  ))}
-                </div> */}
-              </CardContent>
-            </Card>
-          </div>
+                )}
+            </CardContent>
+          </Card>
         </div>
       </div>
 
-      {/* Edit Profile Modal */}
-      {/* <ProfileEditForm
-        profile={profile}
-        onSave={handleSaveProfile}
-        onCancel={() => setIsEditModalOpen(false)}
-        isOpen={isEditModalOpen}
-      /> */}
+      {/* Edit Dialog */}
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Profile</DialogTitle>
+            <DialogDescription>Update your personal information below.</DialogDescription>
+          </DialogHeader>
+          
+          <div className="grid gap-6 py-4">
+            {/* Personal Details */}
+            <div className="space-y-4">
+                <h3 className="font-medium text-sm text-gray-500 border-b pb-2">Personal Details</h3>
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="fullname">Full Name</Label>
+                        <Input id="fullname" name="fullname" value={formData?.fullname} onChange={handleInputChange} />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="mobilenumber">Phone</Label>
+                        <Input id="mobilenumber" name="mobilenumber" value={formData?.mobilenumber} onChange={handleInputChange} />
+                    </div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="location">Location</Label>
+                        <Input id="location" name="location" value={formData?.location} onChange={handleInputChange} placeholder="City, Country"/>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="branch">Branch / Major</Label>
+                        <Input id="branch" name="branch" value={formData?.branch} onChange={handleInputChange} />
+                    </div>
+                </div>
 
-      
-    </div>
+                <div className="space-y-2">
+                    <Label htmlFor="interests">Interests (Comma separated)</Label>
+                    <Input id="interests" name="interests" value={formData?.interests} onChange={handleInputChange} />
+                </div>
+            </div>
+
+            {/* ✅ New Professional Links Section */}
+            <div className="space-y-4">
+                <h3 className="font-medium text-sm text-gray-500 border-b pb-2">Professional Links & Resume</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="linkedin" className="flex items-center gap-2">
+                            <Linkedin className="h-4 w-4 text-blue-600" /> LinkedIn URL
+                        </Label>
+                        <Input 
+                            id="linkedin" 
+                            name="linkedin" 
+                            placeholder="https://linkedin.com/in/..." 
+                            value={formData?.linkedin || ""} 
+                            onChange={handleInputChange} 
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="github" className="flex items-center gap-2">
+                            <Github className="h-4 w-4" /> GitHub URL
+                        </Label>
+                        <Input 
+                            id="github" 
+                            name="github" 
+                            placeholder="https://github.com/..." 
+                            value={formData?.github || ""} 
+                            onChange={handleInputChange} 
+                        />
+                    </div>
+                </div>
+
+                <div className="space-y-2">
+                    <Label htmlFor="resume" className="flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-red-500" /> Resume / CV (PDF)
+                    </Label>
+                    <div className="border border-input rounded-md p-2 flex items-center gap-2 bg-gray-50">
+                        <Input 
+                            id="resume" 
+                            type="file" 
+                            accept=".pdf,.doc,.docx"
+                            className="file:bg-indigo-50 file:text-indigo-700 file:border-0 file:rounded-md file:px-2 file:py-1 file:mr-4 file:text-sm hover:file:bg-indigo-100 transition-all cursor-pointer"
+                            onChange={handleFileChange} 
+                        />
+                    </div>
+                    {formData?.resume && (
+                        <p className="text-xs text-green-600 flex items-center gap-1">
+                            <Upload className="h-3 w-3" /> Current: {formData.resume}
+                        </p>
+                    )}
+                </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4 border-t">
+            <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>Cancel</Button>
+            <Button onClick={handleSave} className="bg-purple-600 hover:bg-purple-700">Save Changes</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </StudentLayout>
   );
 }
