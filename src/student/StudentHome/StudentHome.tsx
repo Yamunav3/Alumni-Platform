@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,10 +20,22 @@ import WebinarSection from "./WebinarSection";
 import TrainingSection from "./TrainingSection";
 import FeedbackSection from "./FeedbackSection";
 
+
+interface profile{
+    username:string;
+    email:string;
+    fullname:string;
+    status:string;
+ }
+
+
+
 const StudentHome = () => {
   const [activeTab, setActiveTab] = useState("mentorship");
   const [loading, setLoading] = useState(false);
+const token=localStorage.getItem('token')||'';
 
+const [profile,setProfile]=useState<profile|null>(null);
   // --- MOCK DATA (Same as before) ---
   // (Keeping your existing data arrays here to save space in this snippet)
   // ... Paste your mentors, internships, webinars, trainings arrays here ...
@@ -41,6 +53,29 @@ const StudentHome = () => {
     setTimeout(() => setLoading(false), 400); // Slight delay for animation feel
   };
 
+
+
+useEffect(()=>{
+ 
+  fetch('http://localhost:8080/api/v1/student',{
+   
+    method:'GET',
+    headers:{ 
+      'Content-Type':'application/json',
+      'Authorization':`Bearer ${token}`
+    }
+  }).then((res)=>{
+    if(!res.ok){  
+      return;
+    }
+    return res.json();
+  }).then((data:profile)=>{
+    setProfile(data);
+  }).catch((err)=>{
+    console.error(err);
+  })},[]);
+
+   
   return (
     <StudentLayout>
       <div className="min-h-screen bg-gray-50/50">
@@ -53,16 +88,16 @@ const StudentHome = () => {
                 Student Dashboard
               </h2>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                Hello, <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">Alex</span> 👋
+                Hello, <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">{profile?.fullname}</span> 👋
               </h1>
               <p className="text-gray-500 mt-2 max-w-lg">
-                Ready to accelerate your career? You have <span className="font-semibold text-gray-900">3 new opportunities</span> waiting.
+                Ready to accelerate your career?<span className="font-semibold text-gray-900">{}</span>
               </p>
             </div>
             <div className="flex gap-2">
                <div className="bg-white px-4 py-2 rounded-full border shadow-sm flex items-center gap-2 text-sm font-medium">
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                  Online
+                  {profile?.status === 'online' ? 'Online' : 'Offline'}
                </div>
                <div className="bg-white px-4 py-2 rounded-full border shadow-sm flex items-center gap-2 text-sm font-medium text-gray-600">
                   {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
@@ -162,12 +197,12 @@ const StudentHome = () => {
                 
                 <TabsContent value="mentorship" className="mt-0">
                   <SectionHeader title="Find your Mentor" subtitle="Connect with alumni who have walked your path." />
-                  <MentorshipSection mentors={mentors} />
+                  <MentorshipSection  />
                 </TabsContent>
 
                 <TabsContent value="internships" className="mt-0">
                   <SectionHeader title="Curated Internships" subtitle="Exclusive opportunities from our alumni network." />
-                  <InternshipSection internships={internships} />
+                  <InternshipSection  />
                 </TabsContent>
 
                 <TabsContent value="webinars" className="mt-0">

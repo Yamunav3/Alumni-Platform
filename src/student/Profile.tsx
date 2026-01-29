@@ -79,7 +79,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState<Profile | null>(null);
 
-  useEffect(() => {
+  useEffect(() => {  
     const token = localStorage.getItem("token");
     
     // Fallback mock data with new fields

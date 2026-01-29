@@ -44,7 +44,7 @@ const navigate = useNavigate();
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 hover-lift">
+          <Link to="" className="flex items-center space-x-3 hover-lift">
             <div className="h-10 w-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-neon animate-pulse-glow">
               <span className="text-primary-foreground font-bold text-xl">A</span>
             </div>

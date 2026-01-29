@@ -164,12 +164,12 @@ const AlumniSignup = () => {
                     <SelectValue placeholder="Select branch" />
                   </SelectTrigger>
                   <SelectContent className="bg-background border shadow-lg z-50">
-                    <SelectItem value="cse">Computer Science</SelectItem>
-                    <SelectItem value="it">Information Technology</SelectItem>
-                    <SelectItem value="ece">Electronics & Communication</SelectItem>
-                    <SelectItem value="me">Mechanical Engineering</SelectItem>
-                    <SelectItem value="ce">Civil Engineering</SelectItem>
-                    <SelectItem value="ee">Electrical Engineering</SelectItem>                 
+                    <SelectItem value="Computer Science">Computer Science</SelectItem>
+                    <SelectItem value="Information Technology">Information Technology</SelectItem>
+                    <SelectItem value="Electronics & Communication Engineering">Electronics & Communication</SelectItem>
+                    <SelectItem value="Mechanical Engineering">Mechanical Engineering</SelectItem>
+                    <SelectItem value="Civil Engineering">Civil Engineering</SelectItem>
+                    <SelectItem value="Electrical and Electrical Engineering">Electrical Engineering</SelectItem>                 
                     {/* <SelectItem value="other">Other</SelectItem> */}
                   </SelectContent>
                 </Select>

@@ -28,6 +28,8 @@ const StudentSignup = () => {
     confirmPassword: "",
     username: "",
     mobilenumber:"",
+    linkedin:"",
+     github:"",
   });
 
   const handleSubmit = async (e) => {
@@ -56,6 +58,8 @@ const StudentSignup = () => {
         interests: formData.interests,
         password: formData.password,
         mobilenumber: formData.mobilenumber,
+        linkedin: formData.linkedin,
+        github: formData.github,
         // role: "STUDENT"
       },
       {
@@ -164,12 +168,12 @@ const StudentSignup = () => {
                     <SelectValue placeholder="Select branch" />
                   </SelectTrigger>
                   <SelectContent className="bg-background border shadow-lg z-50">
-                    <SelectItem value="CSE">Computer Science & Allied</SelectItem>
-                    <SelectItem value="IT">Information Technology & Allied</SelectItem>
-                    <SelectItem value="ECE">Electronics & Communication Engineering</SelectItem>
-                    <SelectItem value="ME">Mechanical Engineering</SelectItem>
-                    <SelectItem value="CE">Civil Engineering</SelectItem>
-                    <SelectItem value="EEE">Electrical & Electronics Engineering</SelectItem>
+                    <SelectItem value="Computer Science">Computer Science & Allied</SelectItem>
+                    <SelectItem value="Information Technology">Information Technology & Allied</SelectItem>
+                    <SelectItem value="Electrical & Electronics Commmunication">Electronics & Communication Engineering</SelectItem>
+                    <SelectItem value="Mechanical Engineering">Mechanical Engineering</SelectItem>
+                    <SelectItem value="Civil Engineering">Civil Engineering</SelectItem>
+                    <SelectItem value="Electrical Electronics Engineering">Electrical & Electronics Engineering</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -218,7 +222,27 @@ const StudentSignup = () => {
                 className="min-h-[80px]"
               />
             </div>
-              
+
+              <div>
+            <div className="space-y-2">
+              <Label htmlFor="linkedin">LinkedIn Profile</Label>
+              <Input id="linkedin"
+              placeholder="Enter your LinkedIn profile URL"
+              onChange={(e)=>setFormData(prev =>({...prev,linkedin:e.target.value}))}
+               />
+            </div>
+              </div>
+
+            <div>
+            <div className="space-y-2">
+              <Label htmlFor="github">GitHub Profile</Label>
+              <Input id="github"
+              placeholder="Enter your GitHub profile URL"
+              onChange={(e)=>setFormData(prev =>({...prev,github:e.target.value}))}
+               />
+              </div>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="mobilenumber">Mobile Number *</Label>
               <Input id="mobilenumber"

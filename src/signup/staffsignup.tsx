@@ -169,12 +169,12 @@ const StaffSignup = () => {
                     <SelectValue placeholder="Select department" />
                   </SelectTrigger>
                   <SelectContent className="bg-background border shadow-lg z-50">
-                    <SelectItem value="CSE">Computer Science</SelectItem>
-                    <SelectItem value="IT">Information Technology</SelectItem>
-                    <SelectItem value="ECE">Electronics & Communication</SelectItem>
-                    <SelectItem value="ME">Mechanical Engineering</SelectItem>
-                    <SelectItem value="CE">Civil Engineering</SelectItem>
-                    <SelectItem value="EEE">Electrical Engineering</SelectItem>
+                    <SelectItem value="Computer Science">Computer Science</SelectItem>
+                    <SelectItem value="Information Technology">Information Technology</SelectItem>
+                    <SelectItem value="Electronics & Communcations Engineering">Electronics & Communication</SelectItem>
+                    <SelectItem value="Mechanical Engineering">Mechanical Engineering</SelectItem>
+                    <SelectItem value="Civil Engineering">Civil Engineering</SelectItem>
+                    <SelectItem value="Electrical & Electronics Engineering">Electrical Engineering</SelectItem>
                     <SelectItem value="ADMIN">Administration</SelectItem>
                     <SelectItem value="LIBRARY">Library</SelectItem>
                   </SelectContent>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,28 +8,30 @@ import { Modal, message } from "antd";
 import { Search, Filter, MapPin, Clock, DollarSign, Calendar, Users, Upload } from "lucide-react";
 
 interface Internship {
+  [x: string]: any;
   id: number;
-  title: string;
+  jobtitle: string;
   company: string;
   location: string;
+  jobtype: string;
   duration: string;
   stipend: string;
   skills: string[];
   deadline: string;
   applicants: number;
-  description: string;
-  requirements: string[];
-  responsibilities: string[];
+  jobdescription: string;
+  requiredskills: string[];
+  Responsibilities: string[];
   benefits: string[];
   companySize: string;
   industry: string;
 }
 
-interface InternshipSectionProps {
-  internships: Internship[];
-}
+// interface InternshipSectionProps {
+//   internships: Internship[];
+// }
 
-const InternshipSection = ({ internships }: InternshipSectionProps) => {
+const InternshipSection = () => {
   const [selectedInternship, setSelectedInternship] = useState<Internship | null>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
@@ -44,6 +46,23 @@ const InternshipSection = ({ internships }: InternshipSectionProps) => {
     coverLetter: '',
     resume: null as File | null
   });
+
+  const[internships,setInternships]=useState<Internship|null>(null);
+
+   useEffect(()=>{
+    //fetch internships from api
+    const fetchInternships=async()=>{
+      try{
+        const response=await fetch('api/v1/internships'); //replace with actual api endpoint
+        const data=await response.json();
+        setInternships(data);
+      }catch(error){
+        console.error("Error fetching internships:",error);
+      }
+    };
+    fetchInternships();
+   })
+
 
   const showDetails = (internship: Internship) => {
     setSelectedInternship(internship);
@@ -89,7 +108,7 @@ const InternshipSection = ({ internships }: InternshipSectionProps) => {
 
       {/* Internships Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {internships.map((internship) => (
+        {internships?.map((internship) => (
           <Card
             key={internship.id}
             className="bg-gradient-card rounded-9xl cursor-pointer group
@@ -101,7 +120,7 @@ const InternshipSection = ({ internships }: InternshipSectionProps) => {
                 className="text-xl cursor-pointer group-hover:text-primary transition-colors"
                 onClick={() => showDetails(internship)}
               >
-                {internship.title}
+                {internship.jobtitle}
               </CardTitle>
               <CardDescription className="text-lg font-medium text-primary">
                 {internship.company}
@@ -184,7 +203,7 @@ const InternshipSection = ({ internships }: InternshipSectionProps) => {
         {selectedInternship && (
           <div className="p-6">
             <div className="mb-6">
-              <h2 className="text-3xl font-bold mb-2">{selectedInternship.title}</h2>
+              <h2 className="text-3xl font-bold mb-2">{selectedInternship.jobtitle}</h2>
               <div className="flex items-center gap-4 mb-4">
                 <p className="text-xl font-medium text-primary">{selectedInternship.company}</p>
                 <Badge variant="outline">{selectedInternship.industry}</Badge>
@@ -213,13 +232,13 @@ const InternshipSection = ({ internships }: InternshipSectionProps) => {
             <div className="space-y-6">
               <div>
                 <h3 className="text-xl font-semibold mb-3">Description</h3>
-                <p className="text-muted-foreground">{selectedInternship.description}</p>
+                <p className="text-muted-foreground">{selectedInternship.jobdescription}</p>
               </div>
 
               <div>
                 <h3 className="text-xl font-semibold mb-3">Requirements</h3>
                 <ul className="list-disc list-inside space-y-1">
-                  {selectedInternship.requirements.map((req, index) => (
+                  {selectedInternship?.requiredskills?.map((req, index) => (
                     <li key={index} className="text-muted-foreground">{req}</li>
                   ))}
                 </ul>
@@ -228,7 +247,7 @@ const InternshipSection = ({ internships }: InternshipSectionProps) => {
               <div>
                 <h3 className="text-xl font-semibold mb-3">Responsibilities</h3>
                 <ul className="list-disc list-inside space-y-1">
-                  {selectedInternship.responsibilities.map((resp, index) => (
+                  {selectedInternship?.Responsibilities?.map((resp, index) => (
                     <li key={index} className="text-muted-foreground">{resp}</li>
                   ))}
                 </ul>

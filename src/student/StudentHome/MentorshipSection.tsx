@@ -1,8 +1,5 @@
 
-
-
-
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,12 +12,13 @@ import {
   Briefcase,
   GraduationCap,
 } from "lucide-react";
+import { set } from "date-fns";
 
 interface Mentor {
   id: number;
-  name: string;
+  fullname: string;
   title: string;
-  company: string;
+  workingcompany: string;
   expertise: string[];
   rating: number;
   sessions: number;
@@ -36,13 +34,16 @@ interface Mentor {
     duration: string;
     sector: string;
   }[];
+  // workingcompany:string;
 }
 
-interface MentorshipSectionProps {
-  mentors: Mentor[];
-}
+// interface MentorshipSectionProps {
+//   mentors: Mentor[];
+// }
 
-const MentorshipSection = ({ mentors }: MentorshipSectionProps) => {
+const MentorshipSection = () => {
+  const[mentors,setMentors] = useState<Mentor[]| null>([]);
+
   const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [connectedMentors, setConnectedMentors] = useState<Set<number>>(
@@ -53,7 +54,32 @@ const MentorshipSection = ({ mentors }: MentorshipSectionProps) => {
     setConnectedMentors((prev) => new Set([...prev, mentorId]));
   };
 
-  const showProfile = (mentor: Mentor) => {
+  const token=localStorage.getItem("token");
+useEffect(()=>{
+
+   fetch("http://localhost:8080/api/v1/alumni/all",{
+    method:"GET",
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":`Bearer ${token}`
+    }
+
+   }).then((res)=>{
+    if(!res.ok){
+      return ;
+    }
+      return res.json();
+   }).then((data:Mentor[])=>{
+    console.log("mentors data:",data);
+    setMentors(data);
+     
+   }).catch((err)=>{
+    console.log(err);
+   })
+
+},[])
+
+const showProfile = (mentor: Mentor) => {
     setSelectedMentor(mentor);
     setIsProfileModalOpen(true);
   };
@@ -84,7 +110,7 @@ const MentorshipSection = ({ mentors }: MentorshipSectionProps) => {
                 >
                   <AvatarImage src={mentor.image} />
                   <AvatarFallback>
-                    {mentor.name
+                    {mentor.fullname
                       .split(" ")
                       .map((n) => n[0])
                       .join("")}
@@ -95,11 +121,11 @@ const MentorshipSection = ({ mentors }: MentorshipSectionProps) => {
                     className="font-semibold text-lg text-black 
                                group-hover:text-primary transition-colors duration-300"
                   >
-                    {mentor.name}
+                    {mentor.fullname}
                   </h3>
                   <p className="text-sm text-gray-900">{mentor.title}</p>
                   <p className="text-sm font-medium text-primary">
-                    {mentor.company}
+                    {mentor.workingcompany}
                   </p>
                 </div>
               </div>
@@ -114,7 +140,7 @@ const MentorshipSection = ({ mentors }: MentorshipSectionProps) => {
                 <span className="text-gray-800">{mentor.sessions} sessions</span>
               </div>
               <div className="flex flex-wrap gap-1">
-                {mentor.expertise.slice(0, 3).map((skill) => (
+                {mentor?.expertise?.slice(0, 3).map((skill) => (
                   <Badge key={skill} variant="secondary" className="text-xs">
                     {skill}
                   </Badge>
@@ -172,7 +198,7 @@ const MentorshipSection = ({ mentors }: MentorshipSectionProps) => {
               <Avatar className="h-24 w-24">
                 <AvatarImage src={selectedMentor.image} />
                 <AvatarFallback className="text-2xl">
-                  {selectedMentor.name
+                  {selectedMentor.fullname
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
@@ -180,13 +206,13 @@ const MentorshipSection = ({ mentors }: MentorshipSectionProps) => {
               </Avatar>
               <div className="flex-1">
                 <h2 className="text-3xl font-bold mb-2 text-primary">
-                  {selectedMentor.name}
+                  {selectedMentor.fullname}
                 </h2>
                 <p className="text-lg text-gray-900 mb-1">
                   {selectedMentor.title}
                 </p>
                 <p className="text-lg font-medium text-primary mb-3">
-                  {selectedMentor.company}
+                  {selectedMentor.workingcompany}
                 </p>
                 <div className="flex items-center gap-4 text-sm text-gray-900">
                   <div className="flex items-center gap-1">
