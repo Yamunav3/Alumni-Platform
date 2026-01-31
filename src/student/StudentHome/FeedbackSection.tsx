@@ -113,7 +113,7 @@ const FeedbackSection = () => {
       id: 1,
       studentName: "Alex Kumar",
       course: "Full Stack Development",
-      rating: 5,
+      rating: 4,
       comment: "Excellent course with hands-on projects. The instructor was very knowledgeable and supportive throughout the journey.",
       date: "2024-01-20",
       verified: true
@@ -179,6 +179,27 @@ const FeedbackSection = () => {
         recommendation: 0,
         comments: ''
       });
+    }
+
+    try{
+    fetch("http://localhost:8080/api/v1/student/submitFeedback",{
+      method:"POST",
+      headers:{
+        "content-type":"application/json",
+        "Authorization":`Bearer ${localStorage.getItem("token") }`
+      },
+      body:JSON.stringify(feedbackData)
+    }).then((res)=>{  
+      if(!res.ok)
+         return ;
+        return res.json();
+    }).then((data)=>{
+      console.log("Feedback submitted successfully:",data);
+    }).catch((err)=>{
+      console.log("Error submitting feedback:",err);
+      });
+    }finally{
+      console.log("Feedback submission attempt finished.");
     }
   };
 

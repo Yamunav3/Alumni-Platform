@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { 
   Users, Target, Lightbulb, Award, Globe, Rocket, Heart, Linkedin, Twitter, 
   Sparkles, TrendingUp, Zap, Briefcase, Loader2, Share2, Compass, Shield
@@ -35,6 +36,7 @@ const GRADIENTS = [
 ];
 
 export default function StudentAbout() {
+  const navigate = useNavigate();
   const [teamMembers, setTeamMembers] = useState<any[]>(FALLBACK_TEAM);
   const [loading, setLoading] = useState(false);
 
@@ -105,12 +107,12 @@ export default function StudentAbout() {
                 </p>
 
                 <div className="flex flex-wrap gap-4">
-                  <Button className="h-12 px-8 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-lg shadow-blue-900/20">
+                  {/* <Button className="h-12 px-8 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-lg shadow-blue-900/20">
                     Get Started
                   </Button>
                   <Button variant="outline" className="h-12 px-8 border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg bg-transparent">
                     View Impact
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
 
@@ -246,7 +248,7 @@ export default function StudentAbout() {
         </section>
 
         {/* --- SECTION 4: CTA --- */}
-        <section className="max-w-5xl mx-auto px-4 mt-20 mb-10">
+        {/* <section className="max-w-5xl mx-auto px-4 mt-20 mb-10">
           <div className="bg-slate-900 rounded-[2rem] p-12 text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-900/50 to-purple-900/50"></div>
             <div className="relative z-10">
@@ -254,12 +256,12 @@ export default function StudentAbout() {
                 Ready to transform your journey?
               </h2>
               <div className="flex justify-center gap-4">
-                <Button className="bg-white text-slate-900 hover:bg-gray-100 rounded-full px-8 h-12">Join as Student</Button>
-                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-full px-8 h-12 bg-transparent">Join as Alumni</Button>
+                <Button className="bg-white text-slate-900 hover:bg-gray-100 rounded-full px-8 h-12" onClick={()=>navigate('/login/student')}>Join as Student</Button>
+                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-full px-8 h-12 bg-transparent"  onClick={()=>navigate("/login/alumni")}>Join as Alumni</Button>
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
 
       </div>
 

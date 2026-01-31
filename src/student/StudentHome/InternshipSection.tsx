@@ -53,7 +53,7 @@ const InternshipSection = () => {
     //fetch internships from api
     const fetchInternships=async()=>{
       try{
-        const response=await fetch('api/v1/internships'); //replace with actual api endpoint
+        const response=await fetch('api/v1/student/internships'); // actual api endpoint
         const data=await response.json();
         setInternships(data);
       }catch(error){

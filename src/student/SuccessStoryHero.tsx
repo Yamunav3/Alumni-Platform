@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowRight, Quote, Linkedin, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { set } from "date-fns";
 
 const stories = [
   {
@@ -12,7 +13,7 @@ const stories = [
     role: "Product Designer",
     company: "Airbnb",
     gradYear: "2021",
-    image: "https://github.com/shadcn.png", // Replace with real images
+    // image: "https://github.com/shadcn.png", // Replace with real images
     quote: "The mentorship I received in my 3rd year changed my career. My mentor helped me build a portfolio that got me hired.",
     tags: ["Design", "Tech"]
   },
@@ -22,7 +23,7 @@ const stories = [
     role: "AI Researcher",
     company: "OpenAI",
     gradYear: "2019",
-    image: "https://github.com/shadcn.png", 
+    // image: "https://github.com/shadcn.png", 
     quote: "Asthra's hackathons gave me the confidence to build things. An alumnus noticed my project and recommended me for a fellowship.",
     tags: ["AI", "Research"]
   },
@@ -32,16 +33,28 @@ const stories = [
     role: "Founder",
     company: "TechFlow",
     gradYear: "2020",
-    image: "https://github.com/shadcn.png", 
+    // image: "https://github.com/shadcn.png", 
     quote: "Networking isn't about asking for favors, it's about genuine relationships. I met my co-founder at an alumni mixer.",
     tags: ["Startup", "Founder"]
   }
 ];
 
+//story structure that mainly holds the type info
+interface storyType {
+  id:number;
+  name:string;
+  title:string;
+  role:string;
+  company:string;
+  gradYear:string;
+  quote:string;
+  tags:string[];
+}
+
 export default function SuccessStoryHero() {
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-
+  const [storiesData, setStoriesData] = useState<storyType[]>();
   // Auto-play logic
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -61,7 +74,27 @@ export default function SuccessStoryHero() {
     setCurrent((prev) => (prev === 0 ? stories.length - 1 : prev - 1));
   };
 
-  const story = stories[current];
+
+useEffect(()=>{
+  fetch("http://localhost:8080/api/v1/alumni/getStory",{
+    method:"GET",
+    headers:{
+      "content-type":"application/json",
+      "Authorization":`Bearer ${localStorage.getItem("token") }`
+    },
+  }).then((res)=>{
+    if(!res.ok)
+       return ;
+      return res.json();
+  }).then((data: storyType[])=>{
+        setStoriesData(data);
+  }).catch((err)=>{
+    console.log(err);
+  });
+})
+
+
+  const story = stories[storiesData? storiesData.length % stories.length : current];
 
   return (
     <div 
@@ -96,7 +129,7 @@ export default function SuccessStoryHero() {
             {/* Soft gradient ring */}
             <div className="absolute inset-0 bg-gradient-to-tr from-purple-200 to-blue-200 rounded-full animate-pulse opacity-50 blur-sm"></div>
             <Avatar className="w-full h-full border-4 border-white shadow-xl relative z-10">
-              <AvatarImage src={story.image} className="object-cover" />
+              {/* <AvatarImage src={story.image} className="object-cover" /> */}
               <AvatarFallback>{story.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="absolute -bottom-3 -right-3 bg-white text-purple-600 p-2 rounded-full shadow-md border border-gray-100 z-20">
