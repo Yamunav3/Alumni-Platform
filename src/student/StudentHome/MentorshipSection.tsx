@@ -13,6 +13,8 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { set } from "date-fns";
+import { getMentorships } from "../../api/studentApi";
+
 
 interface Mentor {
   id: number;
@@ -57,26 +59,28 @@ const MentorshipSection = () => {
   const token=localStorage.getItem("token");
 useEffect(()=>{
 
-   fetch("http://localhost:8080/api/v1/alumni/all",{
-    method:"GET",
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":`Bearer ${token}`
-    }
+  //  fetch("http://localhost:8080/api/v1/alumni/all",{
+  //   method:"GET",
+  //   headers:{
+  //     "Content-Type":"application/json",
+  //     "Authorization":`Bearer ${token}`
+  //   }
 
-   }).then((res)=>{
-    if(!res.ok){
-      return ;
-    }
-      return res.json();
-   }).then((data:Mentor[])=>{
-    console.log("mentors data:",data);
-    setMentors(data);
+  //  }).then((res)=>{
+  //   if(!res.ok){
+  //     return ;
+  //   }
+  //     return res.json();
+  //  }).then((data:Mentor[])=>{
+  //   console.log("mentors data:",data);
+  //   setMentors(data);
      
-   }).catch((err)=>{
-    console.log(err);
-   })
-
+  //  }).catch((err)=>{
+  //   console.log(err);
+  //  })
+    getMentorships().then((data:Mentor[])=>{
+      setMentors(data);
+    });
 },[])
 
 const showProfile = (mentor: Mentor) => {

@@ -21,7 +21,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 const navItems = [
   { name: "Home", href: "/student", icon: Home },
   { name: "About Us", href: "/student/about", icon: Users },
-  { name: "Career Portal", href: "/student/career", icon: Briefcase },
+  // { name: "Career Portal", href: "/student/career", icon: Briefcase },
   { name: "Events", href: "/student/events", icon: Calendar },
   { name: "Messages", href: "/student/messages", icon: MessageSquare },
   { name: "Profile", href: "/student/profile", icon: User },

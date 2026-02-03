@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal, message } from "antd";
 import { Search, Filter, MapPin, Clock, DollarSign, Calendar, Users, Upload } from "lucide-react";
+import { get } from "http";
+import { getInternships } from "../../api/studentApi";
 
 interface Internship {
   [x: string]: any;
@@ -32,7 +34,7 @@ interface Internship {
 // }
 
 const InternshipSection = () => {
-  const [selectedInternship, setSelectedInternship] = useState<Internship | null>(null);
+  const [selectedInternship, setSelectedInternship] = useState<Internship|null>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
   const [appliedInternships, setAppliedInternships] = useState<Set<number>>(new Set());
@@ -47,21 +49,34 @@ const InternshipSection = () => {
     resume: null as File | null
   });
 
-  const[internships,setInternships]=useState<Internship|null>(null);
+  const[internships,setInternships] = useState<Internship|null>();
 
-   useEffect(()=>{
-    //fetch internships from api
-    const fetchInternships=async()=>{
-      try{
-        const response=await fetch('api/v1/student/internships'); // actual api endpoint
-        const data=await response.json();
-        setInternships(data);
-      }catch(error){
-        console.error("Error fetching internships:",error);
-      }
-    };
-    fetchInternships();
-   })
+  useEffect(()=>{
+    getInternships().then((data:Internship)=>{
+      setInternships(data);
+    });
+  },[])
+  //  useEffect(()=>{
+  //   //fetch internships from api
+  //   fetch("http://localhost:8080/api/v1/student/internships",{
+  //     method:"GET",
+  //     headers:{
+  //       "content-type":"application/json",
+  //       "Authorization":`Bearer ${localStorage.getItem("studentToken")}`
+  //     }
+  //   }).then((res)=>{
+  //       if(!res.ok){
+  //         throw new Error("Failed to fetch internships");
+  //       } 
+  //    return res.json();
+  //   }).then((data:Internship)=>{
+  //     setInternships(data);
+  //   }).catch((err)=>{
+  //     console.log(err);
+  //   }).finally(()=>{
+  //     console.log("fetching internships completed");
+  //     });
+  //  },[]);
 
 
   const showDetails = (internship: Internship) => {
@@ -147,8 +162,8 @@ const InternshipSection = () => {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-1">
-                {internship.skills.map((skill) => (
+              {/* <div className="flex flex-wrap gap-1">
+                {internship?.skills.map((skill) => (
                   <Badge
                     key={skill}
                     variant="outline"
@@ -157,7 +172,7 @@ const InternshipSection = () => {
                     {skill}
                   </Badge>
                 ))}
-              </div>
+              </div> */}
 
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground flex items-center gap-1">

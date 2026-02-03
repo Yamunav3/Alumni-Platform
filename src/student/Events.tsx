@@ -249,7 +249,7 @@ const AlumniEvents = () => {
                           </CardContent>
 
                           <CardFooter className="p-6 pt-0 mt-auto">
-                            <Link to={`/register?eventId=${event.id}`} className="w-full">
+                            <Link to="" className="w-full">
                               <Button className="w-full bg-slate-900 hover:bg-slate-800 text-white h-11 rounded-xl shadow-md group-hover:translate-y-[-2px] transition-transform">
                                 Register Now <UserPlus className="w-4 h-4 ml-2" />
                               </Button>

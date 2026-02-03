@@ -292,7 +292,7 @@ const StudentCareerPortal = () => {
                 {[
                   { id: "jobs", label: "Find Jobs", icon: Search },
                   { id: "applications", label: "Applications", icon: Briefcase },
-                  { id: "webinars", label: "Events", icon: Calendar },
+                  // { id: "webinars", label: "Events", icon: Calendar },
                   { id: "success-stories", label: "Stories", icon: Star },
                   { id: "saved", label: "Saved", icon: BookmarkIcon },
                 ].map((tab) => (
@@ -548,7 +548,7 @@ const StudentCareerPortal = () => {
         </div>
 
         {/* --- MODALS --- */}
-        <ApplicationFormDialog
+        {/* <ApplicationFormDialog
           showApplicationForm={showApplicationForm}
           setShowApplicationForm={setShowApplicationForm}
           applicationForm={applicationForm}
@@ -585,7 +585,7 @@ const StudentCareerPortal = () => {
           open={showShareStoryForm}
           onOpenChange={setShowShareStoryForm}
           onStoryShared={(s) => setSuccessStories([...successStories, s])}
-        />
+        /> */}
       </div>
     </StudentLayout>
   );

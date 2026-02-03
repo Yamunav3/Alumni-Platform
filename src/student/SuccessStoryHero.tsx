@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowRight, Quote, Linkedin, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { set } from "date-fns";
+import { getSuccessStories } from "@/api/studentApi";
 
 const stories = [
   {
@@ -54,7 +55,8 @@ interface storyType {
 export default function SuccessStoryHero() {
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [storiesData, setStoriesData] = useState<storyType[]>();
+  const [storiesData, setStoriesData] = useState<storyType>();
+  
   // Auto-play logic
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -76,25 +78,29 @@ export default function SuccessStoryHero() {
 
 
 useEffect(()=>{
-  fetch("http://localhost:8080/api/v1/alumni/getStory",{
-    method:"GET",
-    headers:{
-      "content-type":"application/json",
-      "Authorization":`Bearer ${localStorage.getItem("token") }`
-    },
-  }).then((res)=>{
-    if(!res.ok)
-       return ;
-      return res.json();
-  }).then((data: storyType[])=>{
-        setStoriesData(data);
-  }).catch((err)=>{
-    console.log(err);
-  });
-})
+    getSuccessStories().then((data:storyType)=>{
+      setStoriesData(data);
+    });
+  // --- IGNORE ---
+  // fetch("http://localhost:8080/api/v1/alumni/getStory",{
+  //   method:"GET",
+  //   headers:{
+  //     "content-type":"application/json",
+  //     "Authorization":`Bearer ${localStorage.getItem("token") }`
+  //   },
+  // }).then((res)=>{
+  //   if(!res.ok)
+  //      return ;
+  //     return res.json();
+  // }).then((data: storyType[])=>{
+  //       setStoriesData(data);
+  // }).catch((err)=>{
+  //   console.log(err);
+  // });
+},[])
 
 
-  const story = stories[storiesData? storiesData.length % stories.length : current];
+  const story = stories[current];
 
   return (
     <div 
