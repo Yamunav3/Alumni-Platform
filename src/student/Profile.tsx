@@ -292,7 +292,7 @@ export default function Profile() {
           </Card>
 
           <Card className="border-none shadow-md">
-            <CardHeader><CardTitle className="text-lg">Skills</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-lg">Interests/Skills</CardTitle></CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
                 {profile?.skills && profile.skills.length > 0 ? (
@@ -302,7 +302,7 @@ export default function Profile() {
                     </Badge>
                     ))
                 ) : (
-                    <p className="text-sm text-muted-foreground">No skills added yet.</p>
+                    <p className="text-sm text-muted-foreground"></p>
                 )}
                 {/* Fallback for comma separated string */}
                 {(!profile?.skills || profile.skills.length === 0) && profile?.interests && (

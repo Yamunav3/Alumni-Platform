@@ -31,9 +31,9 @@ const mentorshipStats = [
 ];
 
 const forumTopics = [
-  { title: "Career Transitions", posts: 124, replies: 89, lastActivity: "2 hours ago" },
-  { title: "Entrepreneurship Journey", posts: 98, replies: 156, lastActivity: "4 hours ago" },
-  { title: "Technical Discussions", posts: 203, replies: 234, lastActivity: "1 hour ago" }
+  { title: "Career Transitions", posts: 124, replies: 89, lastActivity: "" },
+  { title: "Entrepreneurship Journey", posts: 98, replies: 156, lastActivity: "" },
+  { title: "Technical Discussions", posts: 203, replies: 234, lastActivity: "" }
 ];
 
 const directoryStats = [
@@ -77,13 +77,13 @@ export default function AlumniHome() {
         Explore Career Portal
       </Button>
     </Link> */}
-            <Button 
+            {/* <Button 
               variant="outline" 
               size="lg"
               onClick={() => navigate("/directory")}
             >
               Find Alumni
-            </Button>
+            </Button> */}
           </div>
         </div>
       </section>

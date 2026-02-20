@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal, message } from "antd";
 import { Search, Filter, MapPin, Clock, DollarSign, Calendar, Users, Upload } from "lucide-react";
-import { get } from "http";
+
 import { getInternships } from "../../api/studentApi";
 
 interface Internship {

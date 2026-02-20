@@ -23,7 +23,7 @@ import { AlumniNavbar } from "@/components/AlumniNavbar";
 interface Profile{
   username:string;
   fullname:string;
-  workingcomapny:string;
+  workingcompany:string;
   jobrole:string;
   mobilenumber:number;
   email:string;
@@ -83,9 +83,9 @@ export default function Profile(){
       <section className="py-16 px-4 bg-indigo-200">
         <div className="container mx-auto max-w-4xl">
           <div className="flex flex-col md:flex-row items-start md:items-center space-y-6 md:space-y-0 md:space-x-8">
-            <Avatar className="h-32 w-32 border-4 border-white shadow-elegant">
+            <Avatar className="h-32 w-32 border-4 shadow-elegant">
               <AvatarImage src={profile?.avatar} alt={profile?.fullname} />
-              <AvatarFallback className="text-2xl">AJ</AvatarFallback>
+              <AvatarFallback className="text-2xl">A</AvatarFallback>
             </Avatar>
             
             <div className="flex-1">
@@ -95,9 +95,9 @@ export default function Profile(){
                   <p className="text-xl text-muted-foreground mb-2">{profile?.jobrole}</p>
                   <div className="flex items-center text-muted-foreground mb-4">
                     <Briefcase className="h-4 w-4 mr-2" />
-                    <span>{profile?.workingcomapny}</span>
+                    <span>{profile?.workingcompany}</span>
                     <MapPin className="h-4 w-4 ml-4 mr-2" />
-                    <span>{profile?.location}</span>
+                    <span>{"Banglore"}</span>
                   </div>
                 </div>
                 {/* <Button 
@@ -111,7 +111,7 @@ export default function Profile(){
               
               <p className="text-muted-foreground mb-6">{profile?.bio}</p>
               
-              <div className="flex flex-wrap gap-2 mb-6">
+              {/* <div className="flex flex-wrap gap-2 mb-6"> */}
                 {/* {achievements.map((achievement, index) => {
                   const IconComponent = achievement.icon;
                   return (
@@ -121,7 +121,7 @@ export default function Profile(){
                     </Badge>
                   );
                 })} */}
-              </div>
+              {/* </div> */}
               
               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center">

@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   X, Send, Bot, Minimize2, Maximize2, Sparkles
 } from "lucide-react";
-// ✅ Keeping your original imports
+//  Keeping your original imports
 import astraLogo from "@/assets/image.png"; 
 import chatbot from "@/assets/image.png"; 
 
@@ -42,6 +42,53 @@ const ChatBot = () => {
     }
   }, [isOpen]);
 
+// const getBotResponse = (text: string) => {
+//     const lower = text.toLowerCase();
+//     if (lower.includes("job") || lower.includes("internship")) return "We have 15+ new opportunities listed in the Career Portal. Would you like to see them?";
+//     if (lower.includes("mentor")) return "You can connect with Alumni mentors via the 'Success Stories' tab or the 'Find a Mentor' section.";
+//     return "I can help you navigate the portal, find jobs, or connect with alumni. What do you need?";
+//   };
+
+
+const GEMINI_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+async function getGeminiResponse(userMessage: string): Promise<string> {
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: userMessage }],
+            },
+          ],
+        }),
+      }
+    );
+
+    const data = await response.json();
+    console.log("Gemini raw response:", data);
+
+    if (!response.ok) {
+      return data.error?.message || "Gemini API error";
+    }
+
+    return data.candidates[0].content.parts[0].text;
+  } catch (err) {
+    console.error(err);
+    return "Network error";
+  }
+}
+
+
+
+
   const handleSendMessage = () => {
     if (!message.trim()) return;
     const newMsg: Message = { id: Date.now(), text: message, sender: 'user', timestamp: new Date() };
@@ -50,23 +97,24 @@ const ChatBot = () => {
     setIsTyping(true);
 
     // Simulate response
-    setTimeout(() => {
-      setMessages(prev => [...prev, {
-        id: Date.now() + 1,
-        text: getBotResponse(newMsg.text),
-        sender: 'bot',
-        timestamp: new Date()
-      }]);
-      setIsTyping(false);
-    }, 1500);
-  };
+   getGeminiResponse(newMsg.text).then((reply) => {
+  setMessages(prev => [
+    ...prev,
+    {
+      id: Date.now() + 1,
+      text: reply,
+      sender: "bot",
+      timestamp: new Date(),
+    },
+  ]);
+  
+  setIsTyping(false);
+});
 
-  const getBotResponse = (text: string) => {
-    const lower = text.toLowerCase();
-    if (lower.includes("job") || lower.includes("internship")) return "We have 15+ new opportunities listed in the Career Portal. Would you like to see them?";
-    if (lower.includes("mentor")) return "You can connect with Alumni mentors via the 'Success Stories' tab or the 'Find a Mentor' section.";
-    return "I can help you navigate the portal, find jobs, or connect with alumni. What do you need?";
-  };
+};
+
+  
+
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
@@ -98,7 +146,7 @@ const ChatBot = () => {
                   <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 border-2 border-indigo-600 rounded-full"></span>
                 </div>
                 <div>
-                  <CardTitle className="text-sm font-bold">Asthra Assistant</CardTitle>
+                  <CardTitle className="text-sm font-bold">Assistant</CardTitle>
                   {!isMinimized && <p className="text-[10px] text-indigo-100 opacity-90">Online & Ready to Help</p>}
                 </div>
               </div>

@@ -296,7 +296,7 @@
 
 
 
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -329,55 +329,126 @@ import {
 } from "lucide-react";
 import { AlumniNavbar } from "@/components/AlumniNavbar";
 import JobPostingForm from "./JobPostingForm";
+import { getInternships } from "../api/studentApi";
+
+interface Internship {
+  [x: string]: any;
+  id: number;
+  jobtitle: string;
+  company: string;
+  location: string;
+  jobtype: string;
+  duration: string;
+  stipend: string;
+  skills: string[];
+  deadline: string;
+  applicants: number;
+  jobdescription: string;
+  requiredskills: string[];
+  Responsibilities: string[];
+  benefits: string[];
+  companySize: string;
+  industry: string;
+}
+
 
 const AlumniCareerPortal = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isJobFormOpen, setIsJobFormOpen] = useState(false);
-
+  const[jobpostings,setJobPostings] = useState<Internship|null>();
   const jobListings = [
     {
-      id: 1,
-      title: "Senior Software Engineer",
-      company: "Tech Corp",
-      location: "San Francisco, CA",
-      type: "Full-time",
-      salary: "$120K - $180K",
-      postedBy: "John Smith (2015)",
-      postedDate: "2 days ago",
-      applications: 23,
-      isUrgent: true,
-      skills: ["React", "Node.js", "AWS", "TypeScript"],
-      description: "Join our engineering team to build next-generation products..."
+      
+  id: 1,
+  jobtitle: "Senior Software Engineer",
+  company: "Tech Corp",
+  location: "San Francisco, CA",
+  jobtype: "Full-time",
+  duration: "Permanent",
+  stipend: "$120K - $180K per year",
+  skills: ["React", "Node.js", "AWS", "TypeScript"],
+  deadline: "2026-03-15",
+  applicants: 23,
+  jobdescription: "Join our engineering team to design and build scalable cloud-based applications serving millions of users.",
+  requiredskills: ["3+ years React", "REST APIs", "Cloud deployment", "Database design"],
+  Responsibilities: [
+    "Develop scalable web applications",
+    "Collaborate with cross-functional teams",
+    "Optimize application performance",
+    "Participate in code reviews"
+  ],
+  benefits: [
+    "Health Insurance",
+    "401(k) Matching",
+    "Flexible Work Hours",
+    "Remote Work Options"
+  ],
+  companySize: "500-1000 employees",
+  industry: "Information Technology"
+
     },
     {
-      id: 2,
-      title: "Product Manager",
-      company: "Innovation Labs",
-      location: "New York, NY",
-      type: "Full-time",
-      salary: "$140K - $200K",
-      postedBy: "Sarah Chen (2012)",
-      postedDate: "1 week ago",
-      applications: 45,
-      isUrgent: false,
-      skills: ["Product Strategy", "Analytics", "Agile", "Leadership"],
-      description: "Lead product development for our flagship platform..."
-    },
+  id: 2,
+  jobtitle: "Backend Developer",
+  company: "NextGen Solutions",
+  location: "Bangalore, India",
+  jobtype: "Internship",
+  duration: "6 Months",
+  stipend: "₹25,000 per month",
+  skills: ["Java", "Spring Boot", "MySQL", "REST APIs"],
+  deadline: "2026-04-01",
+  applicants: 12,
+  jobdescription: "We are looking for a passionate backend developer intern to work on microservices and API development.",
+  requiredskills: ["Java fundamentals", "Spring Boot basics", "SQL knowledge"],
+  Responsibilities: [
+    "Develop RESTful APIs",
+    "Write clean and maintainable code",
+    "Assist in database schema design",
+    "Fix bugs and improve performance"
+  ],
+  benefits: [
+    "Internship Certificate",
+    "Pre-placement Offer Opportunity",
+    "Flexible Working Hours"
+  ],
+  companySize: "100-250 employees",
+  industry: "Software Development"
+},
     {
-      id: 3,
-      title: "Marketing Intern",
-      company: "Growth Co",
-      location: "Remote",
-      type: "Internship",
-      salary: "$20/hour",
-      postedBy: "Mike Johnson (2018)",
-      postedDate: "3 days ago",
-      applications: 12,
-      isUrgent: false,
-      skills: ["Digital Marketing", "Content Creation", "Analytics"],
-      description: "Gain hands-on experience in digital marketing..."
-    }
+  id: 3,
+  jobtitle: "Frontend Developer",
+  company: "InnovateX Labs",
+  location: "Remote",
+  jobtype: "Contract",
+  duration: "12 Months",
+  stipend: "$60 per hour",
+  skills: ["React", "Next.js", "Tailwind CSS", "TypeScript"],
+  deadline: "2026-03-25",
+  applicants: 45,
+  jobdescription: "Seeking a creative frontend developer to build responsive and high-performance web applications.",
+  requiredskills: ["React expertise", "State management", "Responsive design"],
+  Responsibilities: [
+    "Implement UI components",
+    "Optimize frontend performance",
+    "Collaborate with UX designers",
+    "Ensure cross-browser compatibility"
+  ],
+  benefits: [
+    "Fully Remote",
+    "Flexible Contract",
+    "Performance Bonuses"
+  ],
+  companySize: "50-100 employees",
+  industry: "Technology Consulting"
+}
   ];
+
+  useEffect(()=>{
+    getInternships().then((data:Internship)=>{
+      setJobPostings(data);
+    })
+    jobListings.push(jobpostings);
+  }, [])
 
   const applications = [
     {
@@ -512,7 +583,7 @@ const AlumniCareerPortal = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <AlumniNavbar/>
+      <AlumniNavbar />
       {/* Header */}
       <section className="relative py-20 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
@@ -570,10 +641,10 @@ const AlumniCareerPortal = () => {
                     <div className="flex items-start justify-between">
                       <div>
                         <div className="flex items-center space-x-2 mb-2">
-                          <CardTitle className="text-xl">{job.title}</CardTitle>
-                          {job.isUrgent && (
+                          <CardTitle className="text-xl">{job.jobtitle}</CardTitle>
+                          {/* {job.isUrgent && (
                             <Badge variant="destructive" className="text-xs">Urgent</Badge>
-                          )}
+                          )} */}
                         </div>
                         <CardDescription className="flex items-center space-x-4">
                           <span className="flex items-center">
@@ -595,10 +666,10 @@ const AlumniCareerPortal = () => {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between text-sm">
                         <div className="flex items-center space-x-4">
-                          <Badge variant="outline">{job.type}</Badge>
+                          <Badge variant="outline">{job.jobtype}</Badge>
                           <span className="flex items-center">
                             <DollarSign className="h-4 w-4 mr-1" />
-                            {job.salary}
+                            {job.stipend}
                           </span>
                         </div>
                       </div>
@@ -615,16 +686,16 @@ const AlumniCareerPortal = () => {
                       </div>
 
                       <p className="text-sm text-muted-foreground line-clamp-2">
-                        {job.description}
+                        {job.jobdescription}
                       </p>
 
                       <Separator />
 
                       <div className="flex items-center justify-between">
-                        <div className="text-xs text-muted-foreground">
+                        {/* <div className="text-xs text-muted-foreground">
                           <p>Posted by {job.postedBy}</p>
                           <p>{job.postedDate} • {job.applications} applications</p>
-                        </div>
+                        </div> */}
                         <div className="flex space-x-2">
                           <Button size="sm" variant="outline">
                             <ExternalLink className="h-4 w-4" />

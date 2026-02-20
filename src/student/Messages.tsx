@@ -1,5 +1,3 @@
-
-
 import { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "react-router-dom"; 
 import StudentLayout from "./StudentLayout";
@@ -37,7 +35,7 @@ const INITIAL_CONVERSATIONS = [
     id: 2,
     name: "Tony Stark",
     role: "CTO @ Stark Ind.",
-    avatar: "https://github.com/shadcn.png",
+    // avatar: "https://github.com/shadcn.png",
     status: "offline",
     lastMessage: "The internship applications close tomorrow.",
     time: "Yesterday",
@@ -72,6 +70,7 @@ export default function Messages() {
   );
   const [messageInput, setMessageInput] = useState("");
   const [isMobileView, setIsMobileView] = useState(false);
+
 
   // Sync URL ID with Active Chat
   useEffect(() => {
@@ -111,7 +110,7 @@ export default function Messages() {
       text: messageInput,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
-
+   
     setConversations(prev => prev.map(conv => {
       if (conv.id === activeChatId) {
         return {
@@ -123,7 +122,7 @@ export default function Messages() {
       }
       return conv;
     }));
-
+    
     setMessageInput("");
   };
 
@@ -322,18 +321,18 @@ export default function Messages() {
             // Empty State
             <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-slate-50/30">
               <div className="w-28 h-28 bg-purple-100 rounded-full flex items-center justify-center mb-6 animate-pulse">
-                <Send className="h-12 w-12 text-purple-600 ml-1" />
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Your Messages</h2>
+                 <Send className="h-12 w-12 text-purple-600 ml-1" />
+               </div>
+               {/* <h2 className="text-3xl font-bold text-gray-900 mb-3">Your Messages</h2> */}
               <p className="text-gray-500 max-w-sm text-lg leading-relaxed">
                 Connect with Alumni mentors, ask for guidance, and build your network.
               </p>
-              <div className="mt-8">
-                <Button className="rounded-full bg-slate-900 text-white px-8 py-6 text-lg hover:bg-slate-800 shadow-xl">
-                  Start a Conversation
-                </Button>
-              </div>
-            </div>
+            {/* //   <div className="mt-8">
+            //     <Button onClick={} className="rounded-full bg-slate-900 text-white px-8 py-6 text-lg hover:bg-slate-800 shadow-xl">
+            //       Start a Conversation
+            //     </Button>
+            //   </div> */}
+             </div>
           )}
         </Card>
 
@@ -341,3 +340,52 @@ export default function Messages() {
     </StudentLayout>
   );
 }
+// import { useEffect, useState } from "react";
+// import {
+//   connectWebSocket,
+//   sendWebSocketMessage,
+//   disconnectWebSocket
+// } from "../api/Messaging";
+
+// function App() {
+//   const [messages, setMessages] = useState<string[]>([]);
+//   const [input, setInput] = useState("");
+
+//   useEffect(() => {
+//     connectWebSocket((msg) => {
+//       setMessages((prev) => [...prev, msg]);
+//     });
+
+//     return () => {
+//       disconnectWebSocket();
+//     };
+//   }, []);
+
+//   const handleSend = () => {
+//     if (!input.trim()) return;
+//     sendWebSocketMessage(input);
+//     setInput("");
+//   };
+
+//   return (
+//     <div style={{ padding: "20px" }}>
+//       <h2>WebSocket Demo</h2>
+
+//       <input
+//         value={input}
+//         onChange={(e) => setInput(e.target.value)}
+//         placeholder="Type a message"
+//       />
+
+//       <button onClick={handleSend}>Send</button>
+
+//       <ul>
+//         {messages.map((msg, i) => (
+//           <li key={i}>{msg}</li>
+//         ))}
+//       </ul>
+//     </div>
+//   );
+// }
+
+// export default App;
