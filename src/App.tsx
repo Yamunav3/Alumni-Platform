@@ -60,7 +60,7 @@ import StaffSection from "./AdminPage/StaffSection";
 import StudentSection from "./AdminPage/StudentSection";
 import EventS from "./AdminPage/EventS";
 import ExploreOpp from "./pages/ExploreOpportunities";
-import Messages from "./student/Messages";
+import ChatComponent from "./student/Messages";
 
 const queryClient = new QueryClient();
 
@@ -116,7 +116,7 @@ const App = () => (
               <Route path="/student/events" element={<StudentEvents />} />
               <Route path="/student/profile" element={<StudentProfile />} />
               <Route path="/student/notifications" element={<StudentNotifications />} />
-              <Route path="/student/messages" element={<Messages />} />
+              <Route path="/student/messages" element={<ChatComponent />} />
               {/* Staff Routes */}
               <Route path="/staff/about" element={<StaffAbout />} />
               <Route path="/staff/career" element={<StaffCareerPortal />} />
