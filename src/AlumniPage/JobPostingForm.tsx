@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import toast from "react-hot-toast";
+import { postJob } from "@/api/AlumniAPI";
 
 interface JobPostingFormProps {
   open: boolean;
@@ -13,65 +14,62 @@ interface JobPostingFormProps {
 }
 
 const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps) => {
-  const [formData, setFormData] = useState({
-    title: "",
+  const initialFormState = {
+    jobtitle: "",
     company: "",
     location: "",
-    type: "Full-time",
-    salary: "",
-    description: "",
+    jobtype: "Full-time",
+    salary_range: "",
+    jobdescription: "",
     responsibilities: "",
     qualifications: "",
     benefits: "",
-    skills: "",
-    contactEmail: ""
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    requiredskills: "",
+    email: ""
   };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const [formData, setFormData] = useState({
+    ...initialFormState
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const newJob = {
-      id: Math.floor(Math.random() * 1000) + 4,
-      title: formData.title,
+
+    const payload = {
+      jobtitle: formData.jobtitle,
       company: formData.company,
       location: formData.location,
-      type: formData.type,
-      salary: formData.salary,
-      postedBy: "You (Current User)",
-      postedDate: "Just now",
-      applications: 0,
-      isUrgent: false,
-      skills: formData.skills.split(',').map(skill => skill.trim()).filter(skill => skill),
-      description: formData.description,
+      jobtype: formData.jobtype,
+      salary_range: formData.salary_range,
+      salary: formData.salary_range,
+      jobdescription: formData.jobdescription,
       responsibilities: formData.responsibilities.split('\n').filter(line => line.trim()),
       qualifications: formData.qualifications.split('\n').filter(line => line.trim()),
       benefits: formData.benefits.split('\n').filter(line => line.trim()),
-      contactEmail: formData.contactEmail
+      requiredskills: formData.requiredskills.split(',').map(skill => skill.trim()).filter(skill => skill),
+      skills: formData.requiredskills.split(',').map(skill => skill.trim()).filter(skill => skill),
+      email: formData.email,
+      contactEmail: formData.email
     };
 
-    onJobPosted(newJob);
-    onOpenChange(false);
-    
-    setFormData({
-      title: "",
-      company: "",
-      location: "",
-      type: "Full-time",
-      salary: "",
-      description: "",
-      responsibilities: "",
-      qualifications: "",
-      benefits: "",
-      skills: "",
-      contactEmail: ""
-    });
-    
-    toast.success("Job posted successfully!");
+    try {
+      setIsSubmitting(true);
+      const createdJob = await postJob(payload);
+      onJobPosted(createdJob);
+      onOpenChange(false);
+      setFormData(initialFormState);
+      toast.success("Job posted successfully!");
+    } catch (error: any) {
+      console.error("Failed to post job:", error);
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        error?.response?.data ||
+        "Failed to post job. Please try again.";
+      toast.error(String(errorMessage));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -91,8 +89,8 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
               <Input
                 id="title"
                 name="title"
-                value={formData.title}
-                onChange={handleChange}
+                value={formData.jobtitle}
+                onChange={(e)=> setFormData(prev => ({ ...prev, jobtitle: e.target.value }))}
                 required
               />
             </div>
@@ -103,7 +101,7 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
                 id="company"
                 name="company"
                 value={formData.company}
-                onChange={handleChange}
+                onChange={(e)=>setFormData(prev =>({...prev,company: e.target.value}))}
                 required
               />
             </div>
@@ -116,7 +114,7 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
                 id="location"
                 name="location"
                 value={formData.location}
-                onChange={handleChange}
+                onChange={(e)=>setFormData(prev =>({...prev,location: e.target.value}))}
                 required
               />
             </div>
@@ -126,8 +124,8 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
               <select
                 id="type"
                 name="type"
-                value={formData.type}
-                onChange={handleChange}
+                value={formData.jobtype}
+                onChange={(e)=>setFormData(prev =>({...prev,jobtype: e.target.value}))}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 required
               >
@@ -145,8 +143,8 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
             <Input
               id="salary"
               name="salary"
-              value={formData.salary}
-              onChange={handleChange}
+              value={formData.salary_range}
+              onChange={(e)=>setFormData(prev =>({...prev,salary_range: e.target.value}))}
               placeholder="e.g. $80K - $120K"
             />
           </div>
@@ -156,8 +154,8 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
             <Textarea
               id="description"
               name="description"
-              value={formData.description}
-              onChange={handleChange}
+              value={formData.jobdescription}
+              onChange={(e)=>setFormData(prev =>({...prev,jobdescription: e.target.value}))}
               rows={3}
               required
             />
@@ -169,7 +167,7 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
               id="responsibilities"
               name="responsibilities"
               value={formData.responsibilities}
-              onChange={handleChange}
+              onChange={(e)=>setFormData(prev =>({...prev,responsibilities: e.target.value}))}
               rows={3}
               placeholder="Design and implement scalable web applications&#10;Work closely with product managers and designers&#10;Mentor junior engineers"
             />
@@ -181,7 +179,7 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
               id="qualifications"
               name="qualifications"
               value={formData.qualifications}
-              onChange={handleChange}
+              onChange={(e)=>setFormData(prev =>({...prev,qualifications: e.target.value}))}
               rows={3}
               placeholder="5+ years in software engineering&#10;Strong knowledge of React & Node.js&#10;Experience with AWS services"
             />
@@ -193,7 +191,7 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
               id="benefits"
               name="benefits"
               value={formData.benefits}
-              onChange={handleChange}
+              onChange={(e)=>setFormData(prev =>({...prev,benefits: e.target.value}))}
               rows={2}
               placeholder="Health insurance&#10;401(k) matching&#10;Remote flexibility"
             />
@@ -204,8 +202,8 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
             <Input
               id="skills"
               name="skills"
-              value={formData.skills}
-              onChange={handleChange}
+              value={formData.requiredskills}
+              onChange={(e)=>setFormData(prev =>({...prev,requiredskills: e.target.value}))}
               placeholder="React, Node.js, AWS, TypeScript"
             />
           </div>
@@ -216,8 +214,8 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
               id="contactEmail"
               name="contactEmail"
               type="email"
-              value={formData.contactEmail}
-              onChange={handleChange}
+              value={formData.email}
+              onChange={(e)=>setFormData(prev =>({...prev,email: e.target.value}))}
               required
             />
           </div>
@@ -226,11 +224,14 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
             <Button 
               type="button" 
               variant="outline" 
+              disabled={isSubmitting}
               onClick={() => onOpenChange(false)}
             >
               Cancel
             </Button>
-            <Button type="submit">Post Job</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Posting..." : "Post Job"}
+            </Button>
           </div>
         </form>
       </DialogContent>

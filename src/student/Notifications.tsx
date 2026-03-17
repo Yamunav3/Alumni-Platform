@@ -4,7 +4,6 @@ import {
   Bell, Check, Trash2, Mail, Calendar, Briefcase, 
   Info, AlertCircle, X, CheckCheck
 } from "lucide-react";
-import StudentLayout from "./StudentLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -102,8 +101,7 @@ export default function Notifications() {
   };
 
   return (
-    <StudentLayout>
-      <div className="min-h-screen bg-gray-50/50 pb-20">
+    <div className="min-h-screen bg-gray-50/50 pb-20">
         <Toaster position="bottom-center" />
         
         {/* --- HEADER --- */}
@@ -226,6 +224,5 @@ export default function Notifications() {
           </Tabs>
         </div>
       </div>
-    </StudentLayout>
   );
 }

@@ -7,7 +7,6 @@ import {
   User, Mail, Phone, Briefcase, Award, BookOpen, Edit, MapPin, Calendar,
   Linkedin, Github, FileText, ExternalLink, Download, Upload
 } from "lucide-react";
-import StudentLayout from "./StudentLayout";
 import {
   Dialog,
   DialogContent,
@@ -126,6 +125,7 @@ export default function Profile() {
       })
       .then((data: Profile) => {
         setProfile(data);
+        localStorage.setItem("studentName", data.fullname);
         setFormData(data);
       })
       .catch((err) => {
@@ -163,18 +163,16 @@ export default function Profile() {
   };
 
   if (loading) return (
-    <StudentLayout>
-        <div className="flex items-center justify-center h-[80vh]">
-            <div className="animate-pulse flex flex-col items-center">
-                <div className="h-32 w-32 bg-gray-200 rounded-full mb-4"></div>
-                <div className="h-6 w-48 bg-gray-200 rounded"></div>
-            </div>
+    <div className="flex items-center justify-center h-[80vh]">
+        <div className="animate-pulse flex flex-col items-center">
+            <div className="h-32 w-32 bg-gray-200 rounded-full mb-4"></div>
+            <div className="h-6 w-48 bg-gray-200 rounded"></div>
         </div>
-    </StudentLayout>
+    </div>
   );
 
   return (
-    <StudentLayout>
+    <>
       {/* Profile Header */}
       <section className="bg-gradient-to-r from-purple-900 to-indigo-900 rounded-3xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl"></div>
@@ -480,6 +478,6 @@ export default function Profile() {
           </div>
         </DialogContent>
       </Dialog>
-    </StudentLayout>
+    </>
   );
 }

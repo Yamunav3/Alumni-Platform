@@ -1,6 +1,5 @@
 
-
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   Home, Users, Briefcase, Calendar, User, Bell, 
@@ -34,7 +33,7 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
-export function StudentSidebar({ className, isCollapsed, toggleSidebar }: SidebarProps) {
+function StudentSidebarComponent({ className, isCollapsed, toggleSidebar }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false); // Mobile state
   const location = useLocation();
   const navigate = useNavigate();
@@ -213,3 +212,5 @@ export function StudentSidebar({ className, isCollapsed, toggleSidebar }: Sideba
     </>
   );
 }
+
+export const StudentSidebar = memo(StudentSidebarComponent);

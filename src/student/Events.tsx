@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -6,14 +6,81 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link } from "react-router-dom";
-import StudentLayout from "./StudentLayout";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Calendar, MapPin, Users, Clock, Filter, Search, UserPlus, 
   Video, ChevronRight, Camera, Star, Sparkles, GraduationCap, Mic, Lightbulb
 } from "lucide-react";
 import SuggestEventForm from "./Events/SuggestEventForm"; // ✅ Import the form
+import { getEvents } from "../api/studentApi"; // ✅ Import the API function to fetch events
+// Events Interface
+interface Event{
+  id:number;
+  event_description:string;
+   event_name:string;
+   image:string;
+   time:string;
+}
 
+// Mock Events Data
+const EVENTS: Event[] = [
+  {
+    id: 1,
+    event_name: "AI & Machine Learning Summit",
+    event_description: "Join alumni working in AI to discuss the future of machine learning.",
+    image: "",
+    time: "2026-03-10T14:00:00"
+  },
+];
+
+const EventCard = ({ event }: { event: Event }) => {
+  const formattedTime = new Date(event.time).toLocaleString();
+
+  return (
+    <Card className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 group">
+      
+      {/* Image */}
+      <div className="relative h-52 overflow-hidden">
+        <img
+          src={`data:image/png;base64,${event.image}`}
+          alt={event.event_name}
+          className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+
+        <Badge className="absolute top-3 right-3 bg-white/90 text-gray-900 backdrop-blur">
+          Event
+        </Badge>
+      </div>
+
+      {/* Content */}
+      <CardContent className="p-5 space-y-3">
+
+        <h3 className="text-lg font-bold text-gray-900 group-hover:text-purple-600 transition">
+          {event.event_name}
+        </h3>
+
+        <p className="text-sm text-gray-600 line-clamp-3">
+          {event.event_description}
+        </p>
+
+        <div className="flex items-center text-sm text-gray-500 gap-2">
+          <Clock className="w-4 h-4 text-purple-500" />
+          {formattedTime}
+        </div>
+
+      </CardContent>
+
+      <CardFooter className="p-5 pt-0">
+        <Button className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-xl">
+          View Event
+        </Button>
+      </CardFooter>
+
+    </Card>
+  );
+};
 // --- MOCK DATA ---
 const UPCOMING_EVENTS = [
   {
@@ -72,14 +139,14 @@ const PAST_EVENTS = [
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1000"
   },
-  {
-    id: 5,
-    title: "Start-up Founders Panel",
-    date: "Oct 22, 2024",
-    photos: 45,
-    rating: 4.9,
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1000"
-  }
+  // {
+  //   id: 5,
+  //   title: "Start-up Founders Panel",
+  //   date: "Oct 22, 2024",
+  //   photos: 45,
+  //   rating: 4.9,
+  //   image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1000"
+  // }
 ];
 
 const CATEGORIES = [
@@ -93,6 +160,8 @@ const AlumniEvents = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [showSuggestForm, setShowSuggestForm] = useState(false); // ✅ State for modal
+const [events,setEvents] =useState<Event[]>([]);
+
 
   const filteredEvents = UPCOMING_EVENTS.filter(event => {
     const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -100,9 +169,18 @@ const AlumniEvents = () => {
     return matchesSearch && matchesCategory;
   });
 
+  useEffect(() => {
+    getEvents()
+      .then((data: Event[]) => {
+        setEvents(data);
+      })
+      .catch((error) => {
+        console.error("Failed to load events:", error);
+      });
+  }, []);
+
   return (
-    <StudentLayout>
-      <div className="min-h-screen bg-gray-50/30 pb-20">
+    <div className="min-h-screen bg-gray-50/30 pb-20">
         
         {/* --- HERO SECTION --- */}
         <section className="relative bg-slate-900 text-white py-16 overflow-hidden mb-10">
@@ -152,7 +230,7 @@ const AlumniEvents = () => {
               <TabsList className="bg-white border p-1 rounded-full shadow-sm h-auto inline-flex">
                 <TabsTrigger value="upcoming" className="rounded-full px-6 py-2.5 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Upcoming</TabsTrigger>
                 <TabsTrigger value="past" className="rounded-full px-6 py-2.5 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Past Events</TabsTrigger>
-                <TabsTrigger value="categories" className="rounded-full px-6 py-2.5 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Browse Categories</TabsTrigger>
+                {/* <TabsTrigger value="categories" className="rounded-full px-6 py-2.5 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Browse Categories</TabsTrigger> */}
               </TabsList>
             </div>
 
@@ -186,6 +264,7 @@ const AlumniEvents = () => {
             </div>
 
             {/* UPCOMING EVENTS */}
+
             <TabsContent value="upcoming" className="space-y-6">
               <AnimatePresence>
                 {filteredEvents.length === 0 ? (
@@ -262,7 +341,11 @@ const AlumniEvents = () => {
                 )}
               </AnimatePresence>
             </TabsContent>
-
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {events.map((event) => (
+    <EventCard key={event.id} event={event} />
+  ))}
+</div>
             {/* PAST EVENTS */}
             <TabsContent value="past">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -329,7 +412,6 @@ const AlumniEvents = () => {
         <SuggestEventForm open={showSuggestForm} onOpenChange={setShowSuggestForm} />
         
       </div>
-    </StudentLayout>
   );
 };
 

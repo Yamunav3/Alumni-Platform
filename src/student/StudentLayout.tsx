@@ -1,9 +1,10 @@
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 import { StudentSidebar } from "./StudentSidebar";
 import { cn } from "@/lib/utils";
 
 interface StudentLayoutProps {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
 }
 
@@ -19,12 +20,16 @@ export default function StudentLayout({ children, className }: StudentLayoutProp
     localStorage.setItem("sidebarCollapsed", JSON.stringify(isCollapsed));
   }, [isCollapsed]);
 
+  const toggleSidebar = useCallback(() => {
+    setIsCollapsed((current) => !current);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background flex">
       {/* Sidebar - Pass state & toggle function */}
       <StudentSidebar 
         isCollapsed={isCollapsed} 
-        toggleSidebar={() => setIsCollapsed(!isCollapsed)} 
+        toggleSidebar={toggleSidebar}
       />
 
       {/* Main Content - Dynamic Left Margin */}
@@ -36,7 +41,7 @@ export default function StudentLayout({ children, className }: StudentLayoutProp
         )}
       >
         <div className="flex-1 w-full max-w-[1600px] mx-auto">
-          {children}
+          {children ?? <Outlet />}
         </div>
       </main>
     </div>

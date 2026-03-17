@@ -1,26 +1,8 @@
-import axios from 'axios';
-
-export const getAllStudents = async () => {
-  try {
-    const response = await axios.get('http://localhost:8080/students',{
-      headers:{
-        'Authorization': `Bearer ${localStorage.getItem("token")}`
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching students:', error);
-    throw error;
-  }
-};
+import api from "./api";
 
 export const getStudentById = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:8080/students/${id}`,{
-      headers:{
-        'Authorization': `Bearer ${localStorage.getItem("token")}`
-      }
-    });
+    const response = await api.get(`/students/${id}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching student with ID ${id}:`, error);
@@ -28,49 +10,42 @@ export const getStudentById = async (id) => {
   }
 };
 
-export const getInternships= async ()=>{
-    try{
-        const response = await axios.get('http://localhost:8080/student/internships',{
-            headers:{
-                'Authorization': `Bearer ${localStorage.getItem("token")}`
-            }
-        });
-        return response.data;
-    }catch(error){
-        console.error('Error fetching internships:', error);
-        throw error;
-    }
-};
-
-
-export const getMentorships = async ()=>{
-  try{
-    const response = await axios.get('http://localhost:8080/api/v1/alumni/all',{
-      headers:{
-        'Authorization': `Bearer ${localStorage.getItem("token")}`
-      }
-    });
+export const getInternships = async () => {
+  try {
+    const response = await api.get("/student/internships");
     return response.data;
-  }
-  catch(error){
-    console.error('Error fetching mentorships:', error);
+  } catch (error) {
+    console.error("Error fetching internships:", error);
     throw error;
   }
 };
 
-export const getSuccessStories = async ()=>{
-  const token = localStorage.getItem("token");
-
-  try{
-    const response = await axios.get('http://localhost:8080/api/v1/student/getStory',{
-      headers:{
-        'Authorization': `Bearer ${token}`
-      }
-    }); 
+export const getMentorships = async () => {
+  try {
+    const response = await api.get("/api/v1/alumni/all");
     return response.data;
+  } catch (error) {
+    console.error("Error fetching mentorships:", error);
+    throw error;
   }
-  catch(error){ 
-    console.error('Error fetching success stories:', error);
+};
+
+export const getSuccessStories = async () => {
+  try {
+    const response = await api.get("/api/v1/student/getStory");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching success stories:", error);
+    throw error;
+  }
+};
+
+export const getEvents = async () => {
+  try {
+    const response = await api.get("/events/");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching events:", error);
     throw error;
   }
 };

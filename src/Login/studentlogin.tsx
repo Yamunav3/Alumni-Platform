@@ -45,7 +45,7 @@ const StudentLogin = () => {
         title: "Login Successful",
         description: "Welcome back, Student!",
        });
-    navigate("/student/home");}     
+    navigate("/student/profile");}     
   }
     
     // Here you would typically handle authentication

@@ -9,9 +9,6 @@ import {
   TrendingUp, Star, Zap, Calendar, ArrowUpRight
 } from "lucide-react";
 
-// Layout
-import StudentLayout from "../StudentLayout"; 
-
 // Components
 import SuccessStoryHero from "../SuccessStoryHero";
 import MentorshipSection from "./MentorshipSection";
@@ -77,8 +74,7 @@ useEffect(()=>{
 
    
   return (
-    <StudentLayout>
-      <div className="min-h-screen bg-gray-50/50">
+    <div className="min-h-screen bg-gray-50/50">
         
         {/* --- 1. HEADER SECTION --- */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
@@ -226,7 +222,6 @@ useEffect(()=>{
         </div>
 
       </div>
-    </StudentLayout>
   );
 };
 

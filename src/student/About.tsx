@@ -5,18 +5,22 @@ import {
   Users, Target, Lightbulb, Award, Globe, Rocket, Heart, Linkedin, Twitter, 
   Sparkles, TrendingUp, Zap, Briefcase, Loader2, Share2, Compass, Shield
 } from "lucide-react";
-import StudentLayout from "./StudentLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import api from "../api/api";
+import { postSuggestion} from "../api/staffapi";
 
 // --- FALLBACK DATA ---
 const FALLBACK_TEAM = [
-  { _id: "1", name: "Dr. Alan Grant", role: "Faculty Advisor", img: "", color: "from-blue-400 to-indigo-500" },
-  { _id: "2", name: "Sarah Connor", role: "Alumni Relations", img: "", color: "from-purple-400 to-pink-500" },
-  { _id: "3", name: "Tony Stark", role: "Tech Lead", img: "", color: "from-orange-400 to-red-500" },
+  { _id: "1", name: "Siddhardha", role: "Faculty Advisor", img: "", color: "from-blue-400 to-indigo-500" },
+  { _id: "2", name: "Renu Vijay Vara Prasad", role: "Alumni Relations", img: "", color: "from-purple-400 to-pink-500" },
+  { _id: "3", name: "Nikhil Siva", role: "Tech Lead", img: "", color: "from-yellow-400 to-red-500" },
+  { _id: "4", name: "Yamuna", role: "Tech Lead", img: "", color: "from-orange-400 to-red-500" },
 ];
 
 const statsData = [
@@ -35,17 +39,83 @@ const GRADIENTS = [
   "from-yellow-400 to-orange-500"
 ];
 
+interface Suggestions {
+  id:number;
+  student_name:string;
+  title:string;
+  submittedAt:string;
+  content:string;
+}
+
+// const suggestionsSeed: Suggestions[] = [
+//   {
+//     id: 1,
+//     studentName: "Siddharth Reddy",
+//     title: "Weekend alumni Q&A",
+//     submittedAt: "12 Mar 2026, 8:10 PM",
+//     content: "A monthly weekend Q&A with alumni would help students who cannot join weekday sessions.",
+//   },
+//   {
+//     id: 2,
+//     studentName: "Aanya Sharma",
+//     title: "Project showcase wall",
+//     submittedAt: "11 Mar 2026, 5:45 PM",
+//     content: "It would be useful to have a section where students can display projects and receive peer feedback.",
+//   },
+// ];
+
 export default function StudentAbout() {
   const navigate = useNavigate();
   const [teamMembers, setTeamMembers] = useState<any[]>(FALLBACK_TEAM);
   const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [suggestions, setSuggestions] = useState<Suggestions[]>(suggestionsSeed);
+  const [suggestionForm, setSuggestionForm] = useState({
+    student_name: localStorage.getItem("studentName") || "",
+    title: "",
+    content: "",
+  });
+
+  const handleSuggestionSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const student_name = suggestionForm.student_name.trim();
+    const title = suggestionForm.title.trim();
+    const content = suggestionForm.content.trim();
+
+    if (!student_name || !title || !content) {
+      return alert("Please fill in all fields before submitting your suggestion.");
+    }
+
+    try {
+      setIsSubmitting(true);
+
+      await postSuggestion({
+        student_name,
+        title,
+        content,
+      });
+
+      alert("Suggestion submitted successfully!");
+      setSuggestionForm({
+        student_name,
+        title: "",
+        content: "",
+      });
+    } catch (error) {
+      console.error("Failed to submit suggestion:", error);
+      alert("Failed to submit suggestion. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const fetchTeam = async () => {
       try {
         setLoading(true);
         // Ensure this matches your actual endpoint
-        const response = await api.get('/staff/all'); 
+        const response = await api.get('/api/v1/staff/all'); 
         
         if (response.data && Array.isArray(response.data)) {
           const processedData = response.data.map((member: any, index: number) => ({
@@ -63,11 +133,11 @@ export default function StudentAbout() {
         setLoading(false);
       }
     };
-    fetchTeam();
+    // fetchTeam();
   }, []);
 
   return (
-    <StudentLayout>
+    <>
       <div className="min-h-screen w-full bg-white pb-12 overflow-x-hidden">
         
         {/* --- SECTION 1: UNIQUE HERO (Tech Grid Style) --- */}
@@ -237,7 +307,9 @@ export default function StudentAbout() {
                       </div>
 
                       <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                         <Linkedin className="w-5 h-5 text-blue-600" />
+                         <a href="https://www.linkedin.com/in/siddhardha-vemulamada-35476b29a" target="_blank" rel="noopener noreferrer">
+                               <Linkedin className="w-5 h-5 text-blue-600" />
+                            </a>
                       </div>
                     </div>
                   </div>
@@ -247,22 +319,68 @@ export default function StudentAbout() {
           </div>
         </section>
 
-        {/* --- SECTION 4: CTA --- */}
-        {/* <section className="max-w-5xl mx-auto px-4 mt-20 mb-10">
-          <div className="bg-slate-900 rounded-[2rem] p-12 text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/50 to-purple-900/50"></div>
-            <div className="relative z-10">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Ready to transform your journey?
-              </h2>
-              <div className="flex justify-center gap-4">
-                <Button className="bg-white text-slate-900 hover:bg-gray-100 rounded-full px-8 h-12" onClick={()=>navigate('/login/student')}>Join as Student</Button>
-                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-full px-8 h-12 bg-transparent"  onClick={()=>navigate("/login/alumni")}>Join as Alumni</Button>
-              </div>
-            </div>
+        {/* --- SECTION 4: SUGGESTIONS --- */}
+        <section className="max-w-7xl mx-auto px-4 py-14">
+          <div className="mb-10 max-w-2xl">
+            <Badge className="mb-4 bg-blue-100 text-blue-700 hover:bg-blue-100">Student Suggestions</Badge>
+            <h2 className="text-3xl font-bold text-slate-900">Share what you want to see next</h2>
+            <p className="mt-3 text-slate-600">
+              Students can submit ideas, improvements, or requests. Each suggestion records the title,
+              student name, timestamp, and message content.
+            </p>
           </div>
-        </section> */}
 
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+            <Card className="border-slate-200 shadow-lg">
+              <CardContent className="p-6 sm:p-8">
+                <form className="space-y-5" onSubmit={handleSuggestionSubmit}>
+                  <div className="space-y-2">
+                    <Label htmlFor="studentName">Student name</Label>
+                    <Input
+                      id="studentName"
+                      defaultValue={suggestionForm.student_name}
+                      // onChange={(event) =>
+                      //   setSuggestionForm((current) => ({ ...current, studentName: event.target.value }))
+                      // }
+                      // placeholder="Enter your name"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="suggestionTitle">Suggestion title</Label>
+                    <Input
+                      id="suggestionTitle"
+                      value={suggestionForm.title}
+                      onChange={(event) =>
+                        setSuggestionForm((current) => ({ ...current, title: event.target.value }))
+                      }
+                      placeholder="Give your suggestion a short title"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="suggestionContent">Content</Label>
+                    <Textarea
+                      id="suggestionContent"
+                      value={suggestionForm.content}
+                      onChange={(event) =>
+                        setSuggestionForm((current) => ({ ...current, content: event.target.value }))
+                      }
+                      placeholder="Describe your idea or request"
+                      className="min-h-[140px] resize-none"
+                    />
+                  </div>
+
+                  <Button type="submit" className="bg-slate-900 hover:bg-slate-800">
+                    {isSubmitting ? "Submitting..." : "Submit Suggestion"}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+
+            
+          </div>
+        </section>
       </div>
 
       {/* --- SAFE CSS ANIMATIONS --- */}
@@ -285,6 +403,6 @@ export default function StudentAbout() {
           animation-delay: 3s;
         }
       `}</style>
-    </StudentLayout>
+    </>
   );
 }

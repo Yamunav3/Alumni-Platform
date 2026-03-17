@@ -22,12 +22,12 @@ const StudentProfileModal = ({ student, isOpen, onClose }: StudentProfileModalPr
           <DialogTitle className="flex items-center space-x-3">
             <Avatar className="h-12 w-12">
               <AvatarFallback className="text-lg">
-                {student.name.split(' ').map((n: string) => n[0]).join('')}
+                {student.fullname?.split(' ').map((n: string) => n[0]).join('')}
               </AvatarFallback>
             </Avatar>
             <div>
-              <h2 className="text-2xl font-bold">{student.name}</h2>
-              <p className="text-muted-foreground">{student.major} • {student.year}</p>
+              <h2 className="text-2xl font-bold">{student.fullname}</h2>
+              <p className="text-muted-foreground">{student.branch} • {student.yearofpassing}</p>
             </div>
           </DialogTitle>
         </DialogHeader>
@@ -50,7 +50,7 @@ const StudentProfileModal = ({ student, isOpen, onClose }: StudentProfileModalPr
                   <CardContent className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Student ID:</span>
-                      <span className="font-medium">{student.studentId}</span>
+                      <span className="font-medium">{student.studentID}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Email:</span>
@@ -58,15 +58,15 @@ const StudentProfileModal = ({ student, isOpen, onClose }: StudentProfileModalPr
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">GPA:</span>
-                      <span className="font-medium">{student.gpa}</span>
+                      {/* <span className="font-medium">{student.gpa}</span> */}
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Status:</span>
-                      <Badge variant="outline">{student.status}</Badge>
+                      {/* <Badge variant="outline">{student.status}</Badge> */}
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Last Active:</span>
-                      <span className="font-medium">{student.lastActive}</span>
+                      {/* <span className="font-medium">{student.lastActive}</span> */}
                     </div>
                   </CardContent>
                 </Card>
@@ -76,7 +76,7 @@ const StudentProfileModal = ({ student, isOpen, onClose }: StudentProfileModalPr
                     <CardTitle>Skills & Interests</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div>
+                    {/* <div>
                       <p className="font-medium mb-2">Technical Skills:</p>
                       <div className="flex flex-wrap gap-2">
                         {student.skills.map((skill: string) => (
@@ -85,21 +85,24 @@ const StudentProfileModal = ({ student, isOpen, onClose }: StudentProfileModalPr
                           </Badge>
                         ))}
                       </div>
-                    </div>
+                    </div> */}
                     <div>
                       <p className="font-medium mb-2">Interests:</p>
                       <div className="flex flex-wrap gap-2">
-                        {student.interests.map((interest: string) => (
-                          <Badge key={interest} variant="outline">
-                            {interest}
-                          </Badge>
-                        ))}
+                        {(typeof student.interests === "string"
+                                               ? (student.interests as string).split(",")
+                                               : student.interests
+                                 )?.map((interest) => (
+                           <Badge key={interest} variant="secondary" className="text-xs">
+                              {interest}
+                           </Badge>
+                         ))}
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card>
+                {/* <Card>
                   <CardHeader>
                     <CardTitle>Achievements</CardTitle>
                   </CardHeader>
@@ -113,9 +116,9 @@ const StudentProfileModal = ({ student, isOpen, onClose }: StudentProfileModalPr
                       ))}
                     </div>
                   </CardContent>
-                </Card>
+                </Card> */}
 
-                <Card>
+                {/* <Card>
                   <CardHeader>
                     <CardTitle>Documents & Links</CardTitle>
                   </CardHeader>
@@ -129,11 +132,11 @@ const StudentProfileModal = ({ student, isOpen, onClose }: StudentProfileModalPr
                       View Portfolio
                     </Button>
                   </CardContent>
-                </Card>
+                </Card> */}
               </div>
             </TabsContent>
 
-            <TabsContent value="projects" className="mt-6">
+            {/* <TabsContent value="projects" className="mt-6">
               <div className="grid gap-4">
                 {student.projects.map((project: any, index: number) => (
                   <Card key={index}>
@@ -147,9 +150,9 @@ const StudentProfileModal = ({ student, isOpen, onClose }: StudentProfileModalPr
                   </Card>
                 ))}
               </div>
-            </TabsContent>
+            </TabsContent> */}
 
-            <TabsContent value="events" className="mt-6">
+            {/* <TabsContent value="events" className="mt-6">
               <div className="space-y-4">
                 {student.eventsParticipated?.map((event: any, index: number) => (
                   <Card key={index}>
@@ -173,9 +176,9 @@ const StudentProfileModal = ({ student, isOpen, onClose }: StudentProfileModalPr
                   </Card>
                 ))}
               </div>
-            </TabsContent>
+            </TabsContent> */}
 
-            <TabsContent value="assessment" className="mt-6">
+            {/* <TabsContent value="assessment" className="mt-6">
               <div className="grid gap-6">
                 <Card>
                   <CardHeader>
@@ -243,7 +246,7 @@ const StudentProfileModal = ({ student, isOpen, onClose }: StudentProfileModalPr
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
+            </TabsContent> */}
           </Tabs>
         </div>
       </DialogContent>

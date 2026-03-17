@@ -29,16 +29,16 @@ const RecommendStudentModal = ({ student, opportunities, isOpen, onClose }: Reco
     });
   };
 
-  const getMatchScore = (opportunity: any) => {
-    const studentSkills = student.skills.map((s: string) => s.toLowerCase());
-    const requiredSkills = opportunity.requirements.map((r: string) => r.toLowerCase());
-    const matchingSkills = requiredSkills.filter((skill: string) => 
-      studentSkills.some((studentSkill: string) => 
-        studentSkill.includes(skill) || skill.includes(studentSkill)
-      )
-    );
-    return Math.round((matchingSkills.length / requiredSkills.length) * 100);
-  };
+  // const getMatchScore = (opportunity: any) => {
+  //   // const studentSkills = student.skills.map((s: string) => s.toLowerCase());
+  //   // const requiredSkills = opportunity.requirements.map((r: string) => r.toLowerCase());
+  //   // const matchingSkills = requiredSkills.filter((skill: string) => 
+  //     // studentSkills.some((studentSkill: string) => 
+  //     //   studentSkill.includes(skill) || skill.includes(studentSkill)
+  //     // )
+  //   );
+  //   return Math.round((matchingSkills.length / requiredSkills.length) * 100);
+  // };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -47,11 +47,11 @@ const RecommendStudentModal = ({ student, opportunities, isOpen, onClose }: Reco
           <DialogTitle className="flex items-center space-x-3">
             <Avatar>
               <AvatarFallback>
-                {student.name.split(' ').map((n: string) => n[0]).join('')}
+                {student.fullname.split(' ').map((n: string) => n[0]).join('')}
               </AvatarFallback>
             </Avatar>
             <div>
-              <h2 className="text-xl font-bold">Recommend {student.name}</h2>
+              <h2 className="text-xl font-bold">Recommend {student.fullname}</h2>
               <p className="text-muted-foreground">Find suitable opportunities for this student</p>
             </div>
           </DialogTitle>
@@ -62,8 +62,8 @@ const RecommendStudentModal = ({ student, opportunities, isOpen, onClose }: Reco
             <h3 className="text-lg font-semibold mb-3">Student Profile Summary</h3>
             <Card>
               <CardContent className="pt-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
+                <div className="grid grid-cols-1 gap-2">
+                  {/* <div>
                     <p className="text-sm font-medium mb-2">Skills:</p>
                     <div className="flex flex-wrap gap-1">
                       {student.skills.slice(0, 4).map((skill: string) => (
@@ -77,16 +77,19 @@ const RecommendStudentModal = ({ student, opportunities, isOpen, onClose }: Reco
                         </Badge>
                       )}
                     </div>
-                  </div>
+                  </div> */}
                   <div>
                     <p className="text-sm font-medium mb-2">Interests:</p>
                     <div className="flex flex-wrap gap-1">
-                      {student.interests.map((interest: string) => (
-                        <Badge key={interest} variant="outline" className="text-xs">
-                          {interest}
-                        </Badge>
-                      ))}
-                    </div>
+                        {(typeof student.interests === "string"
+                                               ? (student.interests as string).split(",")
+                                               : student.interests
+                                 )?.map((interest) => (
+                           <Badge key={interest} variant="secondary" className="text-xs">
+                              {interest}
+                           </Badge>
+                         ))}
+                      </div>
                   </div>
                 </div>
               </CardContent>
@@ -97,7 +100,7 @@ const RecommendStudentModal = ({ student, opportunities, isOpen, onClose }: Reco
             <h3 className="text-lg font-semibold mb-4">Available Opportunities</h3>
             <div className="space-y-4">
               {opportunities.map((opportunity) => {
-                const matchScore = getMatchScore(opportunity);
+                // const matchScore = getMatchScore(opportunity);
                 const isRecommended = recommendedOpportunities.has(opportunity.id);
                 
                 return (
@@ -108,13 +111,13 @@ const RecommendStudentModal = ({ student, opportunities, isOpen, onClose }: Reco
                           <div className="flex items-center space-x-2 mb-2">
                             <h4 className="font-semibold">{opportunity.title}</h4>
                             <Badge variant="outline">{opportunity.type}</Badge>
-                            <Badge 
+                            {/* <Badge 
                               className={matchScore >= 70 ? "bg-green-100 text-green-800" : 
                                         matchScore >= 50 ? "bg-yellow-100 text-yellow-800" : 
                                         "bg-red-100 text-red-800"}
                             >
                               {matchScore}% Match
-                            </Badge>
+                            </Badge> */}
                             {isRecommended && (
                               <Badge className="bg-green-600 text-white">
                                 <CheckCircle className="h-3 w-3 mr-1" />
@@ -142,7 +145,7 @@ const RecommendStudentModal = ({ student, opportunities, isOpen, onClose }: Reco
                           
                           <div>
                             <p className="text-sm font-medium mb-1">Requirements:</p>
-                            <div className="flex flex-wrap gap-1">
+                            {/* <div className="flex flex-wrap gap-1">
                               {opportunity.requirements.map((req: string) => {
                                 const isMatched = student.skills.some((skill: string) => 
                                   skill.toLowerCase().includes(req.toLowerCase()) || 
@@ -159,7 +162,7 @@ const RecommendStudentModal = ({ student, opportunities, isOpen, onClose }: Reco
                                   </Badge>
                                 );
                               })}
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                         

@@ -50,26 +50,31 @@ const ChatBot = () => {
 //   };
 
 
-const GEMINI_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const GEMINI_MODEL = "gemini-2.5-flash";
 
 async function getGeminiResponse(userMessage: string): Promise<string> {
+  if (!GEMINI_API_KEY) {
+    return "Missing Gemini API key. Add VITE_GEMINI_API_KEY in your .env file and restart the app.";
+  }
+
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
       {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: userMessage }],
-            },
-          ],
-        }),
-      }
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: userMessage }],
+          },
+        ],
+      }),
+    }
     );
 
     const data = await response.json();
@@ -79,7 +84,7 @@ async function getGeminiResponse(userMessage: string): Promise<string> {
       return data.error?.message || "Gemini API error";
     }
 
-    return data.candidates[0].content.parts[0].text;
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response from Gemini.";
   } catch (err) {
     console.error(err);
     return "Network error";

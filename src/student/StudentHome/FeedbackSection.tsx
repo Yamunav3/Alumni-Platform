@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal, message, Timeline } from "antd";
 import { MessageCircle, Star, Calendar, Video, Award, BookOpen, Send, FileText } from "lucide-react";
@@ -117,34 +116,34 @@ const FeedbackSection = () => {
       comment: "Excellent course with hands-on projects. The instructor was very knowledgeable and supportive throughout the journey.",
       date: "2024-01-20",
       verified: true
-    },
-    {
-      id: 2,
-      studentName: "Sarah Mitchell",
-      course: "Data Science Bootcamp",
-      rating: 4,
-      comment: "Great content and practical examples. Would have loved more time on advanced topics but overall very satisfied.",
-      date: "2024-01-18",
-      verified: true
-    },
-    {
-      id: 3,
-      studentName: "Ryan Chen",
-      course: "Digital Marketing Webinar",
-      rating: 5,
-      comment: "Incredibly insightful webinar! Learned practical strategies that I could implement immediately in my work.",
-      date: "2024-01-16",
-      verified: true
-    },
-    {
-      id: 4,
-      studentName: "Emily Rodriguez",
-      course: "Machine Learning Workshop",
-      rating: 4,
-      comment: "Good introduction to ML concepts. The hands-on exercises were particularly helpful for understanding the theory.",
-      date: "2024-01-14",
-      verified: true
     }
+    // {
+    //   id: 2,
+    //   studentName: "Sarah Mitchell",
+    //   course: "Data Science Bootcamp",
+    //   rating: 4,
+    //   comment: "Great content and practical examples. Would have loved more time on advanced topics but overall very satisfied.",
+    //   date: "2024-01-18",
+    //   verified: true
+    // },
+    // {
+    //   id: 3,
+    //   studentName: "Ryan Chen",
+    //   course: "Digital Marketing Webinar",
+    //   rating: 5,
+    //   comment: "Incredibly insightful webinar! Learned practical strategies that I could implement immediately in my work.",
+    //   date: "2024-01-16",
+    //   verified: true
+    // },
+    // {
+    //   id: 4,
+    //   studentName: "Emily Rodriguez",
+    //   course: "Machine Learning Workshop",
+    //   rating: 4,
+    //   comment: "Good introduction to ML concepts. The hands-on exercises were particularly helpful for understanding the theory.",
+    //   date: "2024-01-14",
+    //   verified: true
+    // }
   ];
 
   const openFeedbackForm = (event: AttendedEvent) => {
@@ -182,7 +181,7 @@ const FeedbackSection = () => {
     }
 
     try{
-    fetch("http://localhost:8080/api/v1/student/submitFeedback",{
+    fetch("http://localhost:8080/api/v1/student/submit_feedback",{
       method:"POST",
       headers:{
         "content-type":"application/json",

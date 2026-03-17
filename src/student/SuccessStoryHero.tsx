@@ -59,7 +59,7 @@ export default function SuccessStoryHero() {
   
   // Auto-play logic
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (isPlaying) {
       interval = setInterval(() => {
         handleNext();

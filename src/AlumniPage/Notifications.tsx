@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +15,7 @@ import {
   X
 } from "lucide-react";
 import { AlumniNavbar } from "@/components/AlumniNavbar";
+import { connectWebSocket ,sendMessage, subscribe} from "@/services/websocket";
 
 const notifications = [
   {
@@ -69,9 +70,35 @@ const notifications = [
   }
 ];
 
+type ChatMessage ={
+  id: 1;
+  title: "User";
+  message: string;
+  type: "notification";
+  unread:true;
+  time:"Just Now";
+  icon: "BellRing";
+  Category: "Notification"
+
+}
+
 export default function AlumniNotifications() {
   const [filter, setFilter] = useState("all");
-  const [notificationList, setNotificationList] = useState(notifications);
+  const [notificationList, setNotificationList] = useState(notifications); 
+  const[messages,setMessages] = useState<ChatMessage[]>([]);
+
+useEffect(() => {
+
+  connectWebSocket(() => {
+
+    subscribe("/topic/notifications", (message) => {
+      setMessages((prev)=>[...prev,message])
+      setNotificationList((prev)=>[...prev,message,...prev])
+    });
+
+  });
+
+}, []);
 
   const markAsRead = (id: number) => {
     setNotificationList(prev => 

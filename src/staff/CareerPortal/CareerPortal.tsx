@@ -1,6 +1,4 @@
-
-
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -31,20 +29,48 @@ import CreateWebinarForm from "./CreateWebinarForm";
 import ShareStoryForm from "./ShareStoryForm";
 import StaffNavbar from "../StaffNavbar";
 
+import {
+  getInternships,
+  getSuccessStories,
+} from "@/api/studentApi";
+
+interface CareerJob {
+  id: number;
+  title: string;
+  company: string;
+  location: string;
+  jobtype: string;
+  type?: string;
+  salary_range?: string;
+  salary?: string;
+  postedBy?: string;
+  postedDate: string;
+  applications: number;
+  isUrgent?: boolean;
+  requiredskills: string[];
+  skills?: string[];
+  description?: string;
+  responsibilities?: string[];
+  qualifications?: string[];
+  benefits?: string[];
+  contactEmail?: string;
+  companyDescription?: string;
+}
+
 // Sample data
-const initialJobs = [
+const initialJobs: CareerJob[] = [
   {
     id: 1,
     title: "Senior Frontend Developer",
     company: "TechCorp Inc.",
     location: "San Francisco, CA",
-    type: "Full-time",
-    salary: "$120K - $150K",
+    jobtype: "Full-time",
+    salary_range: "$120K - $150K",
     postedBy: "HR Team",
     postedDate: "2 days ago",
     applications: 45,
     isUrgent: true,
-    skills: ["React", "TypeScript", "Node.js"],
+    requiredskills: ["React", "TypeScript", "Node.js"],
     description: "Join our dynamic team to build cutting-edge web applications using modern technologies.",
     responsibilities: [
       "Develop and maintain user interfaces using React and TypeScript",
@@ -64,20 +90,20 @@ const initialJobs = [
       "Flexible work arrangements",
       "Professional development opportunities"
     ],
-    contactEmail: "hiring@techcorp.com"
+    //email: "hiring@techcorp.com"
   },
   {
     id: 2,
     title: "Product Manager",
     company: "StartupXYZ",
     location: "Remote",
-    type: "Full-time",
-    salary: "$100K - $130K",
+    jobtype: "Full-time",
+    salary_range: "$100K - $130K",
     postedBy: "Founder",
     postedDate: "1 week ago",
     applications: 23,
     isUrgent: false,
-    skills: ["Product Strategy", "Analytics", "Agile"],
+    requiredskills: ["Product Strategy", "Analytics", "Agile"],
     description: "Lead product development and strategy for our innovative SaaS platform."
   },
   {
@@ -85,13 +111,13 @@ const initialJobs = [
     title: "UX Designer",
     company: "DesignStudio",
     location: "New York, NY",
-    type: "Contract",
-    salary: "$80/hour",
+    jobtype: "Contract",
+    salary_range: "$80/hour",
     postedBy: "Creative Director",
     postedDate: "3 days ago",
     applications: 18,
     isUrgent: false,
-    skills: ["Figma", "User Research", "Prototyping"]
+    requiredskills: ["Figma", "User Research", "Prototyping"]
   }
 ];
 
@@ -163,12 +189,140 @@ const initialSuccessStories = [
   }
 ];
 
+interface Internship {
+  [x: string]: any;
+  id: number;
+  jobtitle: string;
+  company: string;
+  location: string;
+  jobtype: string;
+  duration: string;
+  stipend: string;
+  skills: string[];
+  deadline: string;
+  applicants: number;
+  jobdescription: string;
+  requiredskills: string[];
+  Responsibilities: string[];
+  benefits: string[];
+  companySize: string;
+  industry: string;
+}
+
+const formatPostedDate = (dateValue?: string) => {
+  if (!dateValue) return "Recently posted";
+  const parsedDate = new Date(dateValue);
+  if (Number.isNaN(parsedDate.getTime())) return String(dateValue);
+  return parsedDate.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+const formatSalaryRange = (value?: string) => {
+  if (!value) return "";
+  const trimmedValue = value.trim();
+  if (!trimmedValue) return "";
+  if (/^(INR|Rs\.?|₹|\$|€|£)/i.test(trimmedValue)) return trimmedValue;
+  return `INR ${trimmedValue}`;
+};
+
+const normalizeInternshipToJob = (internship: Internship, index: number): CareerJob => ({
+  id: internship.id ?? index + 1,
+  title: internship.jobtitle ?? internship.title ?? "Untitled Internship",
+  company: internship.company ?? "Unknown Company",
+  location: internship.location ?? "Location not specified",
+  jobtype: internship.jobtype ?? internship.type ?? internship.duration ?? "Internship",
+  type: internship.jobtype ?? internship.type ?? internship.duration ?? "Internship",
+  salary_range: internship.salary_range ?? internship.stipend ?? internship.salary,
+  salary: internship.salary_range ?? internship.stipend ?? internship.salary,
+  postedBy: internship.postedBy ?? internship.recruiter ?? "HR Team",
+  postedDate: formatPostedDate(
+    internship.postedDate ?? internship.createdAt ?? internship.created_at ?? internship.deadline
+  ),
+  applications: internship.applications ?? internship.applicants ?? 0,
+  isUrgent: Boolean(internship.isUrgent),
+  requiredskills: Array.isArray(internship.requiredskills)
+    ? internship.requiredskills
+    : Array.isArray(internship.skills)
+      ? internship.skills
+      : [],
+  skills: Array.isArray(internship.requiredskills)
+    ? internship.requiredskills
+    : Array.isArray(internship.skills)
+      ? internship.skills
+      : [],
+  description: internship.description ?? internship.jobdescription ?? "",
+  responsibilities: Array.isArray(internship.responsibilities)
+    ? internship.responsibilities
+    : Array.isArray(internship.Responsibilities)
+      ? internship.Responsibilities
+      : [],
+  qualifications: Array.isArray(internship.qualifications)
+    ? internship.qualifications
+    : Array.isArray(internship.requiredskills)
+      ? internship.requiredskills
+      : Array.isArray(internship.skills)
+        ? internship.skills
+        : [],
+  benefits: Array.isArray(internship.benefits) ? internship.benefits : [],
+  contactEmail: internship.contactEmail ?? internship.email,
+  companyDescription: internship.industry
+    ? `${internship.company ?? "This company"} operates in ${internship.industry}.`
+    : undefined,
+});
+
+interface SuccessStory{
+  id:number;
+  name:string;
+  graduationYear:string;
+  currentRole:string;
+  company:string;
+  previousRole?:string;
+  achievement:string;
+  brief:string;
+  tags:string[];
+  linkedin?:string;
+}
+
+interface SuccessStoryApiResponse{
+  id:number;
+  author:string;
+  content:string;
+  created_At?:string;
+  createdAt?:string;
+  title:string;
+  tags?: string[];
+  linkedin?: string;
+  company?: string;
+  currentRole?: string;
+  graduationYear?: string | number;
+  previousRole?: string;
+}
+
+const normalizeSuccessStory = (
+  story: SuccessStoryApiResponse,
+  index: number
+): SuccessStory => ({
+  id: story.id ?? index + 1,
+  name: story.author || "Alumni",
+  graduationYear: story.graduationYear ? String(story.graduationYear) : "Alumni Story",
+  currentRole: story.currentRole || story.title || "Career Journey",
+  company: story.company || "Asthra Alumni Network",
+  previousRole: story.previousRole,
+  achievement: story.title || "Shared a success story",
+  brief: story.content || "",
+  tags: Array.isArray(story.tags) && story.tags.length > 0 ? story.tags : ["Success Story"],
+  linkedin: story.linkedin,
+});
+
 const StudentCareerPortal = () => {
   // State management
-  const [jobs, setJobs] = useState(initialJobs);
+  const [jobs, setJobs] = useState<CareerJob[]>(initialJobs);
   const [applications, setApplications] = useState(initialApplications);
   const [webinars, setWebinars] = useState(initialWebinars);
-  const [successStories, setSuccessStories] = useState(initialSuccessStories);
+  const [successStories, setSuccessStories] = useState<SuccessStory[]>(initialSuccessStories);
   const [savedJobs, setSavedJobs] = useState<number[]>([]);
   const [connectedUsers, setConnectedUsers] = useState<string[]>([]);
   const [registeredWebinars, setRegisteredWebinars] = useState<number[]>([]);
@@ -184,7 +338,7 @@ const StudentCareerPortal = () => {
   // Selected items
   const [selectedJob, setSelectedJob] = useState<any>(null);
   const [selectedApplication, setSelectedApplication] = useState<any>(null);
-
+  
   // Application form state
   const [applicationForm, setApplicationForm] = useState({
     fullName: "",
@@ -202,6 +356,33 @@ const StudentCareerPortal = () => {
     privacyAgreement: false
   });
   const [resumeError, setResumeError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSuccessStories = async () => {
+      try {
+        const data = await getSuccessStories();
+
+        const storyList = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.stories)
+            ? data.stories
+            : [];
+
+        if (storyList.length > 0) {
+          setSuccessStories(
+            storyList.map((story: SuccessStoryApiResponse, index: number) =>
+              normalizeSuccessStory(story, index)
+            )
+          );
+        }
+      } catch (error) {
+        console.error("Error loading success stories:", error);
+        toast.error("Failed to load success stories");
+      }
+    };
+
+    fetchSuccessStories();
+  }, []);
 
   // Handlers
   const handleApplyClick = (job: any) => {
@@ -347,6 +528,30 @@ const StudentCareerPortal = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchInternships = async () => {
+      try {
+        const data = await getInternships();
+        const internshipList = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.internships)
+            ? data.internships
+            : [];
+
+        if (internshipList.length > 0) {
+          setJobs(internshipList.map((internship: Internship, index: number) =>
+            normalizeInternshipToJob(internship, index)
+          ));
+        }
+      } catch (error) {
+        console.error("Error loading internships for job portal:", error);
+        toast.error("Failed to load jobs from backend");
+      }
+    };
+
+    fetchInternships();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-primary-light/20">
       <Toaster position="top-right" />
@@ -417,23 +622,23 @@ const StudentCareerPortal = () => {
                         </div>
                         <div className="flex items-center">
                           <Clock className="h-4 w-4 mr-1" />
-                          {job.type}
+                          {job.jobtype}
                         </div>
                       </div>
                       
-                      {job.salary && (
+                      {job.salary_range && (
                         <div className="flex items-center text-sm">
                           <DollarSign className="h-4 w-4 mr-1 text-success" />
-                          <span className="font-medium text-success">{job.salary}</span>
+                          <span className="font-medium text-success">{formatSalaryRange(job.salary_range)}</span>
                         </div>
                       )}
                       
                       <div className="flex flex-wrap gap-1">
-                        {job.skills.slice(0, 3).map((skill: string, index: number) => (
+                        {job.requiredskills.slice(0, 3).map((skill: string, index: number) => (
                           <Badge key={index} variant="secondary" className="text-xs">{skill}</Badge>
                         ))}
-                        {job.skills.length > 3 && (
-                          <Badge variant="outline" className="text-xs">+{job.skills.length - 3} more</Badge>
+                        {job.requiredskills.length > 3 && (
+                          <Badge variant="outline" className="text-xs">+{job.requiredskills.length - 3} more</Badge>
                         )}
                       </div>
                       
@@ -698,7 +903,7 @@ const StudentCareerPortal = () => {
                           </div>
                           <div className="flex items-center">
                             <Clock className="h-4 w-4 mr-1" />
-                            {job.type}
+                            {job.jobtype}
                           </div>
                         </div>
                         

@@ -29,6 +29,14 @@ interface JobDetailsModalProps {
   savedJobs: number[];
 }
 
+const formatSalary = (value?: string) => {
+  if (!value) return "";
+  const trimmedValue = value.trim();
+  if (!trimmedValue) return "";
+  if (/^(INR|Rs\.?|₹|\$|€|£)/i.test(trimmedValue)) return trimmedValue;
+  return `INR ${trimmedValue}`;
+};
+
 const JobDetailsModal: React.FC<JobDetailsModalProps> = ({ 
   open, 
   onOpenChange, 
@@ -74,7 +82,7 @@ const JobDetailsModal: React.FC<JobDetailsModalProps> = ({
             {job.salary && (
               <div className="flex items-center space-x-2">
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{job.salary}</span>
+                <span className="text-sm">{formatSalary(job.salary)}</span>
               </div>
             )}
             <div className="flex items-center space-x-2">

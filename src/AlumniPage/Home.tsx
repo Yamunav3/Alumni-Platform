@@ -1,9 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { 
-  Calendar,
   Users,
   MessageSquare,
   BookOpen,
@@ -14,7 +12,6 @@ import {
   FolderOpen,
   Heart
 } from "lucide-react";
-import { useNavigate, Link } from "react-router-dom";
 import { AlumniNavbar } from "@/components/AlumniNavbar";
 
 
@@ -50,21 +47,19 @@ const recentFeedback = [
 ];
 
 export default function AlumniHome() {
-  const navigate = useNavigate();
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-slate-50">
       <AlumniNavbar/>
       {/* Hero Section */}
-      <section className="relative py-20 px-4 bg-indigo-200">
+      <section className="relative py-20 px-4 bg-gradient-to-r from-slate-900 to-slate-700">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center mb-6">
-            <Sparkles className="h-8 w-8 text-primary mr-3" />
-            <h1 className="text-4xl md:text-6xl font-semi-bold gradient-text">
+            <Sparkles className="h-8 w-8 text-slate-200 mr-3" />
+            <h1 className="text-4xl md:text-6xl font-semibold text-white">
               Welcome to Asthra
             </h1>
           </div>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-200 mb-8 max-w-3xl mx-auto">
             Your centralized alumni platform connecting past, present, and future. 
             Build meaningful relationships, advance your career, and give back to your community.
           </p>

@@ -47,10 +47,11 @@ import AlumniSignup from "./signup/alumnisignup";
 // Student Pages
 import StudentHome from "./student/StudentHome/StudentHome";
 import StudentAbout from "./student/About";
-import StudentCareerPortal from "./student/CareerPortal/CareerPortal";
+// import StudentCareerPortal from "./student/CareerPortal/CareerPortal";
 import StudentEvents from "./student/Events";
 import StudentProfile from "./student/Profile";
 import StudentNotifications from "./student/Notifications";
+import StudentLayout from "./student/StudentLayout";
 // import StudentMessage from "./student/Messages/StudentMessage"
 // Components
 import Footer from "./components/Footer";
@@ -108,15 +109,16 @@ const App = () => (
               <Route path="/student/register" element={<Register />} />
               
               {/* ✅ THIS WAS MISSING: Fixes the 404 error */}
-              <Route path="/student" element={<StudentHome />} /> 
-              
-              <Route path="/student/home" element={<StudentHome />} />
-              <Route path="/student/about" element={<StudentAbout />} />
-              <Route path="/student/career" element={<StudentCareerPortal />} />
-              <Route path="/student/events" element={<StudentEvents />} />
-              <Route path="/student/profile" element={<StudentProfile />} />
-              <Route path="/student/notifications" element={<StudentNotifications />} />
-              <Route path="/student/messages" element={<ChatComponent />} />
+              <Route path="/student" element={<StudentLayout />}>
+                <Route index element={<StudentHome />} />
+                <Route path="home" element={<StudentHome />} />
+                <Route path="about" element={<StudentAbout />} />
+                {/* <Route path="career" element={<StudentCareerPortal />} /> */}
+                <Route path="events" element={<StudentEvents />} />
+                <Route path="profile" element={<StudentProfile />} />
+                <Route path="notifications" element={<StudentNotifications />} />
+                <Route path="messages" element={<ChatComponent />} />
+              </Route>
               {/* Staff Routes */}
               <Route path="/staff/about" element={<StaffAbout />} />
               <Route path="/staff/career" element={<StaffCareerPortal />} />

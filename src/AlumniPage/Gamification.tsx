@@ -267,7 +267,7 @@ const AlumniGamification = () => {
 
   // Auto-play effect
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;;
     
     if (autoPlay) {
       interval = setInterval(() => {
