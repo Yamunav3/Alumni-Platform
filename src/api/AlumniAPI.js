@@ -1,5 +1,7 @@
 import api from "./api";
 
+// import { console } from "console";
+
 const normalizeText = (value, separator = ", ") => {
   if (Array.isArray(value)) {
     return value.map((item) => String(item).trim()).filter(Boolean).join(separator);
@@ -65,3 +67,56 @@ export const postJob = async (jobData) => {
   }
 };
 
+export const poststory = async (data)=>{
+
+  try{
+     const payload = {
+       title:data.title??"",
+       content:data.content??"",
+       author:data.author,
+     };
+    
+
+     try{
+        const response = await api.post("/api/v1/alumni/share_story",payload,{params:payload});
+         return response.data;
+     }catch(error){
+      const status = error?.response?.status;
+
+      if(status!=403 && status !=404)
+         throw error;
+     }
+  }catch(error){
+    console.log("Error in posting Story ....");
+    throw error;
+  }
+};
+
+
+export const postEvent = async (data)=>{
+    try{
+      const payload = {
+        eventname:data.eventname,
+        eventtype:data.eventtype,
+        description:data.description,
+        image:data.image,
+        time:data.time,
+        location:data.location,
+        date:data.date,
+      };
+
+      try {
+       const response = await api.post("/events/addEvent",payload,{params:payload});
+       return response.data;
+        
+      } catch (error) {
+        const status = error?.response?.status;
+
+      if(status!=403 && status !=404)
+         throw error;
+      }
+    }catch(err){
+      console.error(err.msg);
+      throw err;
+    }
+}

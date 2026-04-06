@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search, Plus, Globe2, Building2, GraduationCap, Link2 } from "lucide-react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -54,13 +54,140 @@ const alumniSeed: Alumni[] = [
   },
 ];
 
+import {getMentorships} from "../api/studentApi.js";
+
+interface alumni{
+  id:number,
+  collegeid:string,
+  email:string,
+  interests:string,
+  jobrole:string,
+  mobilenumber:number,
+  username:string,
+  workingcompany:string,
+  yearofpassing:string,
+  fullname:string,
+  branch:string,
+  github:string,
+  linked_in:string,
+}
+
+
+type AlumniProps = {
+  data: alumni;
+  onEdit: (alumni: alumni) => void;
+};
+
+const AlumniCard: React.FC<AlumniProps> = ({ data, onEdit }) => {
+  return (
+    <div className="bg-white shadow-md rounded-2xl p-4 border hover:shadow-lg transition">
+      
+      <h2 className="text-xl font-semibold">{data.fullname}</h2>
+      <p className="text-gray-600">{data.email}</p>
+
+      <div className="mt-2 space-y-1 text-sm">
+        <p><b>College ID:</b> {data.collegeid}</p>
+        <p><b>Branch:</b> {data.branch}</p>
+        <p><b>Year:</b> {data.yearofpassing}</p>
+        <p><b>Job Role:</b> {data.jobrole}</p>
+        <p><b>Company:</b> {data.workingcompany}</p>
+        <p><b>Mobile:</b> {data.mobilenumber}</p>
+      </div>
+
+      <div className="flex gap-2 mt-3">
+        <a href={data.github} target="_blank" className="text-blue-500">GitHub</a>
+        <a href={data.linked_in} target="_blank" className="text-blue-500">LinkedIn</a>
+      </div>
+
+      <button
+        onClick={() => onEdit(data)}
+        className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+      >
+        Edit
+      </button>
+    </div>
+  );
+};
+
+type EditProps = {
+  alumni: alumni;
+  onClose: () => void;
+  onSave: (updated: alumni) => void;
+};
+
+const EditAlumniModal: React.FC<EditProps> = ({ alumni, onClose, onSave }) => {
+  const [formData, setFormData] = useState<alumni>(alumni);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
+      <div className="bg-white p-6 rounded-xl w-96">
+
+        <h2 className="text-xl font-bold mb-4">Edit Alumni</h2>
+
+        <input name="fullname" value={formData.fullname} onChange={handleChange} className="input" placeholder="Full Name" />
+        <input name="email" value={formData.email} onChange={handleChange} className="input" placeholder="Email" />
+        <input name="jobrole" value={formData.jobrole} onChange={handleChange} className="input" placeholder="Job Role" />
+        <input name="workingcompany" value={formData.workingcompany} onChange={handleChange} className="input" placeholder="Company" />
+
+        <div className="flex gap-2 mt-4">
+          <button
+            onClick={() => onSave(formData)}
+            className="bg-green-600 text-white px-4 py-2 rounded"
+          >
+            Save
+          </button>
+
+          <button
+            onClick={onClose}
+            className="bg-gray-400 text-white px-4 py-2 rounded"
+          >
+            Cancel
+          </button>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 const AlumniSection: React.FC = () => {
   const [alumni] = useState<Alumni[]>(alumniSeed);
   const [search, setSearch] = useState("");
 
+  const[Alumni,setAlumni] = useState<alumni[] | []>([]);
+  const [selectedAlumni, setSelectedAlumni] = useState<alumni | null>(null);
+
+  //Method to update the data in database via admin
+  const handleSave = async (updated: alumni) => {
+  try {
+    //  await updateAlumni(updated.id, updated); // your API call
+
+    setAlumni((prev) =>
+      prev.map((a) => (a.id === updated.id ? updated : a))
+    );
+
+    setSelectedAlumni(null);
+  } catch (error) {
+    console.error("Update failed", error);
+  }
+};
+
+  useEffect(() => {
+      getMentorships().then((data:alumni[])=>{
+          setAlumni(data);
+      });
+   },[]);
+
   const filteredAlumni = useMemo(() => {
     const query = search.trim().toLowerCase();
-    if (!query) return alumni;
+    if (!query) return Alumni;
     return alumni.filter(
       (member) =>
         member.name.toLowerCase().includes(query) ||
@@ -69,7 +196,7 @@ const AlumniSection: React.FC = () => {
         member.currentRole.toLowerCase().includes(query) ||
         member.graduationYear.includes(query)
     );
-  }, [search, alumni]);
+  }, [search, Alumni]);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -90,7 +217,7 @@ const AlumniSection: React.FC = () => {
           <Card className="border-slate-200">
             <CardContent className="pt-6">
               <p className="text-sm text-slate-500">Total Alumni</p>
-              <p className="text-2xl font-semibold text-slate-900">{alumni.length}</p>
+              <p className="text-2xl font-semibold text-slate-900">{alumni.length + Alumni.length}</p>
             </CardContent>
           </Card>
           <Card className="border-slate-200">
@@ -113,7 +240,7 @@ const AlumniSection: React.FC = () => {
             <CardContent className="pt-6">
               <p className="text-sm text-slate-500">Departments</p>
               <p className="text-2xl font-semibold text-slate-900">
-                {new Set(alumni.map((member) => member.department)).size}
+                {new Set(alumni.map((member) => member.department)).size}+{new Set(Alumni.map((member)=>member.branch)).size}
               </p>
             </CardContent>
           </Card>
@@ -173,11 +300,29 @@ const AlumniSection: React.FC = () => {
                 <p className="text-sm text-slate-500">No alumni records found for the current search.</p>
               )}
             </div>
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  {Alumni?.map((alum) => (
+    <AlumniCard
+      key={alum.id}
+      data={alum}
+      onEdit={(data) => setSelectedAlumni(data)}
+    />
+  ))}
+</div>
           </CardContent>
         </Card>
       </div>
+      {selectedAlumni && (
+  <EditAlumniModal
+    alumni={selectedAlumni}
+    onClose={() => setSelectedAlumni(null)}
+    onSave={handleSave}
+  />
+)}
     </div>
   );
 };
+
+
 
 export default AlumniSection;

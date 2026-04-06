@@ -44,6 +44,10 @@ const [formData, setFormData] = useState({
     
     setError("");
     setSuccess("");
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+  
    try{
        setLoading(true);
         const response= await api.post("api/v1/auth/signin",{

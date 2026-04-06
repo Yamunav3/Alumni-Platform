@@ -29,6 +29,8 @@ const AdminLogin = () => {
       return;
     }
 
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshtoken");
     try{
       setLoading(true);
       // Admin login logic here

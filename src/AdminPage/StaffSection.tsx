@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search, Plus, Mail, Phone, Building2, Briefcase } from "lucide-react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,22 +41,29 @@ const staffSeed: StaffMember[] = [
     status: "On Leave",
   },
 ];
-
+import {getStaffDetails} from "../api/staffapi.js";
 const StaffSection: React.FC = () => {
   const [staff] = useState<StaffMember[]>(staffSeed);
   const [search, setSearch] = useState("");
+  const[Staff,setStaff]=useState<StaffMember[]>([]);
+
+  useEffect(()=>{
+     getStaffDetails().then((data:StaffMember[])=>{
+        setStaff(data);
+     })
+  },[]);
 
   const filteredStaff = useMemo(() => {
     const query = search.trim().toLowerCase();
-    if (!query) return staff;
-    return staff.filter(
+    if (!query) return Staff;
+    return Staff.filter(
       (member) =>
         member.name.toLowerCase().includes(query) ||
         member.email.toLowerCase().includes(query) ||
         member.designation.toLowerCase().includes(query) ||
         member.department.toLowerCase().includes(query)
     );
-  }, [search, staff]);
+  }, [search, Staff]);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -77,14 +84,14 @@ const StaffSection: React.FC = () => {
           <Card className="border-slate-200">
             <CardContent className="pt-6">
               <p className="text-sm text-slate-500">Total Staff</p>
-              <p className="text-2xl font-semibold text-slate-900">{staff.length}</p>
+              <p className="text-2xl font-semibold text-slate-900">{Staff.length}</p>
             </CardContent>
           </Card>
           <Card className="border-slate-200">
             <CardContent className="pt-6">
               <p className="text-sm text-slate-500">Active</p>
               <p className="text-2xl font-semibold text-slate-900">
-                {staff.filter((member) => member.status === "Active").length}
+                {Staff.filter((member) => member.status === "Active").length}
               </p>
             </CardContent>
           </Card>
@@ -92,7 +99,7 @@ const StaffSection: React.FC = () => {
             <CardContent className="pt-6">
               <p className="text-sm text-slate-500">Departments</p>
               <p className="text-2xl font-semibold text-slate-900">
-                {new Set(staff.map((member) => member.department)).size}
+                {new Set(Staff.map((member) => member.department)).size}
               </p>
             </CardContent>
           </Card>

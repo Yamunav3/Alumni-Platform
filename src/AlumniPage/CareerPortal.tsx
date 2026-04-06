@@ -1,4 +1,4 @@
-import { useState , useEffect} from "react";
+import React, { useState , useEffect} from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -32,6 +32,13 @@ import {
 import { AlumniNavbar } from "@/components/AlumniNavbar";
 import JobPostingForm from "./JobPostingForm";
 import { getInternships ,getSuccessStories } from "../api/studentApi";
+import {poststory } from "../api/AlumniAPI";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+// import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
+
+
 
 interface Internship {
   [x: string]: any;
@@ -79,10 +86,12 @@ const formatSalaryRange = (value?: string) => {
 
 
 const AlumniCareerPortal = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");   //search Bar implementation
   const [isJobFormOpen, setIsJobFormOpen] = useState(false);
   const [jobPostings, setJobPostings] = useState<Internship[]>([]);
   const[succesStories,setSuccesStories] = useState<Story[]>([]);
+  const [submit,setSubmit] = useState(false);
+  const[open,isOpen] = useState(true);
 
   useEffect(() => {
     const loadInternships = async () => {
@@ -110,6 +119,38 @@ const AlumniCareerPortal = () => {
      }
      loadStories();
   },[])
+const {toast} = useToast();
+  const handleSubmitStory = async (e:React.FormEvent<HTMLFormElement>)=>{
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+      const data = {
+        title:formData.get("title") as string,
+        content:formData.get("content") as string,
+        author:formData.get("author") as string,
+      }
+      if(!data.title || !data.content || !data.author ){
+          // alert("!ouch You missed some fields");
+          toast({
+            title:"Ouch You Missed",
+            description:"Data fields are Empty.Fill them before submitting",
+            variant:"destructive",
+          });
+        return ;
+      }
+    try{
+      setSubmit(true);
+      
+     const res = await  poststory(data);
+
+     setSuccesStories(prev =>[...prev,res]);
+    }catch(error){
+      console.error(error.msg);
+       throw error;
+     }finally{
+      setSubmit(false);
+      isOpen(false);
+     }
+}
 
   const filteredJobListings = jobPostings.filter((job) => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -417,13 +458,42 @@ const AlumniCareerPortal = () => {
 
           {/* Success Stories */}
           <TabsContent value="success-stories" className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold">Alumni Articles</h2>
-              <Button>
-                <Award className="h-4 w-4 mr-2" />
-                Share Your Article
-              </Button>
-            </div>
+            <Dialog open={open} onOpenChange={isOpen}>
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-2xl font-semibold">Alumni Articles</h2>
+
+               <DialogTrigger asChild>
+                <Button>
+               <Award className="h-4 w-4 mr-2" />
+                   Share Your Article
+                </Button>
+            </DialogTrigger>
+                 </div>
+
+             <DialogContent className="sm:max-w-[500px]">
+               <DialogHeader>
+                  <DialogTitle>Share Your Article</DialogTitle>
+               </DialogHeader>
+
+                {/* Form */}
+                <form onSubmit={handleSubmitStory} >
+                  <div className="space-y-4">
+                    <Input placeholder="Title" name="title"/>
+
+                      <Textarea placeholder="Write your article here..." name="content" />
+
+                   <Input placeholder="Your Name" name="author"/>
+                  </div>
+
+                <DialogFooter>
+
+                     <Button disabled={submit} className=" hover:bg-slate-800">
+                      {submit?"submitting ...":"submit"}
+                       </Button>
+                </DialogFooter>
+                </form>
+             </DialogContent>
+          </Dialog>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {succesStories.map((story) => (

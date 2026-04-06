@@ -33,7 +33,7 @@ const navigation = [
   { name: "Events", href: "/alumni/events", icon: CalendarDays },
   { name: "Donations", href: "/alumni/donations", icon: Heart },
   { name: "Gamification", href: "/alumni/gamification", icon: Trophy },
-  { name: "About", href: "/alumni/about", icon: Users },
+  // { name: "About", href: "/alumni/about", icon: Users },
   { name: "Notifications", href: "/alumni/notifications", icon: Bell },
   { name: "Profile", href: "/alumni/profile", icon: User },
 ];
