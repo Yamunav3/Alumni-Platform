@@ -53,4 +53,14 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  define: {
+    global: "window", // ✅ Vite is strict (no automatic polyfills like CRA)
+// Libraries like:
+// @stomp/stompjs     
+// sockjs-client
+// 👉 internally depend on Node globals like:
+// global
+// process
+// buffer
+  },
 }));

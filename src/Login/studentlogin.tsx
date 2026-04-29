@@ -29,8 +29,10 @@ const StudentLogin = () => {
       });
       return;
     }
-
     try{
+
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshtoken');
       setLoading(true);
       const response = await api.post('api/v1/auth/signin', {
       username: formData.username,

@@ -41,7 +41,11 @@ const staffSeed: StaffMember[] = [
     status: "On Leave",
   },
 ];
+
+
 import {getStaffDetails} from "../api/staffapi.js";
+
+
 const StaffSection: React.FC = () => {
   const [staff] = useState<StaffMember[]>(staffSeed);
   const [search, setSearch] = useState("");

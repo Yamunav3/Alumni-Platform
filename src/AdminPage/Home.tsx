@@ -16,6 +16,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+import {NotificationListener} from "../api/Notifications.js";
+
+
 const summaryCards = [
   { label: "Alumni", value: "3,482", icon: Users, delta: "+6.2%" },
   { label: "Staff", value: "214", icon: UserCheck, delta: "+1.4%" },
@@ -48,8 +51,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-slate-50">
       <AdminNavbar />
-
-      <div className="mx-auto max-w-7xl px-4 py-8 space-y-6">
+       <NotificationListener />
+             <div className="mx-auto max-w-7xl px-4 py-8 space-y-6">
         <Card className="border-slate-200 bg-gradient-to-r from-slate-900 to-slate-700 text-white">
           <CardContent className="p-6 md:p-8 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div>
