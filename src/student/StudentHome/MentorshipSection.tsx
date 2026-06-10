@@ -36,12 +36,8 @@ interface Mentor {
     duration: string;
     sector: string;
   }[];
-  // workingcompany:string;
 }
 
-// interface MentorshipSectionProps {
-//   mentors: Mentor[];
-// }
 
 const MentorshipSection = () => {
   const[mentors,setMentors] = useState<Mentor[]| null>([]);
@@ -57,27 +53,9 @@ const MentorshipSection = () => {
   };
 
   const token=localStorage.getItem("token");
+
+  // Fetching mentorships from DB(Mentors who are alumni of Organization or College)
 useEffect(()=>{
-
-  //  fetch("http://localhost:8080/api/v1/alumni/all",{
-  //   method:"GET",
-  //   headers:{
-  //     "Content-Type":"application/json",
-  //     "Authorization":`Bearer ${token}`
-  //   }
-
-  //  }).then((res)=>{
-  //   if(!res.ok){
-  //     return ;
-  //   }
-  //     return res.json();
-  //  }).then((data:Mentor[])=>{
-  //   console.log("mentors data:",data);
-  //   setMentors(data);
-     
-  //  }).catch((err)=>{
-  //   console.log(err);
-  //  })
     getMentorships().then((data:Mentor[])=>{
       setMentors(data);
     });

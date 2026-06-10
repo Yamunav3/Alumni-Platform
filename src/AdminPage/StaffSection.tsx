@@ -44,6 +44,7 @@ const staffSeed: StaffMember[] = [
 
 
 import {getStaffDetails} from "../api/staffapi.js";
+import { useNavigate } from "react-router-dom";
 
 
 const StaffSection: React.FC = () => {
@@ -68,6 +69,12 @@ const StaffSection: React.FC = () => {
         member.department.toLowerCase().includes(query)
     );
   }, [search, Staff]);
+  //Navigation from React-router-dom
+const navigate = useNavigate();
+// Method to handle new user registration
+const handleAdd = ()=>{
+  navigate('/signup/staff');
+}
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -78,7 +85,7 @@ const StaffSection: React.FC = () => {
             <h1 className="text-3xl font-bold text-slate-900">Staff Management</h1>
             <p className="text-slate-600 mt-1">Manage department teams and operational roles.</p>
           </div>
-          <Button className="bg-slate-900 hover:bg-slate-800">
+          <Button className="bg-slate-900 hover:bg-slate-800" onClick={()=>handleAdd()}>
             <Plus className="h-4 w-4 mr-2" />
             Add Staff
           </Button>

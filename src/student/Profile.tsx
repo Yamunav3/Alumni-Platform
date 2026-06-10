@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import api from '../api/api';
 // Types
 interface Skill {
   id: number;
@@ -48,6 +49,7 @@ interface Achievement {
 }
 
 interface Profile {
+  id:number,
   fullname: string;
   branch: string;
   yearofpassing: string;
@@ -83,6 +85,7 @@ export default function Profile() {
     
     // Fallback mock data with new fields
     const mockProfile: Profile = {
+        id:1,
         fullname: "John Doe",
         branch: "Computer Science",
         yearofpassing: "2025",
@@ -154,11 +157,25 @@ export default function Profile() {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async  () => {
+    // Add API call here to save changes (PUT request)
     if (formData) {
-      setProfile(formData);
+      // setProfile(formData);
+      let id=formData.id;
+      try {
+        setLoading(true);
+         const res = await api.put(`/api/v1/student/${id}/update`,{
+          formdata:formData
+         });
+         if(res.status==200 || res.status==201 )
+            console.log("Updated user details successfully");
+      }catch(e){
+          console.error(e.message);
+
+      }finally{
       setIsEditModalOpen(false);
-      // Add API call here to save changes (PUT request)
+       setLoading(false);
+      }
     }
   };
 

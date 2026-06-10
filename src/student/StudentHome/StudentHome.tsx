@@ -50,28 +50,6 @@ const [profile,setProfile]=useState<profile|null>(null);
     setTimeout(() => setLoading(false), 400); // Slight delay for animation feel
   };
 
-
-
-useEffect(()=>{
- 
-  fetch('http://localhost:8080/api/v1/student',{
-   
-    method:'GET',
-    headers:{ 
-      'Content-Type':'application/json',
-      'Authorization':`Bearer ${token}`
-    }
-  }).then((res)=>{
-    if(!res.ok){  
-      return;
-    }
-    return res.json();
-  }).then((data:profile)=>{
-    setProfile(data);
-  }).catch((err)=>{
-    console.error(err);
-  })},[]);
-
    
   return (
     <div className="min-h-screen bg-gray-50/50">
@@ -103,19 +81,19 @@ useEffect(()=>{
         </div>
 
         {/* --- 2. BENTO GRID HERO (Unique Layout) --- */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
+             */}
             {/* Left: The Success Story Carousel (Takes up 2/3 width) */}
             <div className="lg:col-span-2">
                <SuccessStoryHero />
             </div>
 
             {/* Right: Quick Stats & Actions (Takes up 1/3 width) */}
-            <div className="flex flex-col gap-6">
+            {/* <div className="flex flex-col gap-6"> */}
               
               {/* Stat Card 1: Profile */}
-              <Card className="rounded-3xl border-none shadow-lg bg-gradient-to-br from-indigo-600 to-purple-700 text-white relative overflow-hidden h-full">
+              {/* <Card className="rounded-3xl border-none shadow-lg bg-gradient-to-br from-indigo-600 to-purple-700 text-white relative overflow-hidden h-full">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
                 <CardContent className="p-6 flex flex-col justify-between h-full relative z-10">
                   <div className="flex justify-between items-start">
@@ -132,10 +110,10 @@ useEffect(()=>{
                     </Button>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
 
               {/* Stat Card 2: Upcoming */}
-              <Card className="rounded-3xl border shadow-sm bg-white h-full group hover:shadow-md transition-all">
+              {/* <Card className="rounded-3xl border shadow-sm bg-white h-full group hover:shadow-md transition-all">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="p-2 bg-orange-100 text-orange-600 rounded-xl">
@@ -158,11 +136,11 @@ useEffect(()=>{
                     </div>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
 
-            </div>
+            {/* </div>
           </div>
-        </div>
+        </div> */}
 
         {/* --- 3. FLOATING TABS SECTION --- */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -203,12 +181,12 @@ useEffect(()=>{
 
                 <TabsContent value="webinars" className="mt-0">
                   <SectionHeader title="Live Sessions" subtitle="Learn from the best in the industry." />
-                  <WebinarSection webinars={webinars} />
+                  <WebinarSection></WebinarSection>
                 </TabsContent>
 
                 <TabsContent value="training" className="mt-0">
                   <SectionHeader title="Skill Up" subtitle="Courses designed to get you hired." />
-                  <TrainingSection trainings={trainings} />
+                  <TrainingSection />
                 </TabsContent>
 
                 <TabsContent value="feedback" className="mt-0">

@@ -1,10 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState , useEffect } from "react";
 import { Search, Plus, CalendarDays, MapPin, Users } from "lucide-react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { P } from "node_modules/framer-motion/dist/types.d-DsEeKk6G";
 
 type EventItem = {
   eventName: string;
@@ -45,6 +46,7 @@ const eventsSeed: EventItem[] = [
 const EventS: React.FC = () => {
   const [events] = useState<EventItem[]>(eventsSeed);
   const [search, setSearch] = useState("");
+   const [addevent,setAddEvent] = useState(false);
 
   const filteredEvents = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -57,6 +59,11 @@ const EventS: React.FC = () => {
         event.status.toLowerCase().includes(query)
     );
   }, [search, events]);
+ 
+  const handleAdd = () => {
+    setAddEvent(true);
+  };
+  
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -67,11 +74,23 @@ const EventS: React.FC = () => {
             <h1 className="text-3xl font-bold text-slate-900">Event Management</h1>
             <p className="text-slate-600 mt-1">Plan, review, and publish events across the platform.</p>
           </div>
-          <Button className="bg-slate-900 hover:bg-slate-800">
+          <Button className="bg-slate-900 hover:bg-slate-800" onClick={()=>handleAdd()}>
             <Plus className="h-4 w-4 mr-2" />
             Add Event
           </Button>
         </div>
+
+        {addevent && (
+          <div className="mt-4 p-4 border rounded bg-gray-100">
+            <h3>Event adding is coming soon...</h3>
+            <Button
+              className="mt-2 bg-red-600 hover:bg-red-500"
+              onClick={() => setAddEvent(false)}
+            >
+              Close
+            </Button>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="border-slate-200">

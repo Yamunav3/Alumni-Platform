@@ -21,6 +21,7 @@ const FALLBACK_TEAM = [
   { _id: "2", name: "Renu Vijay Vara Prasad", role: "Alumni Relations", img: "", color: "from-purple-400 to-pink-500" },
   { _id: "3", name: "Nikhil Siva", role: "Tech Lead", img: "", color: "from-yellow-400 to-red-500" },
   { _id: "4", name: "Yamuna", role: "Tech Lead", img: "", color: "from-orange-400 to-red-500" },
+  {_id:"5",name:"Hepsiba",role:"Tech Lead",img:"",color:"from-green-400 to red-500"},
 ];
 
 const statsData = [

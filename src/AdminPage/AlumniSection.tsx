@@ -55,6 +55,7 @@ const alumniSeed: Alumni[] = [
 ];
 
 import {getMentorships} from "../api/studentApi.js";
+import { useNavigate } from "react-router-dom";
 
 interface alumni{
   id:number,
@@ -197,6 +198,12 @@ const AlumniSection: React.FC = () => {
         member.graduationYear.includes(query)
     );
   }, [search, Alumni]);
+  //Navitgate from react-router-dom
+  const navigate = useNavigate();
+  //function to navigate signup page for new user registration.
+  const handleAdd = ()=>{
+    navigate('/signup/alumni');
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -207,7 +214,7 @@ const AlumniSection: React.FC = () => {
             <h1 className="text-3xl font-bold text-slate-900">Alumni Management</h1>
             <p className="text-slate-600 mt-1">Track alumni records, roles, and professional engagement.</p>
           </div>
-          <Button className="bg-slate-900 hover:bg-slate-800">
+          <Button className="bg-slate-900 hover:bg-slate-800" onClick={()=>handleAdd()}>
             <Plus className="h-4 w-4 mr-2" />
             Add Alumni
           </Button>

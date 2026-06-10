@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 type Student = {
   name: string;
@@ -87,6 +88,12 @@ const StudentSection: React.FC = () => {
     );
   }, [search, students]);
 
+  const navigate = useNavigate();
+
+  const handleAdd = ()=>{
+    navigate('/signup/student');
+  }
+
   return (
     <div className="min-h-screen bg-slate-50">
       <AdminNavbar />
@@ -96,7 +103,7 @@ const StudentSection: React.FC = () => {
             <h1 className="text-3xl font-bold text-slate-900">Student Management</h1>
             <p className="text-slate-600 mt-1">Review student records and graduation pipelines.</p>
           </div>
-          <Button className="bg-slate-900 hover:bg-slate-800">
+          <Button className="bg-slate-900 hover:bg-slate-800" onClick={()=>handleAdd()}>
             <Plus className="h-4 w-4 mr-2" />
             Add Student
           </Button>
