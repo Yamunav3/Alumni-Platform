@@ -13,7 +13,7 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { set } from "date-fns";
-import { getMentorships } from "../../api/studentApi";
+import { getMentorships ,sendConnectionRequest } from "../../api/studentApi";
 
 
 interface Mentor {
@@ -49,6 +49,7 @@ const MentorshipSection = () => {
   );
 
   const handleConnect = (mentorId: number) => {
+     notifyAlumni(mentorId);
     setConnectedMentors((prev) => new Set([...prev, mentorId]));
   };
 
@@ -61,6 +62,13 @@ useEffect(()=>{
     });
 },[])
 
+// Push Notification to Alumni when user wanted to connect 
+const notifyAlumni = (id:number)=>{
+     sendConnectionRequest(id);
+     console.log("Notify Alumni method has been called...");  
+   };
+
+  //  View the Profile of selected Alumni/Mentor Candidate
 const showProfile = (mentor: Mentor) => {
     setSelectedMentor(mentor);
     setIsProfileModalOpen(true);
@@ -213,55 +221,15 @@ const showProfile = (mentor: Mentor) => {
               </div>
             </div>
 
-            {/* Education */}
-            <div className="mb-6">
-              <h3 className="text-xl font-semibold mb-3 flex items-center text-black gap-2">
-                <GraduationCap className="h-5 w-5 text-primary" />
-                Education
-              </h3>
-              <p className="text-primary-500">{selectedMentor.education}</p>
-            </div>
 
-            {/* Skills */}
-            <div className="mb-6">
-              <h3 className="text-xl text-purple font-semibold mb-3">
-                Skills & Expertise
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {selectedMentor.skills.map((skill) => (
-                  <Badge key={skill} variant="outline" className="px-3 py-1">
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
-            </div>
+ {/* Will also include and add skills && Work experience list of Each alumni Candidate */}
+ {/* Education */}
 
-            {/* Work Experience */}
-            <div className="mb-6">
-              <h3 className="text-xl font-semibold mb-3 flex items-center gap-2  text-black">
-                <Briefcase className="h-5 w-5 text-primary" />
-                Work Experience
-              </h3>
-              <div className="space-y-4">
-                {selectedMentor.workExperience.map((exp, index) => (
-                  <div
-                    key={index}
-                    className="border-l-4 border-primary pl-4 py-2"
-                  >
-                    <h4 className="font-semibold text-black text-lg">
-                      {exp.role}
-                    </h4>
-                    <p className="text-black text-lg font-medium">
-                      {exp.company}
-                    </p>
-                    <p className="text-sm text-black-300">
-                      {exp.duration} • {exp.sector}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
+ {/* Skills */}
+               
+ {/* Work Experience */}
+            
+      
             {/* Connect Button */}
             <div className="text-center">
               <Button

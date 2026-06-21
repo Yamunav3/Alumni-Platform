@@ -20,7 +20,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 const navItems = [
   { name: "Home", href: "/student", icon: Home },
   { name: "About Us", href: "/student/about", icon: Users },
-  // { name: "Career Portal", href: "/student/career", icon: Briefcase },
   { name: "Events", href: "/student/events", icon: Calendar },
   { name: "Messages", href: "/student/messages", icon: MessageSquare },
   { name: "Profile", href: "/student/profile", icon: User },
@@ -127,7 +126,7 @@ function StudentSidebarComponent({ className, isCollapsed, toggleSidebar }: Side
       {/* Footer Section */}
       <div className="p-3 border-t border-border/50">
         {isCollapsed ? (
-          // ✅ Collapsed State: Show JUST Logout Button (as requested)
+          // Collapsed State: Show JUST Logout Button (as requested)
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -146,7 +145,7 @@ function StudentSidebarComponent({ className, isCollapsed, toggleSidebar }: Side
             </Tooltip>
           </TooltipProvider>
         ) : (
-          // ✅ Expanded State: Show Full Profile + Dropdown
+          //  Expanded State: Show Full Profile + Dropdown
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="w-full justify-start px-2 py-6 hover:bg-accent rounded-xl">

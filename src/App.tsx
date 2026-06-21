@@ -50,7 +50,7 @@ import StudentAbout from "./student/About";
 // import StudentCareerPortal from "./student/CareerPortal/CareerPortal";
 import StudentEvents from "./student/Events";
 import StudentProfile from "./student/Profile";
-import StudentNotifications from "./student/Notifications";
+import Notifications from "./student/Notifications";
 import StudentLayout from "./student/StudentLayout";
 // import StudentMessage from "./student/Messages/StudentMessage"
 // Components
@@ -61,7 +61,7 @@ import StaffSection from "./AdminPage/StaffSection";
 import StudentSection from "./AdminPage/StudentSection";
 import EventS from "./AdminPage/EventS";
 import ExploreOpp from "./pages/ExploreOpportunities";
-import ChatComponent from "./student/Messages";
+import Messages from "./student/Messages";
 
 const queryClient = new QueryClient();
 
@@ -108,7 +108,7 @@ const App = () => (
               {/* Student Routes */}
               <Route path="/student/register" element={<Register />} />
               
-              {/* ✅ THIS WAS MISSING: Fixes the 404 error */}
+              {/*  THIS WAS MISSING: Fixes the 404 error */}
               <Route path="/student" element={<StudentLayout />}>
                 <Route index element={<StudentHome />} />
                 <Route path="home" element={<StudentHome />} />
@@ -116,8 +116,8 @@ const App = () => (
                 {/* <Route path="career" element={<StudentCareerPortal />} /> */}
                 <Route path="events" element={<StudentEvents />} />
                 <Route path="profile" element={<StudentProfile />} />
-                <Route path="notifications" element={<StudentNotifications />} />
-                <Route path="messages" element={<ChatComponent />} />
+                <Route path="notifications" element={<Notifications />} />
+                <Route path="messages" element={<Messages />} />
               </Route>
               {/* Staff Routes */}
               <Route path="/staff/about" element={<StaffAbout />} />

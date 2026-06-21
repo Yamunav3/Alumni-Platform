@@ -9,13 +9,13 @@ interface StudentLayoutProps {
 }
 
 export default function StudentLayout({ children, className }: StudentLayoutProps) {
-  // ✅ 1. Initialize state from Local Storage (so it remembers your choice)
+  //  1. Initialize state from Local Storage (so it remembers your choice)
   const [isCollapsed, setIsCollapsed] = useState(() => {
     const savedState = localStorage.getItem("sidebarCollapsed");
     return savedState ? JSON.parse(savedState) : false; // Default to false (Expanded) if no setting found
   });
 
-  // ✅ 2. Save to Local Storage whenever the state changes
+  // 2. Save to Local Storage whenever the state changes
   useEffect(() => {
     localStorage.setItem("sidebarCollapsed", JSON.stringify(isCollapsed));
   }, [isCollapsed]);

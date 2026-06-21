@@ -49,3 +49,12 @@ export const getEvents = async () => {
     throw error;
   }
 };
+
+export const sendConnectionRequest = async (alumniId) => {
+  console.log(alumniId);
+  const res = await api.post(`/api/connections/${alumniId}`,null, {
+    withCredentials: "include",
+  });
+
+  return res.data;
+};
