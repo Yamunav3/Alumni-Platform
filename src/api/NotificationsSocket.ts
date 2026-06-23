@@ -16,9 +16,10 @@ type Props = {
 
 export const useNotificationsSocket = ({ onMessage }: Props) => {
   const clientRef = useRef<Client | null>(null);
-  const ctoken=localStorage.getItem("token");
 
   useEffect(() => {
+  const ctoken=localStorage.getItem("token");
+
     const client = new Client({
       webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
       connectHeaders:{
@@ -27,7 +28,7 @@ export const useNotificationsSocket = ({ onMessage }: Props) => {
       reconnectDelay: 5000,
       debug: (str) => console.log(str),
       onConnect: () => {
-        client.subscribe("/user/queue/notifications", (message: IMessage) => {
+        client.subscribe("/topic/test", (message:IMessage) => {
           const body: NotificationPayload = JSON.parse(message.body);
           onMessage(body);
           // Check Point 1
