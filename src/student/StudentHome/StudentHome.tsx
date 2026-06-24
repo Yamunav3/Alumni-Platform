@@ -62,7 +62,7 @@ const [profile,setProfile]=useState<profile|null>(null);
                 Student Dashboard
               </h2>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                Hello, <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">{profile?.fullname}</span> 👋
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">{profile?.fullname}</span> 
               </h1>
               <p className="text-gray-500 mt-2 max-w-lg">
                 Ready to accelerate your career?<span className="font-semibold text-gray-900">{}</span>

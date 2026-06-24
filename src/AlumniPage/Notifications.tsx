@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { useNotificationsSocket } from "../api/NotificationsSocket";
+import { useEffect, useState } from "react";
+import { useSocket } from "../api/SocketProvider";
+import { IMessage, StompSubscription } from "@stomp/stompjs";
 
-type NotificationItem = {
+type NotificationPayload = {
   studentId: number;
   studentName: string;
   message: string;
@@ -47,13 +48,22 @@ function getAvatarColor(name: string) {
 }
 
 export default function NotificationsPage() {
-  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const { client, connected } = useSocket();
+  const [notifications, setNotifications] = useState<NotificationPayload[]>([]);
 
-  useNotificationsSocket({
-    onMessage: (data) => {
+  useEffect(() => {
+    if (!client || !connected) return;
+    if (localStorage.getItem("role") !== "ALUMNI") return;
+
+    const subscription: StompSubscription = client.subscribe("/topic/test", (message: IMessage) => {
+      const data: NotificationPayload = JSON.parse(message.body);
       setNotifications((prev) => [data, ...prev]);
-    },
-  });
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [client, connected]);
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-10">

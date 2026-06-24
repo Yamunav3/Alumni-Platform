@@ -45,6 +45,10 @@ export default function Profile(){
 
   useEffect(()=>{
       const token=localStorage.getItem("token");
+       localStorage.setItem("role","ALUMNI");
+       
+       const url=import.meta.env.Backend_URL;
+
       if(!token){
         setError("Profile Can't be Loaded , Try again ..");
         setLoading(false);
@@ -192,47 +196,7 @@ export default function Profile(){
               </div>
             </TabsContent>
 
-            {/* <TabsContent value="experience" className="space-y-6 mt-6">
-              {experience.map((exp, index) => (
-                <Card key={index}>
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle className="text-lg">{exp.position}</CardTitle>
-                        <CardDescription className="flex items-center mt-1">
-                          <Briefcase className="h-4 w-4 mr-2" />
-                          {exp.company} • {exp.duration}
-                        </CardDescription>
-                      </div>
-                      <ExternalLink className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{exp.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </TabsContent> */}
-
-            {/* <TabsContent value="skills" className="space-y-6 mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Technical Skills</CardTitle>
-                  <CardDescription>
-                    Programming languages, frameworks, and tools I work with
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {skills.map((skill, index) => (
-                      <Badge key={index} variant="outline" className="hover:bg-primary/10">
-                        {skill}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent> */}
+           
 
             <TabsContent value="activity" className="space-y-6 mt-6">
               <Card>
@@ -270,53 +234,3 @@ export default function Profile(){
   );
 
 }
-
-// const profileData = {
-//   name: "Alex Johnson",
-//   title: "Senior Software Engineer",
-//   company: "TechCorp Inc.",
-//   location: "San Francisco, CA",
-//   email: "alex.johnson@email.com",
-//   phone: "+1 (555) 123-4567",
-//   graduationYear: "2018",
-//   degree: "Computer Science",
-//   joinedDate: "March 2024",
-//   bio: "Passionate software engineer with 5+ years of experience in full-stack development. Alumni mentor and active community contributor.",
-//   avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
-// };
-
-// const achievements = [
-//   { title: "Top Performer 2023", icon: Award, color: "text-yellow-600" },
-//   { title: "Mentor of the Year", icon: Users, color: "text-blue-600" },
-//   { title: "Community Contributor", icon: MessageSquare, color: "text-green-600" }
-// ];
-
-// const experience = [
-//   {
-//     company: "TechCorp Inc.",
-//     position: "Senior Software Engineer",
-//     duration: "2021 - Present",
-//     description: "Leading development of cloud-native applications and mentoring junior developers."
-//   },
-//   {
-//     company: "StartupXYZ",
-//     position: "Full Stack Developer",
-//     duration: "2019 - 2021",
-//     description: "Built scalable web applications using React and Node.js for a growing fintech startup."
-//   },
-//   {
-//     company: "DevAgency",
-//     position: "Junior Developer",
-//     duration: "2018 - 2019",
-//     description: "Started career developing custom websites and web applications for various clients."
-//   }
-// ];
-
-// const skills = [
-//   "JavaScript", "React", "Node.js", "TypeScript", "Python", "AWS", 
-//   "Docker", "GraphQL", "MongoDB", "PostgreSQL", "Git", "Agile"
-// ];
-
-// export default function AlumniProfile() {
- 
-// }

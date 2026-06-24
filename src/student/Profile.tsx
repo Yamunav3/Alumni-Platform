@@ -63,7 +63,7 @@ interface Profile {
   major?: string;
   gpa?: string;
   
-  // ✅ New Fields
+  //  New Fields
   linkedin?: string;
   github?: string;
   resume?: string; // Storing filename or URL
@@ -81,8 +81,10 @@ export default function Profile() {
   const [formData, setFormData] = useState<Profile | null>(null);
 
   useEffect(() => {  
+
     const token = localStorage.getItem("token");
-    
+   localStorage.setItem("role","STUDENT");
+   
     // Fallback mock data with new fields
     const mockProfile: Profile = {
         id:1,
@@ -110,8 +112,9 @@ export default function Profile() {
         setLoading(false);
         return;
     }
+const url=import.meta.env.Backend_URL;
 
-    fetch("http://localhost:8080/api/v1/student", {
+    fetch(`http://localhost:8080/api/v1/student`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -147,7 +150,7 @@ export default function Profile() {
     }
   };
 
-  // ✅ Handle Resume File Upload
+  //  Handle Resume File Upload
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (formData && e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
