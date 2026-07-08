@@ -28,7 +28,7 @@ const StudentSignup = () => {
     confirmPassword: "",
     username: "",
     mobilenumber:"",
-    linkedin:"",
+    linkedIn:"",
      github:"",
   });
 
@@ -58,7 +58,7 @@ const StudentSignup = () => {
         interests: formData.interests,
         password: formData.password,
         mobilenumber: formData.mobilenumber,
-        linkedin: formData.linkedin,
+        linkedin: formData.linkedIn,
         github: formData.github,
         // role: "STUDENT"
       },

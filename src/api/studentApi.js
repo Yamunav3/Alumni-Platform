@@ -58,3 +58,8 @@ export const sendConnectionRequest = async (alumniId) => {
 
   return res.data;
 };
+
+// export const uploadProfilePicture = (file )=>{
+    // this api has been implemented in profile.tsx component itself
+    
+// }

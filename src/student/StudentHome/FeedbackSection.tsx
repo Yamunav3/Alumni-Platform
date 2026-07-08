@@ -50,101 +50,9 @@ const FeedbackSection = () => {
     recommendation: 0,
     comments: ''
   });
-
-  // Mock data for attended events
-  const attendedEvents: AttendedEvent[] = [
-    {
-      id: 1,
-      title: "Building Your Tech Career",
-      type: "webinar",
-      date: "2024-01-15",
-      duration: "1 hour",
-      instructor: "John Smith",
-      company: "Amazon",
-      feedbackSubmitted: false
-    },
-    {
-      id: 2,
-      title: "Full Stack Web Development",
-      type: "training",
-      date: "2024-01-10",
-      duration: "12 weeks",
-      instructor: "Sarah Johnson",
-      company: "Tech Academy",
-      rating: 4.8,
-      feedbackSubmitted: true
-    },
-    {
-      id: 3,
-      title: "Advanced React Patterns",
-      type: "webinar",
-      date: "2024-01-08",
-      duration: "2 hours",
-      instructor: "Lisa Wong",
-      company: "Facebook",
-      feedbackSubmitted: false
-    },
-    {
-      id: 4,
-      title: "AI/ML Bootcamp",
-      type: "training",
-      date: "2023-12-20",
-      duration: "8 weeks",
-      instructor: "Dr. Michael Chen",
-      company: "AI Institute",
-      rating: 4.9,
-      feedbackSubmitted: true
-    },
-    {
-      id: 5,
-      title: "Tech Leadership Summit",
-      type: "event",
-      date: "2023-12-15",
-      duration: "1 day",
-      company: "Tech Leaders Community",
-      feedbackSubmitted: false
-    }
-  ];
-
-  // Mock data for recent feedback
-  const recentFeedbacks: RecentFeedback[] = [
-    {
-      id: 1,
-      studentName: "Alex Kumar",
-      course: "Full Stack Development",
-      rating: 4,
-      comment: "Excellent course with hands-on projects. The instructor was very knowledgeable and supportive throughout the journey.",
-      date: "2024-01-20",
-      verified: true
-    }
-    // {
-    //   id: 2,
-    //   studentName: "Sarah Mitchell",
-    //   course: "Data Science Bootcamp",
-    //   rating: 4,
-    //   comment: "Great content and practical examples. Would have loved more time on advanced topics but overall very satisfied.",
-    //   date: "2024-01-18",
-    //   verified: true
-    // },
-    // {
-    //   id: 3,
-    //   studentName: "Ryan Chen",
-    //   course: "Digital Marketing Webinar",
-    //   rating: 5,
-    //   comment: "Incredibly insightful webinar! Learned practical strategies that I could implement immediately in my work.",
-    //   date: "2024-01-16",
-    //   verified: true
-    // },
-    // {
-    //   id: 4,
-    //   studentName: "Emily Rodriguez",
-    //   course: "Machine Learning Workshop",
-    //   rating: 4,
-    //   comment: "Good introduction to ML concepts. The hands-on exercises were particularly helpful for understanding the theory.",
-    //   date: "2024-01-14",
-    //   verified: true
-    // }
-  ];
+  const [attendedEvents, setAttendedEvents] = useState<AttendedEvent[]>([]);
+  const [recentFeedbacks, setRecentFeedbacks] = useState<RecentFeedback[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const openFeedbackForm = (event: AttendedEvent) => {
     setSelectedEvent(event);
@@ -160,14 +68,40 @@ const FeedbackSection = () => {
     setFeedbackFormOpen(true);
   };
 
-  const handleFeedbackSubmit = () => {
-    if (selectedEvent) {
-      // Update the event as feedback submitted
-      attendedEvents.find(e => e.id === selectedEvent.id)!.feedbackSubmitted = true;
+  const handleFeedbackSubmit = async () => {
+    if (!selectedEvent) return;
+
+    const payload = {
+      ...feedbackData,
+      eventId: selectedEvent.id
+    };
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/student/submit_feedback", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        message.error("We couldn't submit your feedback right now. Please try again.");
+        return;
+      }
+
+      setAttendedEvents((prev) =>
+        prev.map((event) =>
+          event.id === selectedEvent.id ? { ...event, feedbackSubmitted: true } : event
+        )
+      );
+
       setFeedbackFormOpen(false);
-      message.success('Thank you for your feedback! Your input helps us improve our services.');
-      
-      // Reset form
+      message.success("Thank you for your feedback! Your input helps us improve our services.");
+
       setSelectedEvent(null);
       setFeedbackData({
         eventId: 0,
@@ -178,27 +112,11 @@ const FeedbackSection = () => {
         recommendation: 0,
         comments: ''
       });
-    }
-
-    try{
-    fetch("http://localhost:8080/api/v1/student/submit_feedback",{
-      method:"POST",
-      headers:{
-        "content-type":"application/json",
-        "Authorization":`Bearer ${localStorage.getItem("token") }`
-      },
-      body:JSON.stringify(feedbackData)
-    }).then((res)=>{  
-      if(!res.ok)
-         return ;
-        return res.json();
-    }).then((data)=>{
-      console.log("Feedback submitted successfully:",data);
-    }).catch((err)=>{
-      console.log("Error submitting feedback:",err);
-      });
-    }finally{
-      console.log("Feedback submission attempt finished.");
+    } catch (err) {
+      console.log("Error submitting feedback:", err);
+      message.error("Something went wrong while submitting your feedback.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -249,56 +167,63 @@ const FeedbackSection = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Timeline
-                items={attendedEvents.map((event) => ({
-                  dot: getEventIcon(event.type),
-                  children: (
-                    <div className="ml-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <h4 className="font-semibold">{event.title}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {event.instructor && `by ${event.instructor}`}
-                            {event.company && ` • ${event.company}`}
-                          </p>
-                          <div className="flex items-center gap-2 mt-1">
-                            <Badge variant="outline" className="text-xs capitalize">
-                              {event.type}
-                            </Badge>
-                            <span className="text-xs text-muted-foreground">{event.date}</span>
-                            <span className="text-xs text-muted-foreground">• {event.duration}</span>
+              {attendedEvents.length > 0 ? (
+                <Timeline
+                  items={attendedEvents.map((event) => ({
+                    dot: getEventIcon(event.type),
+                    children: (
+                      <div className="ml-4 rounded-lg border border-border/60 bg-background/70 p-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <h4 className="font-semibold">{event.title}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {event.instructor && `by ${event.instructor}`}
+                              {event.company && ` • ${event.company}`}
+                            </p>
+                            <div className="flex items-center gap-2 mt-1 flex-wrap">
+                              <Badge variant="outline" className="text-xs capitalize">
+                                {event.type}
+                              </Badge>
+                              <span className="text-xs text-muted-foreground">{event.date}</span>
+                              <span className="text-xs text-muted-foreground">• {event.duration}</span>
+                            </div>
                           </div>
                         </div>
+                        <div className="mt-3">
+                          {event.feedbackSubmitted ? (
+                            <div className="flex items-center gap-2">
+                              <Badge variant="default" className="bg-success">
+                                <MessageCircle className="h-3 w-3 mr-1" />
+                                Feedback Submitted
+                              </Badge>
+                              {event.rating && (
+                                <div className="flex items-center gap-1">
+                                  <Star className="h-4 w-4 text-warning fill-current" />
+                                  <span className="text-sm">{event.rating}</span>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <Button 
+                              size="sm" 
+                              className="bg-gradient-primary hover:shadow-asthra transition-asthra"
+                              onClick={() => openFeedbackForm(event)}
+                            >
+                              <FileText className="h-4 w-4 mr-2" />
+                              Give Feedback
+                            </Button>
+                          )}
+                        </div>
                       </div>
-                      <div className="mt-3">
-                        {event.feedbackSubmitted ? (
-                          <div className="flex items-center gap-2">
-                            <Badge variant="default" className="bg-success">
-                              <MessageCircle className="h-3 w-3 mr-1" />
-                              Feedback Submitted
-                            </Badge>
-                            {event.rating && (
-                              <div className="flex items-center gap-1">
-                                <Star className="h-4 w-4 text-warning fill-current" />
-                                <span className="text-sm">{event.rating}</span>
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <Button 
-                            size="sm" 
-                            className="bg-gradient-primary hover:shadow-asthra transition-asthra"
-                            onClick={() => openFeedbackForm(event)}
-                          >
-                            <FileText className="h-4 w-4 mr-2" />
-                            Give Feedback
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  )
-                }))}
-              />
+                    )
+                  }))}
+                />
+              ) : (
+                <div className="rounded-xl border border-dashed border-border/60 bg-background/70 p-6 text-center">
+                  <p className="font-medium text-foreground">No attended events available yet</p>
+                  <p className="mt-2 text-sm text-muted-foreground">Feedback requests will appear here once events are available.</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -315,35 +240,42 @@ const FeedbackSection = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4 max-h-96 overflow-y-auto">
-                {recentFeedbacks.map((feedback) => (
-                  <div key={feedback.id} className="border-l-4 border-primary pl-4 py-3 bg-muted/20 rounded-r-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-semibold text-sm">{feedback.studentName}</span>
-                        {feedback.verified && (
-                          <Badge variant="outline" className="text-xs">
-                            Verified
-                          </Badge>
-                        )}
+                {recentFeedbacks.length > 0 ? (
+                  recentFeedbacks.map((feedback) => (
+                    <div key={feedback.id} className="border-l-4 border-primary pl-4 py-3 bg-muted/20 rounded-r-lg">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-sm">{feedback.studentName}</span>
+                          {feedback.verified && (
+                            <Badge variant="outline" className="text-xs">
+                              Verified
+                            </Badge>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star 
+                              key={star} 
+                              className={`h-3 w-3 ${
+                                star <= feedback.rating ? 'text-warning fill-current' : 'text-gray-300'
+                              }`} 
+                            />
+                          ))}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <Star 
-                            key={star} 
-                            className={`h-3 w-3 ${
-                              star <= feedback.rating ? 'text-warning fill-current' : 'text-gray-300'
-                            }`} 
-                          />
-                        ))}
+                      <p className="text-sm text-muted-foreground mb-2">{feedback.comment}</p>
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <span>{feedback.course}</span>
+                        <span>{feedback.date}</span>
                       </div>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-2">{feedback.comment}</p>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>{feedback.course}</span>
-                      <span>{feedback.date}</span>
-                    </div>
+                  ))
+                ) : (
+                  <div className="rounded-xl border border-dashed border-border/60 bg-background/70 p-6 text-center">
+                    <p className="font-medium text-foreground">No recent feedback yet</p>
+                    <p className="mt-2 text-sm text-muted-foreground">Feedback shared by students will appear here shortly.</p>
                   </div>
-                ))}
+                )}
               </div>
             </CardContent>
           </Card>
@@ -364,6 +296,7 @@ const FeedbackSection = () => {
             key="submit" 
             className="bg-gradient-primary hover:shadow-asthra" 
             onClick={handleFeedbackSubmit}
+            disabled={isSubmitting || feedbackData.rating === 0 || !feedbackData.content.trim()}
           >
             <Send className="h-4 w-4 mr-2" />
             Submit Feedback

@@ -71,7 +71,7 @@ const [profile,setProfile]=useState<profile|null>(null);
             <div className="flex gap-2">
                <div className="bg-white px-4 py-2 rounded-full border shadow-sm flex items-center gap-2 text-sm font-medium">
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                  {profile?.status === 'online' ? 'Online' : 'Offline'}
+                  {/* {profile?.status === 'online' ? 'Online' : 'Offline'} */}
                </div>
                <div className="bg-white px-4 py-2 rounded-full border shadow-sm flex items-center gap-2 text-sm font-medium text-gray-600">
                   {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}

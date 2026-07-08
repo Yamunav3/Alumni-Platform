@@ -5,7 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
   User, Mail, Phone, Briefcase, Award, BookOpen, Edit, MapPin, Calendar,
-  Linkedin, Github, FileText, ExternalLink, Download, Upload
+  Linkedin, Github, FileText, ExternalLink, Download, Upload,
+  Loader2,
+  Camera
 } from "lucide-react";
 import {
   Dialog,
@@ -64,8 +66,9 @@ interface Profile {
   gpa?: string;
   
   //  New Fields
-  linkedin?: string;
+  linkedIn?: string;
   github?: string;
+  // as of now the AI models are still under development so currenlt the resume has now usage in the application.Hence just keep it for name sake
   resume?: string; // Storing filename or URL
 
   skills?: Skill[];
@@ -79,8 +82,12 @@ export default function Profile() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState<Profile | null>(null);
+  const [profileImage, setProfileImage] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
-  useEffect(() => {  
+
+  useEffect(() =>  {  
 
     const token = localStorage.getItem("token");
    localStorage.setItem("role","STUDENT");
@@ -97,7 +104,7 @@ export default function Profile() {
         mobilenumber: 9876543210,
         location: "New York, USA",
         joinDate: "Sept 2021",
-        linkedin: "https://linkedin.com/in/johndoe",
+        linkedIn: "https://linkedin.com/in/johndoe",
         github: "https://github.com/johndoe",
         resume: "john_doe_resume.pdf",
         skills: [{id: 1, name: "React"}, {id: 2, name: "Node.js"}],
@@ -112,37 +119,138 @@ export default function Profile() {
         setLoading(false);
         return;
     }
-const url=import.meta.env.Backend_URL;
 
-    fetch(`http://localhost:8080/api/v1/student`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-           setProfile(mockProfile);
-           setFormData(mockProfile);
-           return; 
-        }
-        return res.json();
-      })
-      .then((data: Profile) => {
-        setProfile(data);
-        localStorage.setItem("studentName", data.fullname);
-        setFormData(data);
-      })
-      .catch((err) => {
-        console.error(err);
-        setProfile(mockProfile);
-        setFormData(mockProfile);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+// API end point to get student details
+    api.get("/api/v1/student")
+         .then((res) => {
+         const data = res.data;
+
+    setProfile(data);
+    setFormData(data);
+  
+    localStorage.setItem("studentName", data.fullname);
+
+       loadProfilePicture();
+       })
+         .catch((err) => {
+    console.error(err);
+
+    setProfile(mockProfile);
+    setFormData(mockProfile);
+
+   
+         })
+        .finally(() => setLoading(false));
+   }, []);
+
+
+
+  // api end point to get image data from backend and Load the profile picture
+const loadProfilePicture = async () => {
+    try {
+
+        const res = await api.get(
+            "/api/v1/student/profile-picture",
+            {
+                responseType: "blob",
+            }
+        );
+
+        const imageUrl = URL.createObjectURL(res.data);
+
+        setProfileImage(imageUrl);
+
+        console.log("Image received successfully");
+
+    } catch (error) {
+
+        console.error(error);
+
+        setProfileImage("");
+
+    }
+};
+
+// function to change the image URL
+const handleImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+) => {
+
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    setSelectedImage(file);
+
+    setProfileImage(URL.createObjectURL(file));
+
+};
+
+// saves from memory leakage , generally it creates new object for each and every request
+useEffect(()=>{
+  return ()=>{
+      if(profileImage){
+        URL.revokeObjectURL(profileImage);
+      }
+  };
+},[profileImage])
+
+// Profile picture upload api end point(Select the image from the local storage and send them to server for DB)
+const uploadProfilePicture = async () => {
+
+    if (!selectedImage) return;
+
+    try {
+
+        setUploading(true);
+
+        const formData = new FormData();
+
+        formData.append("file", selectedImage);
+
+        await api.post(
+            "/api/v1/student/profile-picture",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+        console.log("Profile Picture uploaded sucessfully");
+
+        loadProfilePicture();
+
+        setSelectedImage(null);
+
+    } catch (e) {
+
+        console.error(e);
+
+    } finally {
+
+        setUploading(false);
+
+    }
+
+};
+
+// API end point to delete the profile picture from DB
+const deleteProfilePicture = async () => {
+
+    try {
+
+        await api.delete("/api/v1/student/profile-picture");
+        console.log("Profile picture delete request has been sent");
+        setProfileImage("");
+
+    } catch (e) {
+
+        console.error(e);
+
+    }
+
+};
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (formData) {
@@ -160,6 +268,7 @@ const url=import.meta.env.Backend_URL;
     }
   };
 
+// API call to update details for user
   const handleSave = async  () => {
     // Add API call here to save changes (PUT request)
     if (formData) {
@@ -167,9 +276,8 @@ const url=import.meta.env.Backend_URL;
       let id=formData.id;
       try {
         setLoading(true);
-         const res = await api.put(`/api/v1/student/${id}/update`,{
-          formdata:formData
-         });
+        // Send form data directly as like JSON
+         const res = await api.put(`/api/v1/student/${id}/update`, formData);
          if(res.status==200 || res.status==201 )
             console.log("Updated user details successfully");
       }catch(e){
@@ -198,17 +306,74 @@ const url=import.meta.env.Backend_URL;
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl"></div>
         
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-          <div className="w-32 h-32 rounded-full border-4 border-white/20 bg-white/10 flex items-center justify-center backdrop-blur-sm shadow-2xl overflow-hidden">
-             {/* If user has image, show it here, else icon */}
-            <User className="h-16 w-16 text-white" />
-          </div>
+         <div className="relative flex flex-col items-center">
+  {/* Avatar with cyan glow ring */}
+  <div className="relative group">
+    <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-[#00D4FF] to-[#0066FF] opacity-30 blur-md group-hover:opacity-60 transition-opacity duration-500" />
+
+    <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-[#00D4FF]/30 shadow-[0_0_25px_rgba(0,212,255,0.15)] group-hover:border-[#00D4FF]/60 group-hover:shadow-[0_0_35px_rgba(0,212,255,0.35)] transition-all duration-500">
+      {profileImage ? (
+        <img
+          src={profileImage}
+          alt="Profile"
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <div className="w-full h-full bg-[#0A1428] flex items-center justify-center">
+          <User className="h-16 w-16 text-[#00D4FF]/40" />
+        </div>
+      )}
+    </div>
+
+    {/* Camera overlay — click to pick a new image */}
+    <label
+      htmlFor="profile-image"
+      className="absolute bottom-1 right-1 flex items-center justify-center w-9 h-9 rounded-full bg-[#050A18] border border-[#00D4FF]/40 cursor-pointer hover:bg-[#00D4FF]/10 hover:border-[#00D4FF] transition-all duration-300 shadow-lg"
+    >
+      <Camera className="h-4 w-4 text-[#00D4FF]" />
+    </label>
+  </div>
+
+  <input
+    type="file"
+    accept="image/*"
+    id="profile-image"
+    className="hidden"
+    onChange={handleImageChange}
+  />
+
+  <div className="flex gap-3 mt-6">
+    <Button
+      onClick={uploadProfilePicture}
+      disabled={!selectedImage || uploading}
+      className="bg-[#00D4FF] text-[#050A18] font-semibold hover:bg-[#00D4FF]/90 hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300"
+    >
+      {uploading ? (
+        <span className="flex items-center gap-2">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Uploading...
+        </span>
+      ) : (
+        "Upload"
+      )}
+    </Button>
+
+    <Button
+      variant="destructive"
+      onClick={deleteProfilePicture}
+      className="bg-transparent border border-red-500/40 text-red-400 hover:bg-red-500/10 hover:border-red-500 transition-all duration-300"
+    >
+      Delete
+    </Button>
+  </div>
+</div>
           
           <div className="text-center md:text-left flex-1">
             <h1 className="text-4xl font-bold mb-2">{profile?.fullname}</h1>
             <p className="text-xl text-indigo-100 mb-4">{profile?.branch} • {profile?.yearofpassing}</p>
             
             <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-              <Badge className="bg-green-500/20 text-green-100 hover:bg-green-500/30 border-none px-3 py-1">Active Student</Badge>
+              {/* <Badge className="bg-green-500/20 text-green-100 hover:bg-green-500/30 border-none px-3 py-1">Active Student</Badge> */}
               <Badge className="bg-white/10 text-white hover:bg-white/20 border-none px-3 py-1">ID: {profile?.collegeID}</Badge>
             </div>
           </div>
@@ -229,7 +394,7 @@ const url=import.meta.env.Backend_URL;
         {/* Left Column - Details */}
         <div className="lg:col-span-1 space-y-6">
           
-          {/* ✅ Professional Links Card */}
+          {/*  Professional Links Card */}
           <Card className="border-none shadow-md">
             <CardHeader>
               <CardTitle className="text-lg">Professional Profile</CardTitle>
@@ -253,8 +418,8 @@ const url=import.meta.env.Backend_URL;
               )}
 
               <div className="grid grid-cols-2 gap-3">
-                {profile?.linkedin ? (
-                  <a href={profile.linkedin} target="_blank" rel="noreferrer" className="block">
+                {profile?.linkedIn ? (
+                  <a href={profile.linkedIn} target="_blank" rel="noreferrer" className="block">
                     <Button variant="outline" className="w-full justify-start gap-2 border-indigo-100 hover:bg-blue-50 hover:text-blue-700">
                       <Linkedin className="h-4 w-4" /> LinkedIn
                     </Button>
@@ -361,7 +526,7 @@ const url=import.meta.env.Backend_URL;
                 <div className="mx-auto w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 mb-2">
                     <Calendar className="h-5 w-5" />
                 </div>
-                <div className="text-2xl font-bold text-gray-800">4</div>
+                <div className="text-2xl font-bold text-gray-800">0</div>
                 <div className="text-xs text-gray-500">Events</div>
              </div>
           </div>
@@ -439,21 +604,21 @@ const url=import.meta.env.Backend_URL;
                 </div>
             </div>
 
-            {/* ✅ New Professional Links Section */}
+            {/*  New Professional Links Section */}
             <div className="space-y-4">
                 <h3 className="font-medium text-sm text-gray-500 border-b pb-2">Professional Links & Resume</h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                        <Label htmlFor="linkedin" className="flex items-center gap-2">
+                        <Label htmlFor="linkedIn" className="flex items-center gap-2">
                             <Linkedin className="h-4 w-4 text-blue-600" /> LinkedIn URL
                         </Label>
                         <Input 
-                            id="linkedin" 
-                            name="linkedin" 
+                            id="linkedIn" 
+                            name="linkedIn" 
                             placeholder="https://linkedin.com/in/..." 
-                            value={formData?.linkedin || ""} 
-                            onChange={handleInputChange} 
+                            value={formData?.linkedIn || ""} 
+                            onChange={handleInputChange} disabled
                         />
                     </div>
                     <div className="space-y-2">
@@ -465,7 +630,7 @@ const url=import.meta.env.Backend_URL;
                             name="github" 
                             placeholder="https://github.com/..." 
                             value={formData?.github || ""} 
-                            onChange={handleInputChange} 
+                            onChange={handleInputChange} disabled
                         />
                     </div>
                 </div>
@@ -494,7 +659,7 @@ const url=import.meta.env.Backend_URL;
 
           <div className="flex justify-end gap-3 pt-4 border-t">
             <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>Cancel</Button>
-            <Button onClick={handleSave} className="bg-purple-600 hover:bg-purple-700">Save Changes</Button>
+            <Button onClick={handleSave} className="bg-purple-600 hover:bg-purple-700">Update Details</Button>
           </div>
         </DialogContent>
       </Dialog>
