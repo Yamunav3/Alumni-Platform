@@ -17,24 +17,23 @@ interface Internship {
   location: string;
   jobtype: string;
   duration: string;
-  stipend: string;
+  salary_range: string;
   skills: string[];
   deadline: string;
   applicants: number;
   jobdescription: string;
   requiredskills: string[];
-  Responsibilities: string[];
+  responsibilities: string[];
   benefits: string[];
   companySize: string;
   industry: string;
 }
 
-// interface InternshipSectionProps {
-//   internships: Internship[];
-// }
+
 
 const InternshipSection = () => {
   const [selectedInternship, setSelectedInternship] = useState<Internship|null>(null);
+  const [selectedInternshipId, setSelectedInternshipId] = useState<number | null>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
   const [appliedInternships, setAppliedInternships] = useState<Set<number>>(new Set());
@@ -51,40 +50,22 @@ const InternshipSection = () => {
 
   const[internships,setInternships] = useState<Internship|null>();
 
+// Api end point to fetch internships and Jobs data and add it in UI
   useEffect(()=>{
     getInternships().then((data:Internship)=>{
       setInternships(data);
     });
   },[])
-  //  useEffect(()=>{
-  //   //fetch internships from api
-  //   fetch("http://localhost:8080/api/v1/student/internships",{
-  //     method:"GET",
-  //     headers:{
-  //       "content-type":"application/json",
-  //       "Authorization":`Bearer ${localStorage.getItem("studentToken")}`
-  //     }
-  //   }).then((res)=>{
-  //       if(!res.ok){
-  //         throw new Error("Failed to fetch internships");
-  //       } 
-  //    return res.json();
-  //   }).then((data:Internship)=>{
-  //     setInternships(data);
-  //   }).catch((err)=>{
-  //     console.log(err);
-  //   }).finally(()=>{
-  //     console.log("fetching internships completed");
-  //     });
-  //  },[]);
-
-
+  
+// function to handle specific dialouge card of internships or Jobs
   const showDetails = (internship: Internship) => {
+    setSelectedInternshipId(internship.id);
     setSelectedInternship(internship);
     setIsDetailsModalOpen(true);
   };
 
   const showApplication = (internship: Internship) => {
+    setSelectedInternshipId(internship.id);
     setSelectedInternship(internship);
     setIsApplicationModalOpen(true);
   };
@@ -126,9 +107,12 @@ const InternshipSection = () => {
         {internships?.map((internship) => (
           <Card
             key={internship.id}
-            className="bg-gradient-card rounded-9xl cursor-pointer group
-                       transition-transform duration-300 ease-in-out
-                       hover:scale-[1.02] hover:-translate-y-2 hover:shadow-blue-500/100 rounded-2xl"
+            onClick={() => showDetails(internship)}
+            className={`bg-gradient-card cursor-pointer group transition-transform duration-300 ease-in-out hover:scale-[1.02] hover:-translate-y-2 hover:shadow-blue-500/100 rounded-2xl ${
+              selectedInternshipId === internship.id
+                ? "ring-2 ring-primary/70 shadow-lg shadow-primary/20"
+                : ""
+            }`}
           >
             <CardHeader>
               <CardTitle
@@ -153,8 +137,8 @@ const InternshipSection = () => {
                   <span>{internship.duration}</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  <span>{internship.stipend}</span>
+                  <span className="h-4 w-4 text-muted-foreground">₹</span> INR
+                  <span>{internship.salary_range}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -162,17 +146,18 @@ const InternshipSection = () => {
                 </div>
               </div>
 
-              {/* <div className="flex flex-wrap gap-1">
-                {internship?.skills.map((skill) => (
+              <div className="flex flex-wrap gap-1">
+                {internship?.requiredskills.split(",").map((skill,id) => (
                   <Badge
-                    key={skill}
+                    key={id}
                     variant="outline"
                     className="text-xs group-hover:border-primary group-hover:text-primary transition-colors"
                   >
-                    {skill}
+                    {skill.trim()}
                   </Badge>
                 ))}
-              </div> */}
+                
+              </div>
 
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground flex items-center gap-1">
@@ -184,7 +169,10 @@ const InternshipSection = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => showDetails(internship)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      showDetails(internship);
+                    }}
                     className="transition-colors group-hover:border-primary group-hover:text-primary"
                   >
                     View Details
@@ -195,7 +183,10 @@ const InternshipSection = () => {
                         ? 'bg-success hover:bg-success/80'
                         : 'bg-gradient-secondary hover:shadow-blue-500/90'
                     }` }
-                    onClick={() => showApplication(internship)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      showApplication(internship);
+                    }}
                     disabled={appliedInternships.has(internship.id)}
                   >
                     {appliedInternships.has(internship.id) ? 'Applied' : 'Apply Now'}
@@ -209,7 +200,7 @@ const InternshipSection = () => {
 
       {/* Details Modal */}
       <Modal
-        title={null}
+        title={"Apply as Early as possible to increase your chance of getting selected"}
         open={isDetailsModalOpen}
         onCancel={() => setIsDetailsModalOpen(false)}
         width={900}
@@ -221,8 +212,8 @@ const InternshipSection = () => {
               <h2 className="text-3xl font-bold mb-2">{selectedInternship.jobtitle}</h2>
               <div className="flex items-center gap-4 mb-4">
                 <p className="text-xl font-medium text-primary">{selectedInternship.company}</p>
-                <Badge variant="outline">{selectedInternship.industry}</Badge>
-                <Badge variant="outline">{selectedInternship.companySize}</Badge>
+                {/* <Badge variant="outline">{selectedInternship.industry}</Badge>
+                <Badge variant="outline">{selectedInternship.companySize}</Badge> */}
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div className="flex items-center gap-2">
@@ -231,11 +222,11 @@ const InternshipSection = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
-                  <span>{selectedInternship.duration}</span>
+                  <span>{selectedInternship.duration==null?"Can be varied based on performance":selectedInternship.duration}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  <span>{selectedInternship.stipend}</span>
+                  <span className="h-4 w-4 text-muted-foreground">₹</span> INR
+                  <span>{selectedInternship.salary_range}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -250,39 +241,42 @@ const InternshipSection = () => {
                 <p className="text-muted-foreground">{selectedInternship.jobdescription}</p>
               </div>
 
-              <div>
+              {/* <div>
                 <h3 className="text-xl font-semibold mb-3">Requirements</h3>
                 <ul className="list-disc list-inside space-y-1">
                   {selectedInternship?.requiredskills?.map((req, index) => (
                     <li key={index} className="text-muted-foreground">{req}</li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
 
               <div>
                 <h3 className="text-xl font-semibold mb-3">Responsibilities</h3>
                 <ul className="list-disc list-inside space-y-1">
-                  {selectedInternship?.Responsibilities?.map((resp, index) => (
+                  {/* {selectedInternship?.responsibilities?.map((resp, index) => (
                     <li key={index} className="text-muted-foreground">{resp}</li>
-                  ))}
+                  ))} */}
+                  {selectedInternship.responsibilities}
                 </ul>
               </div>
 
               <div>
                 <h3 className="text-xl font-semibold mb-3">Benefits</h3>
                 <ul className="list-disc list-inside space-y-1">
-                  {selectedInternship.benefits.map((benefit, index) => (
+                  {/* {selectedInternship.benefits.map((benefit, index) => (
                     <li key={index} className="text-muted-foreground">{benefit}</li>
-                  ))}
+                  ))} */}
+                  {selectedInternship.benefits}
                 </ul>
               </div>
 
               <div>
                 <h3 className="text-xl font-semibold mb-3">Required Skills</h3>
                 <div className="flex flex-wrap gap-2">
-                  {selectedInternship.skills.map((skill) => (
+                  {/* {selectedInternship.skills.map((skill) => (
                     <Badge key={skill} variant="secondary">{skill}</Badge>
-                  ))}
+                  ))} */}
+                  {selectedInternship.requiredskills}
                 </div>
               </div>
             </div>
@@ -290,7 +284,7 @@ const InternshipSection = () => {
             <div className="text-center mt-8">
               <Button 
                 size="lg" 
-                className="bg-gradient-secondary hover:shadow-blue-500/40 transition-all duration-300 px-8"
+                className="bg-gradient-secondary hover:shadow-blue-500/40 transition-all duration-300 px-8 text-black bg-orange-300"
                 onClick={() => {
                   setIsDetailsModalOpen(false);
                   showApplication(selectedInternship);
