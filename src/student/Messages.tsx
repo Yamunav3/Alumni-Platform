@@ -91,7 +91,7 @@ const StudentChat = () => {
               </svg>
             </div>
             <div>
-              <p className="text-white font-medium text-sm leading-none">Student Chat</p>
+              <p className="text-white font-medium text-sm leading-none">A Common Student Chat Group</p>
               <div className="flex items-center gap-1.5 mt-1">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_0_3px_rgba(16,185,129,0.2)]" />
                 <span className="text-xs text-gray-400">

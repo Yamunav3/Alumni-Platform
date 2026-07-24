@@ -48,18 +48,18 @@ const recentFeedback = [
 
 export default function AlumniHome() {
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="alumni-shell">
       <AlumniNavbar/>
       {/* Hero Section */}
-      <section className="relative py-20 px-4 bg-gradient-to-r from-slate-900 to-slate-700">
-        <div className="container mx-auto text-center">
+      <section className="alumni-hero px-4 py-20">
+        <div className="container mx-auto text-center relative z-10">
           <div className="flex items-center justify-center mb-6">
-            <Sparkles className="h-8 w-8 text-slate-200 mr-3" />
+            <Sparkles className="h-8 w-8 text-white/90 mr-3" />
             <h1 className="text-4xl md:text-6xl font-semibold text-white">
               Welcome to Asthra
             </h1>
           </div>
-          <p className="text-xl text-slate-200 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-white/80 mb-8 max-w-3xl mx-auto">
             Your centralized alumni platform connecting past, present, and future. 
             Build meaningful relationships, advance your career, and give back to your community.
           </p>
@@ -87,14 +87,15 @@ export default function AlumniHome() {
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Discover What's Possible</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <div className="alumni-pill mx-auto mb-4">Community hub</div>
+            <h2 className="alumni-section-title mb-4">Discover What's Possible</h2>
+            <p className="alumni-section-subtitle max-w-2xl mx-auto">
               Explore the various ways you can connect, learn, and contribute to our thriving alumni community.
             </p>
           </div>
           
           <Tabs defaultValue="celebrations" className="w-full">
-            <TabsList className="grid w-full grid-cols-5">
+            <TabsList className="alumni-tab-list grid w-full grid-cols-5">
               <TabsTrigger value="celebrations">Celebrations</TabsTrigger>
               <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
               <TabsTrigger value="forums">Forums</TabsTrigger>
@@ -148,7 +149,7 @@ export default function AlumniHome() {
                     {mentorshipStats.map((stat, index) => {
                       const IconComponent = stat.icon;
                       return (
-                        <div key={index} className="text-center p-4 border rounded-lg">
+                        <div key={index} className="alumni-stat-card text-center">
                           <IconComponent className="h-8 w-8 mx-auto mb-2 text-primary" />
                           <div className="text-2xl font-bold text-primary">{stat.value}</div>
                           <div className="text-sm text-muted-foreground">{stat.label}</div>
@@ -247,7 +248,7 @@ export default function AlumniHome() {
       </section>
 
       {/* Quick Stats */}
-      <section className="py-16 px-4 bg-muted/50">
+      <section className="py-16 px-4 bg-white/50">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>

@@ -177,16 +177,16 @@ const AlumniAboutUs = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="alumni-shell">
       <AlumniNavbar/>
       {/* Header */}
-        <section className="relative py-20 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <section className="alumni-hero py-20">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-fade-in">
+          <div className="alumni-pill mx-auto mb-6">About the community</div>
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white animate-fade-in">
             About Us
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-white/80 max-w-2xl mx-auto">
               Connect with fellow alumni, find mentors, celebrate achievements, and grow together
             </p>
         </div>
@@ -194,7 +194,7 @@ const AlumniAboutUs = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="celebrations" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="alumni-tab-list grid w-full grid-cols-5">
             <TabsTrigger value="celebrations">Celebrations</TabsTrigger>
             <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
             <TabsTrigger value="forums">Forums</TabsTrigger>
@@ -214,7 +214,7 @@ const AlumniAboutUs = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {congratulatoryPosts.map((post) => (
-                <Card key={post.id} className="hover:shadow-lg transition-shadow">
+                <Card key={post.id} className="alumni-card hover:-translate-y-1 transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex items-center space-x-3">
@@ -269,7 +269,7 @@ const AlumniAboutUs = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {mentors.map((mentor) => (
-                <Card key={mentor.id} className="hover:shadow-lg transition-shadow">
+                <Card key={mentor.id} className="alumni-card hover:-translate-y-1 transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-center space-x-3">
                       <Avatar className="h-12 w-12">
@@ -379,7 +379,7 @@ const AlumniAboutUs = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {alumniDirectory.map((alumni) => (
-                <Card key={alumni.id} className="hover:shadow-lg transition-shadow">
+                <Card key={alumni.id} className="alumni-card hover:-translate-y-1 transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-center space-x-3">
                       <Avatar className="h-12 w-12">

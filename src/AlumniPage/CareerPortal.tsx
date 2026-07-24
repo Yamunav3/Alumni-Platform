@@ -271,16 +271,16 @@ const {toast} = useToast();
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="alumni-shell">
       <AlumniNavbar />
       {/* Header */}
-      <section className="relative py-20 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5">
+      <section className="alumni-hero py-20">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-fade-in">
             Career Portal
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-white/80 max-w-2xl mx-auto">
               Discover opportunities, track applications, and advance your career with alumni connections
             </p>
         </div>
@@ -289,7 +289,7 @@ const {toast} = useToast();
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="jobs" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="alumni-tab-list grid w-full grid-cols-3">
             <TabsTrigger value="jobs">Job Board</TabsTrigger>
             {/* <TabsTrigger value="applications">My Applications</TabsTrigger> */}
             <TabsTrigger value="success-stories">Articles</TabsTrigger>
@@ -325,7 +325,7 @@ const {toast} = useToast();
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {filteredJobListings.map((job, index) => (
-                <Card key={job.id ?? index} className="hover:shadow-lg transition-shadow">
+                <Card key={job.id ?? index} className="alumni-card hover:-translate-y-1 transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div>
@@ -497,7 +497,7 @@ const {toast} = useToast();
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {succesStories.map((story) => (
-                <Card key={story.id} className="hover:shadow-lg transition-shadow">
+                <Card key={story.id} className="alumni-card hover:-translate-y-1 transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-start space-x-4">
                       {/* <Avatar className="h-16 w-16">
@@ -582,7 +582,7 @@ const {toast} = useToast();
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {webinars.map((webinar) => (
-                <Card key={webinar.id} className="hover:shadow-lg transition-shadow">
+                <Card key={webinar.id} className="alumni-card hover:-translate-y-1 transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div>

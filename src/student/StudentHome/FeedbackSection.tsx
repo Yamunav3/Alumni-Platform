@@ -79,7 +79,7 @@ const FeedbackSection = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:8080/api/v1/student/submit_feedback", {
+      const response = await fetch(`import.meta.env.VITE_Backend_URL/api/v1/student/submit_feedback`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

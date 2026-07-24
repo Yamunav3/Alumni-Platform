@@ -66,7 +66,7 @@ export default function NotificationsPage() {
   }, [client, connected]);
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-10">
+    <div className="alumni-shell px-4 py-10">
       <div className="mx-auto max-w-2xl">
 
         {/* Header */}
@@ -86,7 +86,7 @@ export default function NotificationsPage() {
 
         {/* Empty state */}
         {notifications.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-white py-20 text-center">
+          <div className="alumni-card flex flex-col items-center justify-center border-dashed border-gray-200 py-20 text-center">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
               <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
@@ -106,7 +106,7 @@ export default function NotificationsPage() {
               return (
                 <li
                   key={index}
-                  className={`relative flex items-start gap-4 rounded-2xl border bg-white px-5 py-4 transition-all
+                  className={`alumni-card relative flex items-start gap-4 px-5 py-4 transition-all
                     ${isNew
                       ? "border-violet-200 ring-1 ring-violet-100"
                       : "border-gray-100"

@@ -62,7 +62,7 @@ const EventCard = ({ event }: { event: Event }) => {
   const formattedTime = new Date(event.time).toLocaleString();
 
   return (
-    <Card className="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 group">
+    <Card className="alumni-card overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 group">
       
       {/* Image */}
       <div className="relative h-52 overflow-hidden">
@@ -251,16 +251,16 @@ useEffect(() => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="alumni-shell">
       <AlumniNavbar/>
       {/* Header */}
-      <section className="relative py-20 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5">
+      <section className="alumni-hero py-20">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-fade-in">
             Event Management
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-white/80 max-w-2xl mx-auto">
             Discover, organize, and participate in alumni events and networking opportunities
           </p>
         </div>
@@ -268,7 +268,7 @@ useEffect(() => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="upcoming" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="alumni-tab-list grid w-full grid-cols-4">
             <TabsTrigger value="upcoming">Upcoming Events</TabsTrigger>
             <TabsTrigger value="past">Past Events</TabsTrigger>
             <TabsTrigger value="create">Create Event</TabsTrigger>

@@ -40,10 +40,10 @@ export const postJob = async (jobData) => {
       email: payload.email,
     };
 
-    const endpoints = ["/alumni/add_job", "/api/v1/alumni/add_job"];
+    const endpoint = "/alumni/add_job";
     let lastError;
 
-    for (const endpoint of endpoints) {
+    
       try {
         const response = await api.post(endpoint, payload, {
           params,
@@ -58,7 +58,7 @@ export const postJob = async (jobData) => {
           throw error;
         }
       }
-    }
+    
 
     throw lastError;
   } catch (error) {

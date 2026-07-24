@@ -49,15 +49,15 @@ export const AlumniNavbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur">
+    <nav className="sticky top-0 z-50 w-full border-b border-white/60 bg-white/80 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex h-16 items-center justify-between">
           <Link to="/alumni/home" className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent font-bold text-white shadow-lg shadow-primary/20">
               A
             </div>
             <span className="text-xl font-semibold text-slate-900">Asthra</span>
-            <Badge variant="secondary" className="text-xs bg-slate-100 text-slate-700">
+            <Badge variant="secondary" className="bg-slate-100 text-slate-700 text-xs">
               Alumni
             </Badge>
           </Link>
@@ -71,9 +71,9 @@ export const AlumniNavbar = () => {
                   key={item.name}
                   to={item.href}
                   className={cn(
-                    "rounded-md px-3 py-2 text-sm font-medium flex items-center gap-2 transition-colors",
+                    "rounded-xl px-3 py-2 text-sm font-medium flex items-center gap-2 transition-all duration-200",
                     isActive
-                      ? "bg-slate-900 text-white"
+                      ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg shadow-primary/20"
                       : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                   )}
                 >
@@ -132,9 +132,9 @@ export const AlumniNavbar = () => {
                     to={item.href}
                     onClick={() => setIsOpen(false)}
                     className={cn(
-                      "rounded-md px-3 py-2 text-sm font-medium flex items-center gap-2",
+                      "rounded-xl px-3 py-2 text-sm font-medium flex items-center gap-2",
                       isActive
-                        ? "bg-slate-900 text-white"
+                        ? "bg-gradient-to-r from-primary to-accent text-white"
                         : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                     )}
                   >

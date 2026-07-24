@@ -136,6 +136,9 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    background:
+      radial-gradient(circle at top left, hsl(224 76% 48% / 0.08), transparent 32%),
+      linear-gradient(135deg, hsl(224 47% 99%), hsl(224 47% 97%));
   }
 
   /* Smooth scrolling */
@@ -145,6 +148,59 @@ All colors MUST be HSL.
 }
 
 @layer components {
+  .alumni-shell {
+    @apply min-h-screen bg-transparent text-foreground;
+  }
+
+  .alumni-hero {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255,255,255,0.65);
+    background:
+      radial-gradient(circle at top left, rgba(255,255,255,0.28), transparent 38%),
+      linear-gradient(135deg, hsl(224 76% 48%) 0%, hsl(262 83% 58%) 55%, hsl(283 89% 74%) 100%);
+    box-shadow: 0 20px 60px -25px hsl(224 76% 48% / 0.35);
+  }
+
+  .alumni-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.18;
+    pointer-events: none;
+  }
+
+  .alumni-card {
+    @apply rounded-2xl border border-white/70 bg-white/80 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.28)] backdrop-blur-xl;
+  }
+
+  .alumni-pill {
+    @apply inline-flex items-center rounded-full bg-white/70 px-3 py-1 text-sm font-medium text-slate-700 backdrop-blur;
+  }
+
+  .alumni-tab-list {
+    @apply rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-sm backdrop-blur;
+  }
+
+  .alumni-tab-list [data-state='active'] {
+    background: linear-gradient(135deg, hsl(224 76% 48%), hsl(262 83% 58%));
+    color: white;
+    box-shadow: 0 10px 25px -12px hsl(224 76% 48% / 0.45);
+  }
+
+  .alumni-stat-card {
+    @apply rounded-2xl border border-white/70 bg-white/80 p-6 shadow-[0_16px_40px_-24px_rgba(15,23,42,0.35)] backdrop-blur;
+  }
+
+  .alumni-section-title {
+    @apply text-3xl font-semibold tracking-tight text-slate-900;
+  }
+
+  .alumni-section-subtitle {
+    @apply text-base text-slate-600;
+  }
   /* Hero Button Variant */
   .btn-hero {
     @apply bg-gradient-to-r from-primary to-accent text-primary-foreground;

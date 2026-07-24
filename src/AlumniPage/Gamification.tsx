@@ -531,7 +531,7 @@ const AlumniGamification = () => {
             </div>
 
            {/* Recent Activities */}
-            <Card className="mb-8 bg-card/70 backdrop-blur-md shadow-xl">
+            <Card className="alumni-card mb-8">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <span className="flex items-center">
@@ -584,7 +584,7 @@ const AlumniGamification = () => {
             {/* Main Content */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6 ">
               <div className="flex items-center justify-between">
-    <TabsList className="grid w-full md:w-auto grid-cols-2 md:grid-cols-6 bg-card/70 backdrop-blur-md shadow-lg">
+    <TabsList className="alumni-tab-list grid w-full md:w-auto grid-cols-2 md:grid-cols-6">
       <TabsTrigger value="leaderboard" className="hover:bg-primary/10 transition-colors">
         <Trophy className="h-4 w-4 mr-4" />
         Leaderboard

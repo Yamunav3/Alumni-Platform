@@ -19,6 +19,7 @@ import {
   ExternalLink
 } from "lucide-react";
 import { AlumniNavbar } from "@/components/AlumniNavbar";
+import api from "../api/api";
 
 interface Profile{
   username:string;
@@ -54,40 +55,22 @@ export default function Profile(){
         setLoading(false);
           return ;
       }
-  fetch("http://localhost:8080/api/v1/alumni",{
-       method:"GET",
-       headers:{
-         "Content-Type":"Application/json",
-         "Authorization":`Bearer ${token}`
-       },
-  }).then((res)=>{
-      if(!res){
-        throw new Error("Profile Not Found");
-      }
-      return res.json();
-  })
-    .then((data:Profile)=>{
-           setProfile(data);
-    })
-    .catch((err)=>{
-      setError(err.message);
-    })
-    .finally(()=>{
-      setLoading(false);
-    })
-
+      api.get("/api/v1/alumni").then((res)=>{
+          const data=res.data;
+          setProfile(data);
+      })
   },[]);
 
 
   
   return (
-    <div className="min-h-screen bg-background">
+    <div className="alumni-shell">
       <AlumniNavbar/>
       {/* Profile Header */}
-      <section className="py-16 px-4 bg-indigo-200">
-        <div className="container mx-auto max-w-4xl">
-          <div className="flex flex-col md:flex-row items-start md:items-center space-y-6 md:space-y-0 md:space-x-8">
-            <Avatar className="h-32 w-32 border-4 shadow-elegant">
+      <section className="alumni-hero py-16 px-4">
+        <div className="container mx-auto max-w-5xl">
+          <div className="flex flex-col md:flex-row items-start md:items-center space-y-6 md:space-y-0 md:space-x-8 rounded-[2rem] border border-white/60 bg-white/15 p-8 backdrop-blur-md">
+            <Avatar className="h-32 w-32 border-4 border-white/80 shadow-[0_20px_50px_-24px_rgba(15,23,42,0.4)]">
               <AvatarImage src={profile?.avatar} alt={profile?.fullname} />
               <AvatarFallback className="text-2xl">A</AvatarFallback>
             </Avatar>
@@ -95,9 +78,10 @@ export default function Profile(){
             <div className="flex-1">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h1 className="text-3xl font-bold gradient-text mb-2">{profile?.fullname}</h1>
-                  <p className="text-xl text-muted-foreground mb-2">{profile?.jobrole}</p>
-                  <div className="flex items-center text-muted-foreground mb-4">
+                  <div className="alumni-pill mb-3">Professional profile</div>
+                  <h1 className="text-3xl font-bold text-white mb-2">{profile?.fullname}</h1>
+                  <p className="text-xl text-white/85 mb-2">{profile?.jobrole}</p>
+                  <div className="flex items-center text-white/80 mb-4">
                     <Briefcase className="h-4 w-4 mr-2" />
                     <span>{profile?.workingcompany}</span>
                     <MapPin className="h-4 w-4 ml-4 mr-2" />
@@ -113,29 +97,15 @@ export default function Profile(){
                 </Button> */}
               </div>
               
-              <p className="text-muted-foreground mb-6">{profile?.bio}</p>
+              <p className="text-white/80 mb-6">{profile?.bio}</p>
               
-              {/* <div className="flex flex-wrap gap-2 mb-6"> */}
-                {/* {achievements.map((achievement, index) => {
-                  const IconComponent = achievement.icon;
-                  return (
-                    <Badge key={index} variant="secondary" className="flex items-center space-x-1">
-                      <IconComponent className={`h-3 w-3 ${achievement.color}`} />
-                      <span>{achievement.title}</span>
-                    </Badge>
-                  );
-                })} */}
-              {/* </div> */}
               
-              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+              <div className="flex flex-wrap gap-4 text-sm text-white/80">
                 <div className="flex items-center">
                   <GraduationCap className="h-4 w-4 mr-2" />
                   <span>Class of {profile?.yearofpassing} • {"Bachelor of technology(B.Tech)"}</span>
                 </div>
-                <div className="flex items-center">
-                  {/* <Calendar className="h-4 w-4 mr-2" />
-                  <span>Joined {profileData.joinedDate}</span> */}
-                </div>
+               
               </div>
             </div>
           </div>
@@ -146,7 +116,7 @@ export default function Profile(){
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <Tabs defaultValue="about" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="alumni-tab-list grid w-full grid-cols-4">
               <TabsTrigger value="about">About</TabsTrigger>
               <TabsTrigger value="experience">Experience</TabsTrigger>
               <TabsTrigger value="skills">Skills</TabsTrigger>
@@ -188,7 +158,7 @@ export default function Profile(){
                   <CardContent>
                     <div className="space-y-2">
                       <h4 className="font-medium">Bachelor of Science in {profile?.branch}</h4>
-                      <p className="text-muted-foreground">Asthra University</p>
+                      <p className="text-muted-foreground">SRKR Engineering College</p>
                       <p className="text-sm text-muted-foreground">Graduated {profile?.yearofpassing}</p>
                     </div>
                   </CardContent>
