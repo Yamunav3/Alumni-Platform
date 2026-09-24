@@ -43,7 +43,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import {getEvents} from "../api/studentAPI";
+import {getEvents} from "../api/studentApi";
 import {postEvent} from "../api/AlumniAPI";
 
 interface Event{
