@@ -57,3 +57,13 @@ export const getSuccessStories = async () => {
     throw error;
   }
 };
+
+export const updateUser = async (id, data) => {
+  try {
+    const response = await api.put(`/api/v1/user/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw error;
+  }
+};

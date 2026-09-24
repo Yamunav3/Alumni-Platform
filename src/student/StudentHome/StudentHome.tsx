@@ -80,67 +80,10 @@ const [profile,setProfile]=useState<profile|null>(null);
           </div>
         </div>
 
-        {/* --- 2. BENTO GRID HERO (Unique Layout) --- */}
-        {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-             */}
-            {/* Left: The Success Story Carousel (Takes up 2/3 width) */}
-            <div className="lg:col-span-2">
-               <SuccessStoryHero />
-            </div>
-
-            {/* Right: Quick Stats & Actions (Takes up 1/3 width) */}
-            {/* <div className="flex flex-col gap-6"> */}
-              
-              {/* Stat Card 1: Profile */}
-              {/* <Card className="rounded-3xl border-none shadow-lg bg-gradient-to-br from-indigo-600 to-purple-700 text-white relative overflow-hidden h-full">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
-                <CardContent className="p-6 flex flex-col justify-between h-full relative z-10">
-                  <div className="flex justify-between items-start">
-                    <div className="p-2 bg-white/20 rounded-xl backdrop-blur-md">
-                      <TrendingUp className="h-6 w-6 text-white" />
-                    </div>
-                    <BadgePill text="+12% this week" />
-                  </div>
-                  <div>
-                    <p className="text-indigo-100 text-sm mb-1">Profile Views</p>
-                    <h3 className="text-4xl font-bold">1,248</h3>
-                    <Button variant="link" className="text-white p-0 h-auto mt-2 text-xs opacity-90 hover:opacity-100">
-                      View Analytics <ArrowUpRight className="h-3 w-3 ml-1" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card> */}
-
-              {/* Stat Card 2: Upcoming */}
-              {/* <Card className="rounded-3xl border shadow-sm bg-white h-full group hover:shadow-md transition-all">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-orange-100 text-orange-600 rounded-xl">
-                      <Calendar className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900">Upcoming</h4>
-                      <p className="text-xs text-gray-500">Don't miss out</p>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 group-hover:bg-orange-50/50 transition-colors cursor-pointer">
-                      <div className="flex-col flex items-center justify-center w-10 h-10 bg-white rounded-lg shadow-sm border text-xs font-bold text-gray-700">
-                        <span>FEB</span><span>15</span>
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-gray-900 line-clamp-1">Tech Networking Night</p>
-                        <p className="text-xs text-gray-500">5:00 PM • Virtual</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card> */}
-
-            {/* </div>
-          </div>
-        </div> */}
+        {/* --- 2. SUCCESS STORY & ARTICLES SECTION --- */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <SuccessStoryHero />
+        </div>
 
         {/* --- 3. FLOATING TABS SECTION --- */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

@@ -59,7 +59,7 @@ const StudentSignup = () => {
         password: formData.password,
         mobilenumber: formData.mobilenumber,
         linkedin: formData.linkedIn,
-        github: formData.github,
+        github: formData.github,       
         // role: "STUDENT"
       },
       {

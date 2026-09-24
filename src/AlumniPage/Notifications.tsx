@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSocket } from "../api/SocketProvider";
 import { IMessage, StompSubscription } from "@stomp/stompjs";
+import { AlumniNavbar } from "@/components/AlumniNavbar";
 
 type NotificationPayload = {
   studentId: number;
@@ -66,11 +67,13 @@ export default function NotificationsPage() {
   }, [client, connected]);
 
   return (
-    <div className="alumni-shell px-4 py-10">
+    
+    <div className="alumni-shell  py-1">
+      <AlumniNavbar />
       <div className="mx-auto max-w-2xl">
 
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex items-center justify-between py-3">
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">Notifications</h1>
             <p className="mt-1 text-sm text-gray-500">

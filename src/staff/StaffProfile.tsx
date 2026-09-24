@@ -1,3 +1,4 @@
+import api from "../api/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Navigation from "../components/StaffNavbar"
@@ -31,7 +32,7 @@ export default function Profile() {
 const[profile,setProfile]=useState<Profile | null>(null);
 const[error,setError]=useState("");
 const[loading,setLoading]=useState(true);
-  
+   
 useEffect(()=>{
   const token=localStorage.getItem("token");
   if(!token){
@@ -40,10 +41,8 @@ useEffect(()=>{
     return;
   }
 
-  fetch("http://localhost:8080/api/v1/staff",{
-    method:"GET",
+  api.get("/api/v1/staff",{
     headers:{
-      "Content-Type":"application/json",
       "Authorization":`Bearer ${token}` 
     }
 
@@ -51,7 +50,7 @@ useEffect(()=>{
     if(!res.ok){
       throw new Error("Failed to Fetch profie data");
     }
-    return res.json();
+    return res.data;
   }).then((data:Profile)=>{
     setProfile(data);
   }).finally(()=>{

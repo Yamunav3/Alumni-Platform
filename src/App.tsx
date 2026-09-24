@@ -13,7 +13,6 @@ import CareerPortal from "./pages/CareerPortal";
 import NotFound from "./pages/NotFound";
 
 // Admin Pages
-import Admin from "./AdminPage/Admin";
 import AlumniSection from "./AdminPage/AlumniSection";
 
 // Alumni Pages
@@ -88,7 +87,7 @@ const App = () => (
               <Route path="/analytics" element={<AlumniAnalytics />} />
 
               {/* Admin Routes */}
-              <Route path="/admin/profile" element={<Admin />} />
+              {/* <Route path="/admin/profile" element={<Admin />} /> */}
               <Route path="/admin/home" element={<Home />} />
               <Route path="/admin/alumnisection" element={<AlumniSection />} />
               <Route path="/admin/staffsection" element={<StaffSection />} />

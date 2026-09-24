@@ -27,7 +27,7 @@ import {
 
 const navigation = [
   { name: "Dashboard", href: "/admin/home", icon: Home },
-  { name: "Profile", href: "/admin/profile", icon: User },
+  // { name: "Profile", href: "/admin/profile", icon: User },
   { name: "Alumni", href: "/admin/alumnisection", icon: Users },
   { name: "Staff", href: "/admin/staffsection", icon: UserCheck },
   { name: "Students", href: "/admin/studentsection", icon: GraduationCap },

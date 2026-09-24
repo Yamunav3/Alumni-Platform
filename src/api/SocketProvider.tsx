@@ -18,11 +18,11 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    const url = import.meta.env.VITE_BACKEND_URL;
+    const wsUrl = import.meta.env.VITE_WS_URL || `${import.meta.env.VITE_BACKEND_URL}/ws`;
     const token = localStorage.getItem("token");
 
     const client = new Client({
-      webSocketFactory: () => new SockJS(`http://localhost:8080/ws`),
+      webSocketFactory: () => new SockJS(`${wsUrl}`),
       connectHeaders: token ? { Authorization: `Bearer ${token}` } : {},
       reconnectDelay: 5000,
       debug: (str) => console.log(str),

@@ -152,12 +152,15 @@ All colors MUST be HSL.
     @apply min-h-screen bg-transparent text-foreground;
   }
 
+  /* ===== Alumni Hero ===== */
   .alumni-hero {
     position: relative;
+    isolation: isolate;
     overflow: hidden;
     border-bottom: 1px solid rgba(255,255,255,0.65);
     background:
-      radial-gradient(circle at top left, rgba(255,255,255,0.28), transparent 38%),
+      radial-gradient(55rem 30rem at 90% -10%, hsl(283 89% 74% / 0.5), transparent 55%),
+      radial-gradient(50rem 30rem at -10% 115%, hsl(224 76% 48% / 0.55), transparent 55%),
       linear-gradient(135deg, hsl(224 76% 48%) 0%, hsl(262 83% 58%) 55%, hsl(283 89% 74%) 100%);
     box-shadow: 0 20px 60px -25px hsl(224 76% 48% / 0.35);
   }
@@ -166,22 +169,59 @@ All colors MUST be HSL.
     content: "";
     position: absolute;
     inset: 0;
+    z-index: -1;
     background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
     background-size: 24px 24px;
     opacity: 0.18;
     pointer-events: none;
   }
 
+  .alumni-hero::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -8rem;
+    right: -8rem;
+    width: 24rem;
+    height: 24rem;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(255,255,255,0.3), transparent 62%);
+    animation: alumni-float 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes alumni-float {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(-1.5rem, 1.5rem, 0) scale(1.08); }
+  }
+
+  .alumni-hero-title {
+    @apply text-4xl md:text-6xl font-bold tracking-tight text-white drop-shadow-[0_2px_20px_rgba(15,23,42,0.25)];
+  }
+
+  .alumni-hero-sub {
+    @apply text-lg md:text-xl text-white/85;
+  }
+
+  .alumni-hero-chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/15 px-5 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur-md;
+  }
+
+  /* ===== Alumni Cards ===== */
   .alumni-card {
-    @apply rounded-2xl border border-white/70 bg-white/80 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.28)] backdrop-blur-xl;
+    @apply rounded-2xl border border-white/70 bg-white/80 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.28)] backdrop-blur-xl transition-all duration-300;
+  }
+
+  .alumni-card:hover {
+    @apply -translate-y-1 border-primary/25 shadow-[0_28px_70px_-30px_rgba(79,70,229,0.4)];
   }
 
   .alumni-pill {
-    @apply inline-flex items-center rounded-full bg-white/70 px-3 py-1 text-sm font-medium text-slate-700 backdrop-blur;
+    @apply inline-flex items-center rounded-full border border-primary/15 bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary shadow-sm backdrop-blur;
   }
 
   .alumni-tab-list {
-    @apply rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-sm backdrop-blur;
+    @apply rounded-2xl border border-slate-200/80 bg-white/70 p-1.5 shadow-[0_10px_30px_-15px_rgba(15,23,42,0.2)] backdrop-blur;
   }
 
   .alumni-tab-list [data-state='active'] {
@@ -191,15 +231,32 @@ All colors MUST be HSL.
   }
 
   .alumni-stat-card {
-    @apply rounded-2xl border border-white/70 bg-white/80 p-6 shadow-[0_16px_40px_-24px_rgba(15,23,42,0.35)] backdrop-blur;
+    @apply rounded-2xl border border-white/70 bg-white/80 p-6 shadow-[0_16px_40px_-24px_rgba(15,23,42,0.35)] backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_24px_60px_-28px_rgba(79,70,229,0.35)];
   }
 
   .alumni-section-title {
-    @apply text-3xl font-semibold tracking-tight text-slate-900;
+    @apply text-3xl font-bold tracking-tight text-slate-900;
   }
 
   .alumni-section-subtitle {
     @apply text-base text-slate-600;
+  }
+
+  /* Gradient text accent for the alumni section */
+  .alumni-gradient-text {
+    background: linear-gradient(135deg, hsl(224 76% 48%), hsl(262 83% 58%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Polished list row used inside alumni cards */
+  .alumni-list-row {
+    @apply flex items-center justify-between rounded-2xl border border-slate-100 bg-white/60 p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:bg-gradient-to-r hover:from-primary/5 hover:to-accent/5 hover:shadow-md;
+  }
+
+  .alumni-chip {
+    @apply inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary;
   }
   /* Hero Button Variant */
   .btn-hero {
@@ -244,24 +301,6 @@ All colors MUST be HSL.
   .nav-link:hover::after {
     @apply w-full;
   }
-
-
-  @layer components {
-  .glass-card {
-    @apply bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl;
-    @apply shadow-[var(--shadow-primary)] transition-all duration-300;
-  }
-
-  .glass-card:hover {
-    @apply shadow-[var(--shadow-glow)] scale-[1.02];
-    background: linear-gradient(
-      145deg,
-      hsl(220 20% 10%) 0%,
-      hsl(210 100% 56% / 0.1) 100%
-    );
-  }
-}
-
 }
 
 /* Slide in from right animation */

@@ -106,7 +106,9 @@ export const postEvent = async (data)=>{
       };
 
       try {
-       const response = await api.post("/events/addEvent",payload,{params:payload});
+       const response = await api.post("/events/addEvent",payload,{
+         headers: { "Content-Type": "application/json" },
+       });
        return response.data;
         
       } catch (error) {

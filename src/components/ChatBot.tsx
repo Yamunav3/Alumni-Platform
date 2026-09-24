@@ -51,16 +51,17 @@ const ChatBot = () => {
 
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const GEMINI_MODEL = "gemini-2.5-flash";
+const GEMINI_BASE_URL = import.meta.env.VITE_GEMINI_BASE_URL;
+const GEMINI_MODEL = import.meta.env.VITE_GEMINI_MODEL;
 
 async function getGeminiResponse(userMessage: string): Promise<string> {
-  if (!GEMINI_API_KEY) {
-    return "Missing Gemini API key. Add VITE_GEMINI_API_KEY in your .env file and restart the app.";
+  if (!GEMINI_API_KEY || !GEMINI_BASE_URL || !GEMINI_MODEL) {
+    return "Missing Gemini configuration. Add VITE_GEMINI_API_KEY, VITE_GEMINI_BASE_URL, and VITE_GEMINI_MODEL in your .env file and restart the app.";
   }
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
+      `${GEMINI_BASE_URL}/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
       {
       method: "POST",
       headers: {

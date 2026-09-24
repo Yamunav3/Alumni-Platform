@@ -2,6 +2,7 @@ import React, { useState , useEffect} from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -90,8 +91,10 @@ const AlumniCareerPortal = () => {
   const [isJobFormOpen, setIsJobFormOpen] = useState(false);
   const [jobPostings, setJobPostings] = useState<Internship[]>([]);
   const[succesStories,setSuccesStories] = useState<Story[]>([]);
-  const [submit,setSubmit] = useState(false);
-  const[open,isOpen] = useState(true);
+const [submit,setSubmit] = useState(false);
+   const[open,isOpen] = useState(true);
+   const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+   const [viewDialogOpen, setViewDialogOpen] = useState(false);
 
   useEffect(() => {
     const loadInternships = async () => {
@@ -137,19 +140,19 @@ const {toast} = useToast();
           });
         return ;
       }
-    try{
-      setSubmit(true);
-      
-     const res = await  poststory(data);
+try{
+       setSubmit(true);
+       
+      const res = await  poststory(data);
 
-     setSuccesStories(prev =>[...prev,res]);
+      setSuccesStories(prev =>[...prev,res]);
+      toast({ title: "Success", description: "Article submitted successfully!" });
     }catch(error){
-      console.error(error.msg);
-       throw error;
-     }finally{
-      setSubmit(false);
-      isOpen(false);
-     }
+       console.error(error.msg);
+        throw error;
+      }finally{
+       setSubmit(false);
+      }
 }
 
   const filteredJobListings = jobPostings.filter((job) => {
@@ -456,119 +459,89 @@ const {toast} = useToast();
             </div> */}
           </TabsContent>
 
-          {/* Success Stories */}
-          <TabsContent value="success-stories" className="space-y-6">
-            <Dialog open={open} onOpenChange={isOpen}>
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-semibold">Alumni Articles</h2>
+           {/* Success Stories */}
+           <TabsContent value="success-stories" className="space-y-6">
+             <div className="flex items-center justify-between">
+               <h2 className="text-2xl font-semibold">Alumni Articles</h2>
+             </div>
 
-               <DialogTrigger asChild>
-                <Button>
-               <Award className="h-4 w-4 mr-2" />
-                   Share Your Article
-                </Button>
-            </DialogTrigger>
-                 </div>
+             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+               {/* Article List (Left Side) */}
+               <div className="lg:col-span-2 space-y-4">
+                 {succesStories.length === 0 ? (
+                   <Card>
+                     <CardContent className="py-10 text-center text-muted-foreground">
+                       No articles yet. Be the first to share!
+                     </CardContent>
+                   </Card>
+                 ) : (
+                   succesStories.map((story) => (
+                     <Card key={story.id} className="alumni-card hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                       onClick={() => { setSelectedStory(story); setViewDialogOpen(true); }}
+                     >
+                       <CardContent className="p-6">
+                         <div className="flex items-start justify-between gap-4">
+                           <div className="flex-1">
+                             <CardTitle className="text-lg">{story.title}</CardTitle>
+                             <p className="text-sm italic text-muted-foreground mt-2 line-clamp-2">
+                               {story.content}
+                             </p>
+                             <Badge variant="outline" className="mt-2">{story.author}</Badge>
+                           </div>
+                         </div>
+                       </CardContent>
+                     </Card>
+                   ))
+                 )}
+               </div>
 
-             <DialogContent className="sm:max-w-[500px]">
-               <DialogHeader>
-                  <DialogTitle>Share Your Article</DialogTitle>
-               </DialogHeader>
-
-                {/* Form */}
-                <form onSubmit={handleSubmitStory} >
-                  <div className="space-y-4">
-                    <Input placeholder="Title" name="title"/>
-
-                      <Textarea placeholder="Write your article here..." name="content" />
-
-                   <Input placeholder="Your Name" name="author"/>
-                  </div>
-
-                <DialogFooter>
-
-                     <Button disabled={submit} className=" hover:bg-slate-800">
-                      {submit?"submitting ...":"submit"}
+               {/* Submit Form (Right Side Sidebar) */}
+               <div>
+                 <Card className="sticky top-4">
+                   <CardHeader>
+                     <CardTitle className="flex items-center gap-2">
+                       <Award className="h-5 w-5 text-purple-600" />
+                       Share Your Article
+                     </CardTitle>
+                   </CardHeader>
+                   <CardContent>
+                     <form onSubmit={handleSubmitStory} className="space-y-4">
+                       <div className="space-y-2">
+                         <Label htmlFor="article-title">Title</Label>
+                         <Input placeholder="Title" name="title" id="article-title"/>
+                       </div>
+                       <div className="space-y-2">
+                         <Label htmlFor="article-content">Content</Label>
+                         <Textarea placeholder="Write your article here..." name="content" id="article-content" rows={4}/>
+                       </div>
+                       <div className="space-y-2">
+                         <Label htmlFor="article-author">Your Name</Label>
+                         <Input placeholder="Your Name" name="author" id="article-author"/>
+                       </div>
+                       <Button disabled={submit} className="w-full hover:bg-slate-800">
+                         {submit ? "Submitting..." : "Submit Article"}
                        </Button>
-                </DialogFooter>
-                </form>
-             </DialogContent>
-          </Dialog>
+                     </form>
+                   </CardContent>
+                 </Card>
+               </div>
+             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {succesStories.map((story) => (
-                <Card key={story.id} className="alumni-card hover:-translate-y-1 transition-all duration-300">
-                  <CardHeader>
-                    <div className="flex items-start space-x-4">
-                      {/* <Avatar className="h-16 w-16">
-                        <AvatarImage src={story.image} alt={story.na} />
-                        <AvatarFallback>{story.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                      </Avatar> */}
-                      <div className="flex-1">
-                        <CardTitle className="text-lg">{story.title}</CardTitle>
-                        <CardDescription className="text-sm">
-                          {/* Class of {story.graduationYear} */}
-                        </CardDescription>
-                        {/* <div className="flex items-center mt-1">
-                          <Building className="h-4 w-4 mr-1 text-muted-foreground" />
-                          <span className="text-sm font-medium">{story.currentRole}</span>
-                        </div>
-                        <div className="text-sm text-muted-foreground">{story.company}</div> */}
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {/* <div>
-                        <div className="flex items-center mb-2">
-                          <TrendingUp className="h-4 w-4 mr-2 text-primary" />
-                          <span className="text-sm font-medium">Career Journey</span>
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          <span className="font-medium">From:</span> {story.previousRole}
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          <span className="font-medium">To:</span> {story.currentRole}
-                        </div>
-                      </div> */}
-
-                      {/* <div>
-                        <div className="flex items-center mb-2">
-                          <Target className="h-4 w-4 mr-2 text-primary" />
-                          <span className="text-sm font-medium">Key Achievement</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground">{story.achievement}</p>
-                      </div> */}
-
-                      <div>
-                        <p className="text-sm italic">{story.content}</p>
-                      </div>
-
-                      {/* <div>
-                        <div className="flex flex-wrap gap-1 mb-3">
-                          {story.tags.map((tag, index) => (
-                            <Badge key={index} variant="secondary" className="text-xs">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div> */}
-
-                      <div className="flex items-center justify-between">
-                        {/* <Button variant="outline" size="sm" className="flex items-center">
-                          <ExternalLink className="h-4 w-4 mr-1" />
-                          LinkedIn
-                        </Button> */}
-                        {/* <Button size="sm">
-                          Connect
-                        </Button> */}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
+             {/* View Article Dialog */}
+             <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
+               <DialogContent className="sm:max-w-[600px]">
+                 <DialogHeader>
+                   <DialogTitle>{selectedStory?.title}</DialogTitle>
+                 </DialogHeader>
+                 <div className="space-y-4 py-4">
+                   <Badge variant="outline">{selectedStory?.author}</Badge>
+                   <p className="text-sm text-muted-foreground">{selectedStory?.created_at}</p>
+                   <Separator />
+                   <p className="text-base leading-relaxed">{selectedStory?.content}</p>
+                 </div>
+               </DialogContent>
+             </Dialog>
+           </TabsContent>
 
           {/* Webinars & Workshops */}
           <TabsContent value="webinars" className="space-y-6">

@@ -15,23 +15,14 @@ import { AdminNavbar } from "@/components/AdminNavbar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { getCount } from "@/api/studentApi";
+import { useState, useEffect } from "react";
 
-// import {NotificationListener} from "../api/Notifications.js";
-
-
-const summaryCards = [
-  { label: "Alumni", value: "3,482", icon: Users, delta: "+6.2%" },
-  { label: "Staff", value: "214", icon: UserCheck, delta: "+1.4%" },
-  { label: "Students", value: "4,920", icon: GraduationCap, delta: "+8.7%" },
-  { label: "Upcoming Events", value: "12", icon: CalendarDays, delta: "+2 this week" },
-];
-
-const adminQueue = [
-  { title: "Pending Verifications", count: 23, severity: "high" },
-  { title: "Staff Role Change Requests", count: 4, severity: "medium" },
-  { title: "Event Approvals", count: 9, severity: "medium" },
-  { title: "Flagged Profiles", count: 2, severity: "high" },
-];
+const getSeverityBadge = (severity: "high" | "medium" | "low") => {
+  if (severity === "high") return <Badge className="bg-red-600">High</Badge>;
+  if (severity === "medium") return <Badge className="bg-amber-600">Medium</Badge>;
+  return <Badge className="bg-emerald-600">Low</Badge>;
+};
 
 const quickLinks = [
   { title: "Manage Alumni", desc: "View and maintain alumni directory", href: "/admin/alumnisection" },
@@ -41,18 +32,43 @@ const quickLinks = [
   { title: "Admin Profile", desc: "Security, preferences and exports", href: "/admin/profile" },
 ];
 
-const getSeverityBadge = (severity: "high" | "medium" | "low") => {
-  if (severity === "high") return <Badge className="bg-red-600">High</Badge>;
-  if (severity === "medium") return <Badge className="bg-amber-600">Medium</Badge>;
-  return <Badge className="bg-emerald-600">Low</Badge>;
-};
+const adminQueue = [
+  { title: "Pending Verifications", count: 23, severity: "high" },
+  { title: "Staff Role Change Requests", count: 4, severity: "medium" },
+  { title: "Event Approvals", count: 9, severity: "medium" },
+  { title: "Flagged Profiles", count: 2, severity: "high" },
+];
 
 export default function Home() {
+  const [counts, setCounts] = useState<{ alumni: number; staff: number; students: number; events: number } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const data = await getCount();
+        setCounts(data);
+      } catch (error) {
+        console.error("Error fetching counts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCounts();
+  }, []);
+
+  const summaryCards = [
+    { label: "Alumni", value: loading ? "..." : (counts?.alumni ?? 0), icon: Users },
+    { label: "Staff", value: loading ? "..." : (counts?.staff ?? 0), icon: UserCheck },
+    { label: "Students", value: loading ? "..." : (counts?.students ?? 0), icon: GraduationCap },
+    { label: "Upcoming Events", value: loading ? "..." : (counts?.events ?? 0), icon: CalendarDays  },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50">
       <AdminNavbar />
        {/* <NotificationListener /> */}
-             <div className="mx-auto max-w-7xl px-4 py-8 space-y-6">
+              <div className="mx-auto max-w-7xl px-4 py-8 space-y-6">
         <Card className="border-slate-200 bg-gradient-to-r from-slate-900 to-slate-700 text-white">
           <CardContent className="p-6 md:p-8 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div>
@@ -82,8 +98,9 @@ export default function Home() {
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="text-sm text-slate-500">{item.label}</p>
-                    <p className="text-2xl font-semibold text-slate-900 mt-1">{item.value}</p>
-                    <p className="text-xs text-emerald-700 mt-1">{item.delta}</p>
+                    <p className="text-2xl font-semibold text-slate-900 mt-1">
+                      {typeof item.value === "number" ? item.value.toLocaleString() : item.value}
+                    </p>
                   </div>
                   <div className="h-10 w-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center">
                     <item.icon className="h-5 w-5" />

@@ -62,7 +62,7 @@ const EventCard = ({ event }: { event: Event }) => {
   const formattedTime = new Date(event.time).toLocaleString();
 
   return (
-    <Card className="alumni-card overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 group">
+    <Card className="alumni-card overflow-hidden border-none group">
       
       {/* Image */}
       <div className="relative h-52 overflow-hidden">
@@ -72,9 +72,9 @@ const EventCard = ({ event }: { event: Event }) => {
           className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-        <Badge className="absolute top-3 right-3 bg-white/90 text-gray-900 backdrop-blur">
+        <Badge className="absolute top-3 right-3 border-0 bg-white/90 text-gray-900 backdrop-blur shadow-md">
           Event
         </Badge>
       </div>
@@ -82,7 +82,7 @@ const EventCard = ({ event }: { event: Event }) => {
       {/* Content */}
       <CardContent className="p-5 space-y-3">
 
-        <h3 className="text-lg font-bold text-gray-900 group-hover:text-purple-600 transition">
+        <h3 className="text-lg font-bold text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text transition-all duration-300">
           {event.eventname}
         </h3>
 
@@ -98,7 +98,7 @@ const EventCard = ({ event }: { event: Event }) => {
       </CardContent>
 
       <CardFooter className="p-5 pt-0">
-        <Button className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-xl">
+        <Button className="w-full rounded-xl bg-gradient-to-r from-primary to-accent text-white shadow-[0_10px_25px_-12px_hsl(262_83%_58%/0.6)] hover:shadow-[0_10px_30px_-8px_hsl(262_83%_58%/0.8)] hover:brightness-110 transition-all duration-300">
           View Event
         </Button>
       </CardFooter>
@@ -111,15 +111,16 @@ const AlumniEvents = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [events,setEvents] =useState<Event[]>([]);
   const[submit,setSubmit] = useState(false);
-  const[formData,setFormData] = useState({
-    eventname:"",
-    eventtype:"",
-    description:"",
-    image:"",
-    time:"",
-    date:"",
-    location:"",
-  })
+  const[formData,setFormData] = useState<Event>({
+    id: 0,
+  description: "",
+  eventname: "",
+  eventtype: "",
+  image: "",
+  time: "",
+  date: "",
+  location: "",
+  });
 
 
 
@@ -133,8 +134,9 @@ useEffect(() => {
       });
   }, []);
   
-
-  const handleSubmit = async (formData) =>{
+// Form data is directly taken from state not passed as parameter
+  const handleSubmit = async (e:React.FormEvent) =>{
+    e.preventDefault(); //prevents page reload
        try{
         setSubmit(true);
 
@@ -152,95 +154,95 @@ useEffect(() => {
   }
 
 
-  const upcomingEvents = [
-    {
-      id: 1,
-      imageUrl: Reunion, 
-      title: "Annual Alumni Reunion 2025",
-      date: "March 15, 2025",
-      time: "6:00 PM - 11:00 PM",
-      location: "Main Campus Auditorium",
-      type: "Reunion",
-      organizer: "Alumni Committee",
-      attendees: 450,
-      maxAttendees: 500,
-      registrationOpen: true,
-      description: "Join us for our biggest annual gathering of alumni from all batches.",
-      isVirtual: false
-    },
-    {
-      id: 2,
-      imageUrl: Tech, 
-      title: "Tech Industry Networking Night",
-      date: "January 20, 2025",
-      time: "7:00 PM - 9:00 PM",
-      location: "Virtual Event",
-      type: "Networking",
-      organizer: "Tech Alumni Group",
-      attendees: 120,
-      maxAttendees: 200,
-      registrationOpen: true,
-      description: "Connect with fellow tech professionals and share industry insights.",
-      isVirtual: true
-    },
-    {
-      id: 3,
-      imageUrl: Mentor, 
-      title: "Career Mentorship Workshop",
-      date: "February 5, 2025",
-      time: "2:00 PM - 5:00 PM",
-      location: "Business Center Hall",
-      type: "Workshop",
-      organizer: "Career Services",
-      attendees: 85,
-      maxAttendees: 100,
-      registrationOpen: true,
-      description: "Learn effective mentorship strategies and build meaningful connections.",
-      isVirtual: false
-    }
-  ];
+  // const upcomingEvents = [
+  //   {
+  //     id: 1,
+  //     imageUrl: Reunion, 
+  //     title: "Annual Alumni Reunion 2025",
+  //     date: "March 15, 2025",
+  //     time: "6:00 PM - 11:00 PM",
+  //     location: "Main Campus Auditorium",
+  //     type: "Reunion",
+  //     organizer: "Alumni Committee",
+  //     attendees: 450,
+  //     maxAttendees: 500,
+  //     registrationOpen: true,
+  //     description: "Join us for our biggest annual gathering of alumni from all batches.",
+  //     isVirtual: false
+  //   },
+  //   {
+  //     id: 2,
+  //     imageUrl: Tech, 
+  //     title: "Tech Industry Networking Night",
+  //     date: "January 20, 2025",
+  //     time: "7:00 PM - 9:00 PM",
+  //     location: "Virtual Event",
+  //     type: "Networking",
+  //     organizer: "Tech Alumni Group",
+  //     attendees: 120,
+  //     maxAttendees: 200,
+  //     registrationOpen: true,
+  //     description: "Connect with fellow tech professionals and share industry insights.",
+  //     isVirtual: true
+  //   },
+  //   {
+  //     id: 3,
+  //     imageUrl: Mentor, 
+  //     title: "Career Mentorship Workshop",
+  //     date: "February 5, 2025",
+  //     time: "2:00 PM - 5:00 PM",
+  //     location: "Business Center Hall",
+  //     type: "Workshop",
+  //     organizer: "Career Services",
+  //     attendees: 85,
+  //     maxAttendees: 100,
+  //     registrationOpen: true,
+  //     description: "Learn effective mentorship strategies and build meaningful connections.",
+  //     isVirtual: false
+  //   }
+  // ];
 
-  const pastEvents = [
-    {
-      id: 4,
-      title: "Healthcare Professionals Meet",
-      date: "November 15, 2024",
-      attendees: 95,
-      type: "Professional Meet",
-      highlights: [
-        "Panel on latest healthcare trends",
-        "Networking with 20+ senior doctors",
-        "Career opportunities shared"
-      ],
-      photos: [meet,meet,meet]
-    },
-    {
-      id: 5,
-      title: "Startup Founders Panel",
-      date: "October 22, 2024",
-      attendees: 150,
-      type: "Panel Discussion",
-      highlights: [
-        "10 startup founders shared insights",
-        "Q&A on funding challenges",
-        "Pitch competition for students"
-      ],
-      photos: [startup,startup,startup]
-    },
-    {
-      id: 6,
-      title: "Alumni Charity Drive",
-      date: "September 10, 2024",
-      attendees: 200,
-      type: "Community Service",
-      highlights: [
-        "Funds raised for rural education",
-        "Volunteering by 50+ alumni",
-        "Distributed 1000+ books"
-      ],
-      photos: [charity,charity,charity]
-    }
-  ];
+  // const pastEvents = [
+  //   {
+  //     id: 4,
+  //     title: "Healthcare Professionals Meet",
+  //     date: "November 15, 2024",
+  //     attendees: 95,
+  //     type: "Professional Meet",
+  //     highlights: [
+  //       "Panel on latest healthcare trends",
+  //       "Networking with 20+ senior doctors",
+  //       "Career opportunities shared"
+  //     ],
+  //     photos: [meet,meet,meet]
+  //   },
+  //   {
+  //     id: 5,
+  //     title: "Startup Founders Panel",
+  //     date: "October 22, 2024",
+  //     attendees: 150,
+  //     type: "Panel Discussion",
+  //     highlights: [
+  //       "10 startup founders shared insights",
+  //       "Q&A on funding challenges",
+  //       "Pitch competition for students"
+  //     ],
+  //     photos: [startup,startup,startup]
+  //   },
+  //   {
+  //     id: 6,
+  //     title: "Alumni Charity Drive",
+  //     date: "September 10, 2024",
+  //     attendees: 200,
+  //     type: "Community Service",
+  //     highlights: [
+  //       "Funds raised for rural education",
+  //       "Volunteering by 50+ alumni",
+  //       "Distributed 1000+ books"
+  //     ],
+  //     photos: [charity,charity,charity]
+  //   }
+  // ];
 
   const eventCategories = [
     { name: "All Events", count: 12, color: "bg-blue-500" },
@@ -254,13 +256,16 @@ useEffect(() => {
     <div className="alumni-shell">
       <AlumniNavbar/>
       {/* Header */}
-      <section className="alumni-hero py-20">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <section className="alumni-hero py-20 md:py-24">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-fade-in">
-            Event Management
+          <div className="alumni-hero-chip mx-auto mb-6 animate-fade-in">
+            <Calendar className="h-4 w-4" />
+            Events & networking
+          </div>
+          <h1 className="alumni-hero-title mb-6 animate-fade-in" style={{ animationDelay: "100ms" }}>
+            Event <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-yellow-100">Management</span>
           </h1>
-          <p className="text-xl text-white/80 max-w-2xl mx-auto">
+          <p className="alumni-hero-sub max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "200ms" }}>
             Discover, organize, and participate in alumni events and networking opportunities
           </p>
         </div>
@@ -284,77 +289,78 @@ useEffect(() => {
                   placeholder="Search events..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 rounded-xl border-slate-200 bg-white/80 shadow-sm focus-visible:ring-primary/30"
                 />
               </div>
-              <Button variant="outline">
+              <Button variant="outline" className="rounded-xl border-slate-200 bg-white/80 shadow-sm hover:bg-primary/5 hover:text-primary">
                 <Filter className="h-4 w-4 mr-2" />
                 Filter
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            {/* <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
               {upcomingEvents.map((event) => (
-                <Card key={event.id} className="hover:shadow-lg transition-shadow">
+                <Card key={event.id} className="alumni-card overflow-hidden group">
                   <div className="relative">
                     {event.imageUrl ? (
                       <img 
                         src={event.imageUrl} 
                         alt={event.title}
-                        className="h-48 w-full object-cover rounded-t-lg"
+                        className="h-48 w-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <div className="h-48 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-t-lg flex items-center justify-center">
+                      <div className="h-48 bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
                         <span className="text-muted-foreground">No image</span>
                       </div>
                     )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                     <Badge 
-                      className="absolute top-4 left-4" 
+                      className="absolute top-4 left-4 border-0 shadow-md" 
                       variant={event.isVirtual ? "secondary" : "default"}
                     >
                       {event.isVirtual ? "Virtual" : "In-Person"}
                     </Badge>
-                    <Badge className="absolute top-4 right-4 text-red-500" variant="outline">
+                    <Badge className="absolute top-4 right-4 text-red-500 bg-white/90 border-0 backdrop-blur shadow-md" variant="outline">
                       {event.type}
                     </Badge>
                   </div>
                   
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg">{event.title}</CardTitle>
+                    <CardTitle className="text-lg group-hover:text-primary transition-colors duration-300">{event.title}</CardTitle>
                     <CardDescription>{event.description}</CardDescription>
                   </CardHeader>
                   
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
                       <div className="flex items-center text-sm text-muted-foreground">
-                        <Calendar className="h-4 w-4 mr-2" />
+                        <Calendar className="h-4 w-4 mr-2 text-primary/60" />
                         {event.date}
                       </div>
                       <div className="flex items-center text-sm text-muted-foreground">
-                        <Clock className="h-4 w-4 mr-2" />
+                        <Clock className="h-4 w-4 mr-2 text-primary/60" />
                         {event.time}
                       </div>
                       <div className="flex items-center text-sm text-muted-foreground">
-                        {event.isVirtual ? <Video className="h-4 w-4 mr-2" /> : <MapPin className="h-4 w-4 mr-2" />}
+                        {event.isVirtual ? <Video className="h-4 w-4 mr-2 text-primary/60" /> : <MapPin className="h-4 w-4 mr-2 text-primary/60" />}
                         {event.location}
                       </div>
                       <div className="flex items-center text-sm text-muted-foreground">
-                        <Users className="h-4 w-4 mr-2" />
+                        <Users className="h-4 w-4 mr-2 text-primary/60" />
                         {event.attendees}/{event.maxAttendees} registered
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2">
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-100">
                       <div className="text-sm text-muted-foreground">
                         by {event.organizer}
                       </div>
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline" className="rounded-lg border-slate-200 hover:bg-primary/5 hover:text-primary">
                           <Eye className="h-4 w-4 mr-1" />
                           Details
                         </Button>
                         <Link to={"/register"}>
-                          <Button size="sm">
+                          <Button size="sm" className="rounded-lg bg-gradient-to-r from-primary to-accent shadow-[0_8px_20px_-10px_hsl(262_83%_58%/0.6)] hover:brightness-110 transition-all">
                             <UserPlus className="h-4 w-4 mr-1" />
                             Register
                           </Button>
@@ -364,7 +370,7 @@ useEffect(() => {
                   </CardContent>
                 </Card>
               ))}
-            </div>
+            </div> */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-3">
   {events.map((event) => (
     <EventCard key={event.id} event={event} />
@@ -375,31 +381,34 @@ useEffect(() => {
           {/* Past Events */}
           <TabsContent value="past" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold">Event History</h2>
+              <h2 className="text-2xl font-bold tracking-tight">Event <span className="alumni-gradient-text">History</span></h2>
               <Link to={"/analytics"}>
-                <Button size="sm">
+                <Button size="sm" className="rounded-lg bg-gradient-to-r from-primary to-accent shadow-md hover:brightness-110">
                   <Eye className="h-4 w-4 mr-2" />
                   View Analytics
                 </Button>
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {pastEvents.map((event) => (
-                <Card key={event.id} className="hover:shadow-sm transition-shadow">
-                  <CardHeader>
+                <Card key={event.id} className="alumni-card overflow-hidden group">
+                  <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
                     <div className="flex items-start justify-between">
                       <div>
-                        <CardTitle className="text-lg">{event.title}</CardTitle>
-                        <p className="text-sm text-muted-foreground">{event.date}</p>
+                        <CardTitle className="text-lg group-hover:text-primary transition-colors duration-300">{event.title}</CardTitle>
+                        <p className="text-sm text-muted-foreground mt-1 flex items-center">
+                          <Calendar className="h-3.5 w-3.5 mr-1 text-primary/60" />
+                          {event.date}
+                        </p>
                       </div>
-                      <Badge variant="outline">{event.type}</Badge>
+                      <Badge variant="outline" className="bg-white/60 border-primary/20">{event.type}</Badge>
                     </div>
                   </CardHeader>
                   
-                  <CardContent className="space-y-3">
-                    <p className="text-sm text-muted-foreground">Attendees: {event.attendees}</p>
-                    <ul className="list-disc pl-5 text-sm space-y-1">
+                  <CardContent className="space-y-3 pt-4">
+                    <p className="text-sm text-muted-foreground"><Users className="h-4 w-4 mr-1.5 inline text-primary/60" /> Attendees: {event.attendees}</p>
+                    <ul className="list-disc pl-5 text-sm space-y-1 text-slate-600">
                       {event.highlights.map((h, i) => (
                         <li key={i}>{h}</li>
                       ))}
@@ -407,7 +416,7 @@ useEffect(() => {
 
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button size="sm" variant="outline" className="w-full">
+                        <Button size="sm" variant="outline" className="w-full rounded-xl border-slate-200 hover:bg-primary/5 hover:text-primary">
                           View Photos
                         </Button>
                       </DialogTrigger>
@@ -421,7 +430,7 @@ useEffect(() => {
                   </CardContent>
                 </Card>
               ))}
-            </div>
+            </div> */}
           </TabsContent>
 
           {/* Create Event */}
@@ -479,7 +488,7 @@ useEffect(() => {
 
                 <div className="flex justify-end space-x-2">
                   {/* <Button variant="outline">Save Draft</Button> */}
-                  <Button >{submit?"Creating event" : "Create Event"}</Button>
+                  <Button type="submit">{submit?"Creating event" : "Create Event"}</Button>
                   
                 </div>
               </CardContent>
@@ -489,14 +498,7 @@ useEffect(() => {
 
           {/* Categories */}
           <TabsContent value="categories" className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold">Event Categories</h2>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Category
-              </Button>
-            </div>
-
+            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {eventCategories.map((category, index) => (
                 <Card key={index} className="hover:shadow-sm transition-shadow cursor-pointer">

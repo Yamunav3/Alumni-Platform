@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Modal, message, Timeline } from "antd";
 import { MessageCircle, Star, Calendar, Video, Award, BookOpen, Send, FileText } from "lucide-react";
+import api from "@/api/api";
 
 interface AttendedEvent {
   id: number;
@@ -79,16 +80,11 @@ const FeedbackSection = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`import.meta.env.VITE_Backend_URL/api/v1/student/submit_feedback`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
-        },
-        body: JSON.stringify(payload)
+      const response = await api.post("/api/v1/student/submit_feedback", payload, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
 
-      if (!response.ok) {
+      if (!response.data) {
         message.error("We couldn't submit your feedback right now. Please try again.");
         return;
       }

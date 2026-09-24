@@ -47,35 +47,36 @@ const [formData, setFormData] = useState({
 
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
-  
-   try{
-       setLoading(true);
-        const response= await api.post("api/v1/auth/signin",{
-        username:formData.username,
-        password:formData.password,
-        
-       })
-       
-        if(response.status===200){
-          localStorage.setItem('token', response.data.token);
-        localStorage.setItem('refreshToken', response.data.refreshToken);
-        }
-        if(localStorage.getItem('token')!=null){
+
+    try {
+      setLoading(true);
+      const response = await api.post("api/v1/auth/signin", {
+        username: formData.username,
+        password: formData.password,
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+        setSuccess("Login successful!");
         toast({
-      title: "Login Successful",
-      description: "Welcome back, Alumni!",
-    });
-    navigate("/alumni/home");
-     }
-   }catch(error){
+          title: "Login Successful",
+          description: "Welcome back, Alumni!",
+        });
+        navigate("/alumni/home");
+      }
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || "Invalid username or password.";
+      setError(message);
       toast({
         title: "Login Failed",
-        description: "Invalid username or password.",
+        description: message,
         variant: "destructive",
       });
-   }finally{
-    setLoading(false);
-   }
+    } finally {
+      setLoading(false);
+    }
 
   };
 

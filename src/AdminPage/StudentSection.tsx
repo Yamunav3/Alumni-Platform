@@ -1,80 +1,59 @@
-import { useMemo, useState } from "react";
-import { Search, Plus, GraduationCap, Phone, Mail, CalendarDays } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Search, Plus, Mail, Phone, Calendar, Edit2, User, MapPin, GraduationCap } from "lucide-react";
 import { AdminNavbar } from "@/components/AdminNavbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { getAllStudents, getCount, updateUser } from "../api/studentApi";
 import { useNavigate } from "react-router-dom";
 
-type Student = {
+interface Student {
+  id: number;
+  username: string;
   name: string;
   email: string;
-  phoneNumber: string;
+  mobilenumber: number;
   graduationYear: string;
   department: string;
-};
-
-type Suggestion = {
-  id: number;
-  studentName: string;
-  title: string;
-  submittedAt: string;
-  content: string;
-};
-
-const studentsSeed: Student[] = [
-  {
-    name: "Siddharth Reddy",
-    email: "sidd@gmail.com",
-    phoneNumber: "9988776655",
-    graduationYear: "2027",
-    department: "Computer Science",
-  },
-  {
-    name: "Aanya Sharma",
-    email: "aanya.sharma@asthra.edu",
-    phoneNumber: "9876543210",
-    graduationYear: "2026",
-    department: "Information Technology",
-  },
-  {
-    name: "Rahul Menon",
-    email: "rahul.menon@asthra.edu",
-    phoneNumber: "9123456780",
-    graduationYear: "2028",
-    department: "Electronics",
-  },
-];
-
-const suggestionsSeed: Suggestion[] = [
-  {
-    id: 1,
-    studentName: "Siddharth Reddy",
-    title: "More evening mentorship sessions",
-    submittedAt: "12 Mar 2026, 7:30 PM",
-    content: "It would help if mentorship sessions were available after class hours for students with packed timetables.",
-  },
-  {
-    id: 2,
-    studentName: "Aanya Sharma",
-    title: "Resume review workshop",
-    submittedAt: "11 Mar 2026, 4:15 PM",
-    content: "Please add a monthly resume review session with alumni from product and software roles.",
-  },
-  {
-    id: 3,
-    studentName: "Rahul Menon",
-    title: "Lab-to-industry talks",
-    submittedAt: "10 Mar 2026, 10:05 AM",
-    content: "A short speaker series on how electronics projects move from academic labs into real products would be useful.",
-  },
-];
+  dob: string;
+  address: string;
+  role: string;
+}
 
 const StudentSection: React.FC = () => {
-  const [students] = useState<Student[]>(studentsSeed);
-  const [suggestions] = useState<Suggestion[]>(suggestionsSeed);
+  const [students, setStudents] = useState<Student[]>([]);
   const [search, setSearch] = useState("");
+  const [counts, setCounts] = useState<{alumni: number, staff: number, students: number}>({alumni: 0, staff: 0, students: 0});
+  const [loading, setLoading] = useState(true);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+
+  const fetchCounts = async () => {
+    try {
+      const data = await getCount();
+      setCounts({ alumni: data.alumni, staff: data.staff, students: data.students });
+    } catch (error) {
+      console.error("Error fetching counts:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchStudents = async () => {
+    try {
+      const data = await getAllStudents();
+      setStudents(data);
+    } catch (error) {
+      console.error("Error fetching students:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents();
+    fetchCounts();
+  }, []);
 
   const filteredStudents = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -84,15 +63,15 @@ const StudentSection: React.FC = () => {
         student.name.toLowerCase().includes(query) ||
         student.email.toLowerCase().includes(query) ||
         student.department.toLowerCase().includes(query) ||
-        student.graduationYear.includes(query)
+        student.graduationYear.includes(query) ||
+        student.username.toLowerCase().includes(query)
     );
   }, [search, students]);
 
   const navigate = useNavigate();
-
-  const handleAdd = ()=>{
+  const handleAdd = () => {
     navigate('/signup/student');
-  }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -103,7 +82,7 @@ const StudentSection: React.FC = () => {
             <h1 className="text-3xl font-bold text-slate-900">Student Management</h1>
             <p className="text-slate-600 mt-1">Review student records and graduation pipelines.</p>
           </div>
-          <Button className="bg-slate-900 hover:bg-slate-800" onClick={()=>handleAdd()}>
+          <Button className="bg-slate-900 hover:bg-slate-800" onClick={handleAdd}>
             <Plus className="h-4 w-4 mr-2" />
             Add Student
           </Button>
@@ -148,74 +127,57 @@ const StudentSection: React.FC = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {filteredStudents.map((student) => (
-                <div
-                  key={student.email}
-                  className="rounded-lg border border-slate-200 bg-white p-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
-                >
-                  <div>
-                    <h3 className="font-semibold text-slate-900">{student.name}</h3>
-                    <div className="mt-2 flex flex-wrap gap-3 text-sm text-slate-600">
-                      <span className="inline-flex items-center gap-1">
-                        <Mail className="h-3.5 w-3.5" />
-                        {student.email}
-                      </span>
-                      <span className="inline-flex items-center gap-1">
-                        <Phone className="h-3.5 w-3.5" />
-                        {student.phoneNumber}
-                      </span>
+            {loading ? (
+              <p className="text-sm text-slate-500">Loading students...</p>
+            ) : (
+              <div className="space-y-3">
+                {filteredStudents.map((student) => (
+                  <div
+                    key={student.id}
+                    className="rounded-lg border border-slate-200 bg-white p-4 flex flex-col gap-3 md:flex-row md:items-start md:justify-between"
+                  >
+                    <div className="flex-1 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold text-slate-900">{student.name}</h3>
+                        <Badge variant="outline">@{student.username}</Badge>
+                      </div>
+                      <div className="flex flex-wrap gap-3 text-sm text-slate-600">
+                        <span className="inline-flex items-center gap-1">
+                          <Mail className="h-3.5 w-3.5" /> {student.email}
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                          <Phone className="h-3.5 w-3.5" /> {student.mobilenumber}
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                          <MapPin className="h-3.5 w-3.5" /> {student.address}
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        <Badge variant="outline" className="border-slate-300 text-slate-700">
+                          <GraduationCap className="h-3.5 w-3.5 mr-1" /> {student.department}
+                        </Badge>
+                        <Badge className="bg-slate-900">
+                          <Calendar className="h-3.5 w-3.5 mr-1" /> {student.graduationYear}
+                        </Badge>
+                        <Badge variant="outline" className="border-slate-300 text-slate-700">
+                          <Calendar className="h-3.5 w-3.5 mr-1" /> DOB: {student.dob}
+                        </Badge>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="border-slate-300 text-slate-700">
-                      <GraduationCap className="h-3.5 w-3.5 mr-1" />
-                      {student.department}
-                    </Badge>
-                    <Badge className="bg-slate-900">
-                      <CalendarDays className="h-3.5 w-3.5 mr-1" />
-                      {student.graduationYear}
-                    </Badge>
-                  </div>
-                </div>
-              ))}
-              {filteredStudents.length === 0 && (
-                <p className="text-sm text-slate-500">No students found for the current search.</p>
-              )}
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card className="border-slate-200">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Suggestions</CardTitle>
-            <p className="text-sm text-slate-500">
-              Student-submitted ideas and requests collected in one place.
-            </p>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {suggestions.map((suggestion) => (
-                <div key={suggestion.id} className="rounded-lg border border-slate-200 bg-white p-4">
-                  <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                    <div className="space-y-1">
-                      <h3 className="font-semibold text-slate-900">{suggestion.title}</h3>
-                      <p className="text-sm text-slate-600">By {suggestion.studentName}</p>
-                    </div>
-                    <Badge variant="outline" className="w-fit border-slate-300 text-slate-700">
-                      <CalendarDays className="mr-1 h-3.5 w-3.5" />
-                      {suggestion.submittedAt}
-                    </Badge>
                   </div>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">{suggestion.content}</p>
-                </div>
-              ))}
-            </div>
+                ))}
+                {filteredStudents.length === 0 && (
+                  <p className="text-sm text-slate-500">No students found for the current search.</p>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
-};
 
-export default StudentSection;
+     </div>
+   );
+ };
+
+ export default StudentSection;

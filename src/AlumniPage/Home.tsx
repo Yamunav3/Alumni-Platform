@@ -51,15 +51,16 @@ export default function AlumniHome() {
     <div className="alumni-shell">
       <AlumniNavbar/>
       {/* Hero Section */}
-      <section className="alumni-hero px-4 py-20">
+      <section className="alumni-hero px-4 py-20 md:py-28">
         <div className="container mx-auto text-center relative z-10">
-          <div className="flex items-center justify-center mb-6">
-            <Sparkles className="h-8 w-8 text-white/90 mr-3" />
-            <h1 className="text-4xl md:text-6xl font-semibold text-white">
-              Welcome to Asthra
-            </h1>
+          <div className="alumni-hero-chip mx-auto mb-6 animate-fade-in">
+            <Sparkles className="h-4 w-4 text-yellow-200" />
+            Your alumni community hub
           </div>
-          <p className="text-xl text-white/80 mb-8 max-w-3xl mx-auto">
+          <h1 className="alumni-hero-title mb-6 animate-fade-in" style={{ animationDelay: "100ms" }}>
+            Welcome to <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-yellow-100">Asthra</span>
+          </h1>
+          <p className="alumni-hero-sub mb-8 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: "200ms" }}>
             Your centralized alumni platform connecting past, present, and future. 
             Build meaningful relationships, advance your career, and give back to your community.
           </p>
@@ -83,14 +84,19 @@ export default function AlumniHome() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 px-4">
+{/* Features Section */}
+      <section className="py-16 md:py-20 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <div className="alumni-pill mx-auto mb-4">Community hub</div>
-            <h2 className="alumni-section-title mb-4">Discover What's Possible</h2>
+            <div className="alumni-pill mx-auto mb-4">
+              <Sparkles className="h-3.5 w-3.5" />
+              Community hub
+            </div>
+            <h2 className="alumni-section-title mb-4">
+              Discover What's <span className="alumni-gradient-text">Possible</span>
+            </h2>
             <p className="alumni-section-subtitle max-w-2xl mx-auto">
-              Explore the various ways you can connect, learn, and contribute to our thriving alumni community.
+              Explore the various ways you can connect, learn, and contribute to your thriving alumni community.
             </p>
           </div>
           
@@ -104,26 +110,28 @@ export default function AlumniHome() {
             </TabsList>
 
             <TabsContent value="celebrations" className="space-y-6 mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <PartyPopper className="h-5 w-5 mr-2" />
+              <Card className="alumni-card overflow-hidden">
+                <CardHeader className="border-b border-slate-100/80 bg-gradient-to-r from-primary/5 to-accent/5">
+                  <CardTitle className="flex items-center text-lg">
+                    <span className="mr-2 flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent text-white shadow-md">
+                      <PartyPopper className="h-5 w-5" />
+                    </span>
                     Upcoming Celebrations
                   </CardTitle>
                   <CardDescription>
                     Stay connected with events, milestones, and special occasions
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-5">
                   <div className="space-y-4">
                     {celebrationsData.map((event, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50">
+                      <div key={index} className="alumni-list-row">
                         <div>
-                          <h4 className="font-medium">{event.title}</h4>
+                          <h4 className="font-medium text-slate-800">{event.title}</h4>
                           <p className="text-sm text-muted-foreground">{event.date}</p>
                         </div>
                         <div className="text-right">
-                          <Badge variant="secondary">{event.type}</Badge>
+                          <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/15">{event.type}</Badge>
                           <p className="text-sm text-muted-foreground mt-1">{event.attendees} attending</p>
                         </div>
                       </div>
@@ -134,10 +142,12 @@ export default function AlumniHome() {
             </TabsContent>
 
             <TabsContent value="mentorship" className="space-y-6 mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <UserCheck className="h-5 w-5 mr-2" />
+              <Card className="alumni-card overflow-hidden">
+                <CardHeader className="border-b border-slate-100/80 bg-gradient-to-r from-primary/5 to-accent/5">
+                  <CardTitle className="flex items-center text-lg">
+                    <span className="mr-2 flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent text-white shadow-md">
+                      <UserCheck className="h-5 w-5" />
+                    </span>
                     Mentorship Program
                   </CardTitle>
                   <CardDescription>
@@ -150,7 +160,9 @@ export default function AlumniHome() {
                       const IconComponent = stat.icon;
                       return (
                         <div key={index} className="alumni-stat-card text-center">
-                          <IconComponent className="h-8 w-8 mx-auto mb-2 text-primary" />
+                          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 text-primary">
+                            <IconComponent className="h-7 w-7" />
+                          </div>
                           <div className="text-2xl font-bold text-primary">{stat.value}</div>
                           <div className="text-sm text-muted-foreground">{stat.label}</div>
                         </div>
@@ -162,22 +174,24 @@ export default function AlumniHome() {
             </TabsContent>
 
             <TabsContent value="forums" className="space-y-6 mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <MessageSquare className="h-5 w-5 mr-2" />
+              <Card className="alumni-card overflow-hidden">
+                <CardHeader className="border-b border-slate-100/80 bg-gradient-to-r from-primary/5 to-accent/5">
+                  <CardTitle className="flex items-center text-lg">
+                    <span className="mr-2 flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent text-white shadow-md">
+                      <MessageSquare className="h-5 w-5" />
+                    </span>
                     Discussion Forums
                   </CardTitle>
                   <CardDescription>
                     Engage in meaningful discussions and collaborate with fellow alumni
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-5">
                   <div className="space-y-4">
                     {forumTopics.map((topic, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50">
+                      <div key={index} className="alumni-list-row">
                         <div>
-                          <h4 className="font-medium">{topic.title}</h4>
+                          <h4 className="font-medium text-slate-800">{topic.title}</h4>
                           <p className="text-sm text-muted-foreground">{topic.posts} posts • {topic.replies} replies</p>
                         </div>
                         <div className="text-sm text-muted-foreground">
@@ -191,22 +205,24 @@ export default function AlumniHome() {
             </TabsContent>
 
             <TabsContent value="directory" className="space-y-6 mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <BookOpen className="h-5 w-5 mr-2" />
+              <Card className="alumni-card overflow-hidden">
+                <CardHeader className="border-b border-slate-100/80 bg-gradient-to-r from-primary/5 to-accent/5">
+                  <CardTitle className="flex items-center text-lg">
+                    <span className="mr-2 flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent text-white shadow-md">
+                      <BookOpen className="h-5 w-5" />
+                    </span>
                     Alumni Directory
                   </CardTitle>
                   <CardDescription>
                     Find and connect with alumni across different industries and locations
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-5">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {directoryStats.map((company, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                        <span className="font-medium">{company.company}</span>
-                        <Badge variant="outline">{company.count} alumni</Badge>
+                      <div key={index} className="flex items-center justify-between rounded-2xl border border-slate-100 bg-white/60 p-3.5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md">
+                        <span className="font-medium text-slate-800">{company.company}</span>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20">{company.count} alumni</Badge>
                       </div>
                     ))}
                   </div>
@@ -215,22 +231,24 @@ export default function AlumniHome() {
             </TabsContent>
 
             <TabsContent value="feedback" className="space-y-6 mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <MessageCircle className="h-5 w-5 mr-2" />
+              <Card className="alumni-card overflow-hidden">
+                <CardHeader className="border-b border-slate-100/80 bg-gradient-to-r from-primary/5 to-accent/5">
+                  <CardTitle className="flex items-center text-lg">
+                    <span className="mr-2 flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent text-white shadow-md">
+                      <MessageCircle className="h-5 w-5" />
+                    </span>
                     Community Feedback
                   </CardTitle>
                   <CardDescription>
                     Share your thoughts and help us improve the alumni experience
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-5">
                   <div className="space-y-4">
                     {recentFeedback.map((feedback, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div key={index} className="alumni-list-row">
                         <div>
-                          <h4 className="font-medium">{feedback.category}</h4>
+                          <h4 className="font-medium text-slate-800">{feedback.category}</h4>
                           <p className="text-sm text-muted-foreground">{feedback.suggestions} suggestions received</p>
                         </div>
                         <div className="text-right">
@@ -248,20 +266,20 @@ export default function AlumniHome() {
       </section>
 
       {/* Quick Stats */}
-      <section className="py-16 px-4 bg-white/50">
+      <section className="py-16 md:py-20 px-4 bg-white/60 backdrop-blur-sm border-t border-white/70">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold text-primary mb-2">10,000+</div>
-              <div className="text-muted-foreground">Active Alumni</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="rounded-3xl border border-slate-100 bg-white/80 p-8 text-center shadow-[0_16px_40px_-24px_rgba(15,23,42,0.35)] backdrop-blur transition-all duration-300 hover:-translate-y-1">
+              <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">10,000+</div>
+              <div className="text-muted-foreground font-medium">Active Alumni</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-primary mb-2">500+</div>
-              <div className="text-muted-foreground">Companies</div>
+            <div className="rounded-3xl border border-slate-100 bg-white/80 p-8 text-center shadow-[0_16px_40px_-24px_rgba(15,23,42,0.35)] transition-all duration-300 hover:-translate-y-1">
+              <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">500+</div>
+              <div className="text-muted-foreground font-medium">Companies</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-primary mb-2">50+</div>
-              <div className="text-muted-foreground">Countries</div>
+            <div className="rounded-3xl border border-slate-100 bg-white/80 p-8 text-center shadow-[0_16px_40px_-24px_rgba(15,23,42,0.35)] transition-all duration-300 hover:-translate-y-1">
+              <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">50+</div>
+              <div className="text-muted-foreground font-medium">Countries</div>
             </div>
           </div>
         </div>

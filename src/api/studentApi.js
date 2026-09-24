@@ -1,11 +1,55 @@
 import api from "./api";
 
+export const getCount = async () => {
+  try {
+    const response = await api.get("/api/v1/admin/getcount");
+    const data = response.data;
+    if (Array.isArray(data)) {
+      return { alumni: data[1] ?? 0, staff: data[2] ?? 0, students: data[0] ?? 0, events: data[3] ?? 0 };
+    }
+    return data;
+  } catch (error) {
+    console.error("Error fetching admin counts:", error);
+    throw error;
+  }
+};
+
+export const postStory = async (storyData) => {
+  try {
+    const response = await api.post("/api/v1/student/share_story", storyData);
+    return response.data;
+  } catch (error) {
+    console.error("Error posting story:", error);
+    throw error;
+  }
+};
+
 export const getStudentById = async (id) => {
   try {
     const response = await api.get(`/students/${id}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching student with ID ${id}:`, error);
+    throw error;
+  }
+};
+
+export const getAllStudents = async () => {
+  try {
+    const response = await api.get("/api/v1/student/all");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching students:", error);
+    throw error;
+  }
+};
+
+export const updateUser = async (id, data) => {
+  try {
+    const response = await api.put(`/api/v1/user/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user:", error);
     throw error;
   }
 };
