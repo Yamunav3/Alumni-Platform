@@ -43,7 +43,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import {getEvents} from "../api/StudentAPI";
+import {getEvents} from "../api/studentAPI";
 import {postEvent} from "../api/AlumniAPI";
 
 interface Event{
@@ -498,7 +498,7 @@ useEffect(() => {
 
           {/* Categories */}
           <TabsContent value="categories" className="space-y-6">
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {eventCategories.map((category, index) => (
                 <Card key={index} className="hover:shadow-sm transition-shadow cursor-pointer">
