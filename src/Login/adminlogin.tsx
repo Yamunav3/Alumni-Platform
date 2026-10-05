@@ -114,23 +114,6 @@ const AdminLogin = () => {
       
             </Button>
           </form>
-          {/* <Button asChild type="button" className="w-full">
-  <Link to="/student">Sign In</Link>
-</Button> */}
-{/* </form> */}
-
-          {/* <div className="text-center mt-6">
-            <p className="text-sm text-muted-foreground">
-              Don't have an account?{" "}
-              <Button 
-                variant="link" 
-                onClick={() => navigate("/signup/admin")} 
-                className="p-0 text-primary"
-              >
-                Sign up here
-              </Button>
-            </p>
-          </div> */}
         </CardContent>
       </Card>
     </div>
