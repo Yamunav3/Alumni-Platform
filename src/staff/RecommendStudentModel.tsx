@@ -7,9 +7,27 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Building, MapPin, Clock, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
+interface StudentProfile {
+  fullname: string;
+  skills: string[];
+  interests: string | string[];
+}
+
+interface Opportunity {
+  id: number;
+  title: string;
+  type: string;
+  company: string;
+  location: string;
+  duration: string;
+  description: string;
+  alumniContact: string;
+  alumniEmail: string;
+}
+
 interface RecommendStudentModalProps {
-  student: any;
-  opportunities: any[];
+  student: StudentProfile;
+  opportunities: Opportunity[];
   isOpen: boolean;
   onClose: () => void;
 }

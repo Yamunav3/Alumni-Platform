@@ -13,10 +13,29 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import toast from "react-hot-toast";
 
+export interface Webinar {
+  id: number;
+  title: string;
+  description: string;
+  presenter: string;
+  presenterTitle: string;
+  date: string;
+  time: string;
+  duration: number;
+  maxAttendees: number;
+  registrations: number;
+  topics: string[];
+  requirements: string;
+  meetingLink: string;
+  status: string;
+  createdBy: string;
+  createdAt: string;
+}
+
 interface CreateWebinarFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onWebinarCreated: (webinar: any) => void;
+  onWebinarCreated: (webinar: Webinar) => void;
 }
 
 const CreateWebinarForm = ({
@@ -73,7 +92,7 @@ const CreateWebinarForm = ({
       return;
     }
 
-    const newWebinar = {
+    const newWebinar: Webinar = {
       id: Math.floor(Math.random() * 1000) + 100,
       title: formData.title,
       description: formData.description,

@@ -156,10 +156,32 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Mail, Phone } from "lucide-react";
 
+interface ApplicationTimelineEvent {
+  stage: string;
+  date: string;
+  details?: string;
+}
+
+interface ApplicationDetails {
+  jobTitle: string;
+  company: string;
+  status: string;
+  progress: number;
+  appliedDate: string;
+  nextStep: string;
+  timeline: ApplicationTimelineEvent[];
+  contact: {
+    name?: string;
+    email?: string;
+    phone?: string;
+  };
+  notes?: string;
+}
+
 interface ApplicationDetailsModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  application: any;
+  application: ApplicationDetails;
 }
 
 const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
@@ -241,7 +263,7 @@ const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
               Application Timeline
             </h3>
             <div className="space-y-2">
-              {application.timeline.map((event: any, index: number) => (
+              {application.timeline.map((event: ApplicationTimelineEvent, index: number) => (
                 <div
                   key={index}
                   className="flex items-start space-x-3 animate-in fade-in-0 slide-in-from-left-2"

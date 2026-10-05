@@ -253,11 +253,32 @@ import {
 } from "@/components/ui/select";
 import { Check, XCircle, Upload } from "lucide-react";
 
+interface ResumeInfo {
+  name: string;
+}
+
+interface ApplicationForm {
+  fullName: string;
+  email: string;
+  country: string;
+  phoneNumber: string;
+  primarySkills: string;
+  state: string;
+  zipCode: string;
+  yearsOfExperience: string;
+  referralEmail?: string;
+  employeeRelation?: string;
+  careerUpdates: boolean;
+  privacyAgreement: boolean;
+  resume?: ResumeInfo;
+  resumeError?: string;
+}
+
 interface ApplicationFormDialogProps {
   showApplicationForm: boolean;
   setShowApplicationForm: (open: boolean) => void;
-  applicationForm: any;
-  setApplicationForm: React.Dispatch<React.SetStateAction<any>>;
+  applicationForm: ApplicationForm;
+  setApplicationForm: React.Dispatch<React.SetStateAction<ApplicationForm>>;
   handleSubmitApplication: (e: React.FormEvent) => void;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   resumeError: string | null;

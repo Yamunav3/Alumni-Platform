@@ -65,9 +65,25 @@ interface Suggestions {
 //   },
 // ];
 
+interface TeamMember {
+  _id: string;
+  name: string;
+  role: string;
+  img: string;
+  color: string;
+}
+
+interface Suggestions {
+  id: number;
+  student_name: string;
+  title: string;
+  submittedAt: string;
+  content: string;
+}
+
 export default function StudentAbout() {
   const navigate = useNavigate();
-  const [teamMembers, setTeamMembers] = useState<any[]>(FALLBACK_TEAM);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(FALLBACK_TEAM as TeamMember[]);
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const [suggestions, setSuggestions] = useState<Suggestions[]>(suggestionsSeed);
@@ -119,7 +135,7 @@ export default function StudentAbout() {
         const response = await api.get('/api/v1/staff/all'); 
         
         if (response.data && Array.isArray(response.data)) {
-          const processedData = response.data.map((member: any, index: number) => ({
+          const processedData = response.data.map((member: TeamMember, index: number) => ({
             _id: member._id || index,
             name: member.username || member.name || "Team Member",
             role: member.role || "Staff Member",

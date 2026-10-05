@@ -1,7 +1,8 @@
-// src/socket/SocketProvider.tsx
+// src/api/SocketProvider.tsx
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import { useSocket } from "./useSocket";
 
 type SocketContextType = {
   client: Client | null;
@@ -12,6 +13,8 @@ const SocketContext = createContext<SocketContextType>({
   client: null,
   connected: false,
 });
+
+export { SocketContext };
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const clientRef = useRef<Client | null>(null);
@@ -62,4 +65,4 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useSocket = () => useContext(SocketContext);
+export { useSocket };

@@ -273,7 +273,7 @@ const deleteProfilePicture = async () => {
     // Add API call here to save changes (PUT request)
     if (formData) {
       // setProfile(formData);
-      let id=formData.id;
+      const id = formData.id;
       try {
         setLoading(true);
         // Send form data directly as like JSON

@@ -4,8 +4,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Calendar, User, MessageSquare, AlertTriangle, CheckCircle, Clock } from "lucide-react";
 
+interface Feedback {
+  author: string;
+  subject: string;
+  submittedDate: string;
+  type: string;
+  priority: string;
+  sentiment: string;
+  status: string;
+  fullContent?: string;
+  content?: string;
+  authorEmail?: string;
+}
+
 interface FeedbackDetailsModalProps {
-  feedback: any;
+  feedback: Feedback;
   isOpen: boolean;
   onClose: () => void;
 }

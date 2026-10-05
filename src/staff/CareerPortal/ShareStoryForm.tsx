@@ -9,10 +9,23 @@ import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import { Drawer } from "antd"; // ✅ Import Ant Design Drawer
 
+interface Story {
+  name: string;
+  graduationYear: string;
+  currentRole: string;
+  company: string;
+  previousRole: string;
+  achievement: string;
+  brief: string;
+  tags: string[];
+  linkedin: string;
+  image?: File;
+}
+
 interface ShareStoryFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onStoryShared?: (story: any) => void;
+  onStoryShared?: (story: Story) => void;
 }
 
 const ShareStoryForm: React.FC<ShareStoryFormProps> = ({

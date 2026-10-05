@@ -10,7 +10,7 @@ import { postJob } from "@/api/AlumniAPI";
 interface JobPostingFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onJobPosted: (job: any) => void;
+  onJobPosted: (job: unknown) => void;
 }
 
 const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps) => {
@@ -59,13 +59,20 @@ const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps
       onOpenChange(false);
       setFormData(initialFormState);
       toast.success("Job posted successfully!");
-    } catch (error: any) {
-      console.error("Failed to post job:", error);
+} catch (error) {
+      const typedError = error as {
+        response?: {
+          data?: {
+            message?: string;
+            error?: string;
+          };
+        };
+      };
       const errorMessage =
-        error?.response?.data?.message ||
-        error?.response?.data?.error ||
-        error?.response?.data ||
+        typedError.response?.data?.message ||
+        typedError.response?.data?.error ||
         "Failed to post job. Please try again.";
+      console.error("Failed to post job:", errorMessage);
       toast.error(String(errorMessage));
     } finally {
       setIsSubmitting(false);

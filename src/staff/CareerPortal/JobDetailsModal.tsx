@@ -20,12 +20,32 @@ import {
   Share2
 } from "lucide-react";
 
+interface Job {
+  id: number;
+  title: string;
+  company: string;
+  isUrgent?: boolean;
+  location: string;
+  type: string;
+  salary?: string;
+  postedDate: string;
+  description: string;
+  responsibilities: string[];
+  qualifications: string[];
+  skills: string[];
+  benefits: string[];
+  applications?: number;
+  postedBy?: string;
+  companyDescription?: string;
+  contactEmail?: string;
+}
+
 interface JobDetailsModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  job: any;
-  onApply: (job: any) => void;
-  onSave: (job: any) => void;
+  job: Job;
+  onApply: (job: Job) => void;
+  onSave: (job: Job) => void;
   savedJobs: number[];
 }
 

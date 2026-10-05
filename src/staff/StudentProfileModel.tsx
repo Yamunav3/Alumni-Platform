@@ -6,8 +6,22 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Download, ExternalLink, Calendar, Award, MapPin, Mail, Phone } from "lucide-react";
 
+interface Student {
+  fullname: string;
+  branch: string;
+  yearofpassing: string;
+  studentID: string;
+  email: string;
+  skills: string[];
+  interests: string | string[];
+  resume?: string;
+  gpa?: string;
+  status?: string;
+  lastActive?: string;
+}
+
 interface StudentProfileModalProps {
-  student: any;
+  student: Student;
   isOpen: boolean;
   onClose: () => void;
 }

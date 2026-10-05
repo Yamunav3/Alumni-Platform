@@ -65,10 +65,11 @@ const [formData, setFormData] = useState({
         });
         navigate("/alumni/home");
       }
-    } catch (error: any) {
+    } catch (error) {
       const message =
-        error.response?.data?.message || "Invalid username or password.";
-      setError(message);
+        (error as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+        "Invalid username or password.";
+      setError(message as string);
       toast({
         title: "Login Failed",
         description: message,

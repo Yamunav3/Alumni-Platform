@@ -6,10 +6,30 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import toast from "react-hot-toast";
 
+interface Job {
+  id: number;
+  title: string;
+  company: string;
+  isUrgent?: boolean;
+  location: string;
+  type: string;
+  salary?: string;
+  postedDate: string;
+  description: string;
+  responsibilities: string[];
+  qualifications: string[];
+  skills: string[];
+  benefits: string[];
+  applications?: number;
+  postedBy?: string;
+  companyDescription?: string;
+  contactEmail?: string;
+}
+
 interface JobPostingFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onJobPosted: (job: any) => void;
+  onJobPosted: (job: Job) => void;
 }
 
 const JobPostingForm = ({ open, onOpenChange, onJobPosted }: JobPostingFormProps) => {

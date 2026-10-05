@@ -5,8 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Send, Phone, Video, MoreHorizontal } from "lucide-react";
 
+interface ChatContact {
+  name: string;
+  type: string;
+}
+
 interface ChatModalProps {
-  chatWith: any;
+  chatWith: ChatContact;
   isOpen: boolean;
   onClose: () => void;
 }

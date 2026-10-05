@@ -10,7 +10,6 @@ import { Search, Filter, MapPin, Clock, DollarSign, Calendar, Users, Upload } fr
 import { getInternships } from "../../api/studentApi";
 
 interface Internship {
-  [x: string]: any;
   id: number;
   jobtitle: string;
   company: string;

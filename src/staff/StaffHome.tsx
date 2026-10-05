@@ -67,16 +67,15 @@ interface Suggestions{
 } 
 
 const StaffPortal = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedStudent, setSelectedStudent] = useState<any>(null);
-  const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
   const [showStudentProfile, setShowStudentProfile] = useState(false);
   const [showRecommendModal, setShowRecommendModal] = useState(false);
   const [showRecommendedStudents, setShowRecommendedStudents] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [showFeedbackDetails, setShowFeedbackDetails] = useState(false);
-  const [selectedFeedback, setSelectedFeedback] = useState<any>(null);
-  const [chatWith, setChatWith] = useState<any>(null);
+  const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);
+  const [chatWith, setChatWith] = useState<ChatContact | null>(null);
   const [opportunityFilter, setOpportunityFilter] = useState("all");
   const [feedbackStatuses, setFeedbackStatuses] = useState<{[key: number]: string}>({});
  
@@ -163,22 +162,22 @@ const StaffPortal = () => {
     }
   };
 
-  const handleViewProfile = (student:any) => {
+  const handleViewProfile = (student: Student) => {
     setSelectedStudent(student);
     setShowStudentProfile(true);
   };
 
-  const handleRecommendStudent = (student:any) => {
+  const handleRecommendStudent = (student: Student) => {
     setSelectedStudent(student);
     setShowRecommendModal(true);
   };
 
   const handleContactAlumni = (alumniEmail: string, alumniName: string) => {
-    setChatWith({ email: alumniEmail, name: alumniName, type: 'alumni' });
+    setChatWith({ name: alumniName, type: 'alumni' });
     setShowChat(true);
   };
 
-  const handleViewFeedbackDetails = (feedback: any) => {
+  const handleViewFeedbackDetails = (feedback: Feedback) => {
     setSelectedFeedback(feedback);
     setShowFeedbackDetails(true);
   };

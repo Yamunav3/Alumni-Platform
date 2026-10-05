@@ -1,4 +1,5 @@
 import { useState ,useEffect} from "react";
+import { Webinar } from "./CreateWebinarForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -190,7 +191,6 @@ const initialSuccessStories = [
 ];
 
 interface Internship {
-  [x: string]: any;
   id: number;
   jobtitle: string;
   company: string;
@@ -336,8 +336,8 @@ const StudentCareerPortal = () => {
   const [showShareStoryForm, setShowShareStoryForm] = useState(false);
 
   // Selected items
-  const [selectedJob, setSelectedJob] = useState<any>(null);
-  const [selectedApplication, setSelectedApplication] = useState<any>(null);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [selectedApplication, setSelectedApplication] = useState<ApplicationDetails | null>(null);
   
   // Application form state
   const [applicationForm, setApplicationForm] = useState({
@@ -385,17 +385,17 @@ const StudentCareerPortal = () => {
   }, []);
 
   // Handlers
-  const handleApplyClick = (job: any) => {
+  const handleApplyClick = (job: Job) => {
     setSelectedJob(job);
     setShowApplicationForm(true);
   };
 
-  const handleJobClick = (job: any) => {
+  const handleJobClick = (job: Job) => {
     setSelectedJob(job);
     setShowJobDetails(true);
   };
 
-  const handleSaveJob = (job: any) => {
+  const handleSaveJob = (job: Job) => {
     if (savedJobs.includes(job.id)) {
       setSavedJobs(savedJobs.filter(id => id !== job.id));
       toast.success(`Removed ${job.title} from saved jobs`);
@@ -405,7 +405,7 @@ const StudentCareerPortal = () => {
     }
   };
 
-  const handleViewApplicationDetails = (application: any) => {
+  const handleViewApplicationDetails = (application: ApplicationDetails) => {
     setSelectedApplication(application);
     setShowApplicationDetails(true);
   };
@@ -484,15 +484,15 @@ const StudentCareerPortal = () => {
     toast.success(`You have successfully applied for ${selectedJob.title} at ${selectedJob.company}!`);
   };
 
-  const handleJobPosted = (newJob: any) => {
+  const handleJobPosted = (newJob: CareerJob) => {
     setJobs([newJob, ...jobs]);
   };
 
-  const handleWebinarCreated = (newWebinar: any) => {
+  const handleWebinarCreated = (newWebinar: Webinar) => {
     setWebinars([newWebinar, ...webinars]);
   };
 
-  const handleWebinarRegistration = (webinar: any) => {
+  const handleWebinarRegistration = (webinar: Webinar) => {
     if (registeredWebinars.includes(webinar.id)) {
       // Already registered
       toast(`You're already registered for ${webinar.title}`, {
@@ -515,7 +515,7 @@ const StudentCareerPortal = () => {
     toast.success(`Successfully registered for ${webinar.title}!`);
   };
 
-  const handleStoryShared = (newStory: any) => {
+  const handleStoryShared = (newStory: Story) => {
     setSuccessStories([newStory, ...successStories]);
   };
 

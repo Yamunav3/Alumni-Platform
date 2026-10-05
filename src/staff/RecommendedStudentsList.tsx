@@ -9,8 +9,24 @@ import { Search, UserCheck } from "lucide-react";
 import { students } from "./data/staffData";
 import { useToast } from "@/hooks/use-toast";
 
+interface Student {
+  name: string;
+  major: string;
+  year: string;
+  status: string;
+  skills: string[];
+  interests: string[];
+}
+
+interface Opportunity {
+  title: string;
+  company: string;
+  type: string;
+  requirements: string[];
+}
+
 interface RecommendedStudentsListProps {
-  opportunity: any;
+  opportunity: Opportunity;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -36,7 +52,7 @@ const RecommendedStudentsList = ({ opportunity, isOpen, onClose }: RecommendedSt
     });
   };
 
-  const getMatchScore = (student: any) => {
+  const getMatchScore = (student: Student) => {
     const studentSkills = student.skills.map((s: string) => s.toLowerCase());
     const requiredSkills = opportunity.requirements.map((r: string) => r.toLowerCase());
     const matchingSkills = requiredSkills.filter((skill: string) => 

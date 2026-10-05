@@ -266,6 +266,12 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     const renderLogoItem = useCallback(
       (item: LogoItem, key: React.Key) => {
         const isNodeItem = 'node' in item;
+        const nodeItem = item as LogoItem extends { node: React.ReactNode }
+          ? LogoItem
+          : never;
+        const imageItem = item as LogoItem extends { src: string }
+          ? LogoItem
+          : never;
 
         const content = isNodeItem ? (
           <span
@@ -275,9 +281,9 @@ export const LogoLoop = React.memo<LogoLoopProps>(
               scaleOnHover &&
                 'transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120'
             )}
-            aria-hidden={!!(item as any).href && !(item as any).ariaLabel}
+            aria-hidden={!!nodeItem.href && !nodeItem.ariaLabel}
           >
-            {(item as any).node}
+            {nodeItem.node}
           </span>
         ) : (
           <img
@@ -289,13 +295,13 @@ export const LogoLoop = React.memo<LogoLoopProps>(
               scaleOnHover &&
                 'transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120'
             )}
-            src={(item as any).src}
-            srcSet={(item as any).srcSet}
-            sizes={(item as any).sizes}
-            width={(item as any).width}
-            height={(item as any).height}
-            alt={(item as any).alt ?? ''}
-            title={(item as any).title}
+            src={imageItem.src}
+            srcSet={imageItem.srcSet}
+            sizes={imageItem.sizes}
+            width={imageItem.width}
+            height={imageItem.height}
+            alt={imageItem.alt ?? ''}
+            title={imageItem.title}
             loading="lazy"
             decoding="async"
             draggable={false}
@@ -303,10 +309,10 @@ export const LogoLoop = React.memo<LogoLoopProps>(
         );
 
         const itemAriaLabel = isNodeItem
-          ? ((item as any).ariaLabel ?? (item as any).title)
-          : ((item as any).alt ?? (item as any).title);
+          ? nodeItem.ariaLabel ?? nodeItem.title
+          : imageItem.alt ?? imageItem.title;
 
-        const inner = (item as any).href ? (
+        const inner = isNodeItem ? (nodeItem.href ? (
           <a
             className={cx(
               'inline-flex items-center no-underline rounded',
@@ -314,7 +320,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
               'hover:opacity-80',
               'focus-visible:outline focus-visible:outline-current focus-visible:outline-offset-2'
             )}
-            href={(item as any).href}
+            href={nodeItem.href}
             aria-label={itemAriaLabel || 'logo link'}
             target="_blank"
             rel="noreferrer noopener"
@@ -323,7 +329,25 @@ export const LogoLoop = React.memo<LogoLoopProps>(
           </a>
         ) : (
           content
-        );
+        )) : (
+          imageItem.href ? (
+          <a
+            className={cx(
+              'inline-flex items-center no-underline rounded',
+              'transition-opacity duration-200 ease-linear',
+              'hover:opacity-80',
+              'focus-visible:outline focus-visible:outline-current focus-visible:outline-offset-2'
+            )}
+            href={imageItem.href}
+            aria-label={itemAriaLabel || 'logo link'}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {content}
+          </a>
+        ) : (
+          content
+        ));
 
         return (
           <li

@@ -154,7 +154,7 @@ const BadgePill = ({ text }: { text: string }) => (
   </span>
 );
 
-const TabItem = ({ value, icon, label }: { value: string; icon: any; label: string }) => (
+const TabItem = ({ value, icon, label }: { value: string; icon: React.ReactNode; label: string }) => (
   <TabsTrigger 
     value={value} 
     className="rounded-full px-6 h-10 data-[state=active]:bg-purple-600 data-[state=active]:text-white text-gray-600 hover:text-purple-600 transition-all flex items-center gap-2"

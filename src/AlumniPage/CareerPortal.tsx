@@ -42,7 +42,6 @@ import { useToast } from "@/hooks/use-toast";
 
 
 interface Internship {
-  [x: string]: any;
   id: number;
   jobtitle: string;
   company: string;
